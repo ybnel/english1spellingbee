@@ -11,6 +11,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const clearButtons = document.querySelectorAll('.btn-clear-all');
   const english1CenterSelect = document.getElementById('english1Center');
 
+  const welcomeScreen = document.getElementById('welcomeScreen');
+  const btnStartRegistration = document.getElementById('btnStartRegistration');
+
+  if (btnStartRegistration && welcomeScreen && form) {
+    btnStartRegistration.addEventListener('click', () => {
+      welcomeScreen.style.display = 'none';
+      form.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
   // Branch Info Cards
   const branchStudentGroup1 = document.getElementById('branch-student-group1');
   const branchStudentGroup2 = document.getElementById('branch-student-group2');
@@ -55,24 +66,42 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const paymentReceiptInput = document.getElementById('paymentReceipt');
+  const btnGalleryUpload = document.getElementById('btnGalleryUpload');
+  const fileStatusBox = document.getElementById('fileStatusBox');
   const fileNameDisplay = document.getElementById('fileNameDisplay');
+  const btnRemoveFile = document.getElementById('btnRemoveFile');
 
-  if (paymentReceiptInput && fileNameDisplay) {
+  if (btnGalleryUpload && paymentReceiptInput) {
+    btnGalleryUpload.addEventListener('click', () => {
+      paymentReceiptInput.click();
+    });
+  }
+
+  if (paymentReceiptInput) {
     paymentReceiptInput.addEventListener('change', () => {
       if (paymentReceiptInput.files && paymentReceiptInput.files.length > 0) {
-        fileNameDisplay.textContent = paymentReceiptInput.files[0].name;
+        const file = paymentReceiptInput.files[0];
+        if (fileNameDisplay) fileNameDisplay.textContent = file.name;
+        if (fileStatusBox) fileStatusBox.style.display = 'flex';
+        
         const uploadCard = paymentReceiptInput.closest('.form-card');
         if (uploadCard) uploadCard.classList.remove('error-state');
-      } else {
-        fileNameDisplay.textContent = '';
       }
+    });
+  }
+
+  if (btnRemoveFile) {
+    btnRemoveFile.addEventListener('click', () => {
+      if (paymentReceiptInput) paymentReceiptInput.value = '';
+      if (fileNameDisplay) fileNameDisplay.textContent = '';
+      if (fileStatusBox) fileStatusBox.style.display = 'none';
     });
   }
 
   // Clear Form handler
   clearButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      if (confirm('Apakah Anda yakin ingin mengosongkan semua isian formulir ini?')) {
+      if (confirm('Are you sure you want to clear all fields in this form?')) {
         resetForm();
       }
     });
@@ -81,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function resetForm() {
     form.reset();
     if (fileNameDisplay) fileNameDisplay.textContent = '';
+    if (fileStatusBox) fileStatusBox.style.display = 'none';
     cards.forEach(c => {
       c.classList.remove('error-state');
       c.classList.remove('active');
