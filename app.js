@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+function initApp() {
   const form = document.getElementById('spellingBeeForm');
   const cards = document.querySelectorAll('.form-card');
   const section1 = document.getElementById('section1');
@@ -513,4 +513,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial load
   updateResponseCount();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
