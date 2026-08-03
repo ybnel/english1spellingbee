@@ -14,10 +14,13 @@ function initApp() {
   const welcomeScreen = document.getElementById('welcomeScreen');
   const btnStartRegistration = document.getElementById('btnStartRegistration');
 
+  // Welcome Screen -> Section 1 Form
   if (btnStartRegistration && welcomeScreen && form) {
     btnStartRegistration.addEventListener('click', () => {
       welcomeScreen.style.display = 'none';
       form.style.display = 'block';
+      if (section1) section1.style.display = 'block';
+      if (section2) section2.style.display = 'none';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
@@ -116,7 +119,9 @@ function initApp() {
       c.classList.remove('error-state');
       c.classList.remove('active');
     });
-    allBranchCards.forEach(card => card.style.display = 'none');
+    allBranchCards.forEach(card => {
+      if (card) card.style.display = 'none';
+    });
     if (section2) section2.style.display = 'none';
     if (section1) section1.style.display = 'block';
     const titleCard = section1.querySelector('.title-card');
@@ -127,8 +132,8 @@ function initApp() {
   // Calculate & Show Branch Info Card based on Student status + Center choice
   function updateBranchCard(shouldScroll = false) {
     const formData = new FormData(form);
-    const isStudent = formData.get('isEnglish1Student'); // "Ya" or "Tidak"
-    const center = formData.get('english1Center'); // Center choice
+    const isStudent = formData.get('isEnglish1Student');
+    const center = formData.get('english1Center');
 
     allBranchCards.forEach(card => {
       if (card) card.style.display = 'none';
@@ -173,7 +178,7 @@ function initApp() {
     english1CenterSelect.addEventListener('change', () => updateBranchCard(true));
   }
 
-  // Validation helper for any section's cards
+  // Validation helper for active section cards
   function validateCardSection(section) {
     if (!section) return true;
     const secCards = section.querySelectorAll('.form-card');
@@ -220,7 +225,6 @@ function initApp() {
     });
 
     if (!isValid && firstErrorCard) {
-      console.warn('Section validation failed on card:', firstErrorCard);
       setActiveCard(firstErrorCard);
       firstErrorCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
@@ -230,13 +234,8 @@ function initApp() {
 
   // Section 1 -> Section 2 Navigation
   function goToSection2() {
-    console.log('goToSection2 called');
-    if (!validateCardSection(section1)) {
-      console.warn('Section 1 validation failed');
-      return;
-    }
+    if (!validateCardSection(section1)) return;
 
-    console.log('Section 1 valid, switching to Section 2');
     section1.style.display = 'none';
     section2.style.display = 'block';
     updateBranchCard();
@@ -252,14 +251,15 @@ function initApp() {
 
   // Section 2 -> Section 1 Navigation ("Back" Button)
   if (btnBack) {
-    btnBack.addEventListener('click', () => {
+    btnBack.addEventListener('click', (e) => {
+      e.preventDefault();
       section2.style.display = 'none';
       section1.style.display = 'block';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
 
-  // Submit Handler
+  // Form Submit Handler
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -276,20 +276,12 @@ function initApp() {
     const receiptFile = document.getElementById('paymentReceipt');
     let receiptFileName = receiptFile && receiptFile.files.length > 0 ? receiptFile.files[0].name : 'Tidak ada file';
 
-    const rawBirthPlace = formData.get('birthPlace') || '';
-    const rawBirthDate = formData.get('birthDate') || '';
-    let birthDetails = formData.get('birthDetails') || '';
-
-    if (!birthDetails && (rawBirthPlace || rawBirthDate)) {
-      birthDetails = rawBirthPlace && rawBirthDate ? `${rawBirthPlace}, ${rawBirthDate}` : (rawBirthPlace || rawBirthDate);
-    }
-
     const submission = {
       id: Date.now(),
       timestamp: new Date().toLocaleString('id-ID'),
       fullName: formData.get('fullName'),
       email: formData.get('email'),
-      birthDetails: birthDetails,
+      birthDetails: formData.get('birthDetails') || '',
       schoolName: formData.get('schoolName'),
       grade: formData.get('grade'),
       groupCategory: formData.get('groupCategory'),

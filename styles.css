@@ -460,26 +460,36 @@ body {
   border-color: var(--accent-color);
 }
 
-/* Error Messages */
+/* Error Messages & Red Card Highlight */
+.form-card.error-state {
+  border: 1.5px solid #d93025 !important;
+  box-shadow: 0 1px 4px rgba(217, 48, 37, 0.15) !important;
+}
+
+.form-card.error-state .text-input,
+.form-card.error-state .select-input {
+  border-color: #d93025 !important;
+}
+
 .error-msg {
   display: none;
   align-items: center;
-  gap: 6px;
-  margin-top: 8px;
-  color: var(--error-color);
+  gap: 8px;
+  margin-top: 12px;
+  color: #d93025;
   font-size: 13px;
   font-weight: 500;
 }
 
 .error-msg svg {
-  width: 16px;
-  height: 16px;
-  fill: currentColor;
+  width: 18px;
+  height: 18px;
+  fill: #d93025;
   flex-shrink: 0;
 }
 
 .form-card.error-state .error-msg {
-  display: flex;
+  display: flex !important;
 }
 
 /* Payment Info Card Header */
