@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import bannerImg from '../Banner Google Form Spelling Bee.png';
+import bannerImg from './assets/banner.png';
 
 const GOOGLE_SCRIPT_URL_SURABAYA = 'https://script.google.com/macros/s/AKfycbyQym6DmlPm2hxeT3ELSu9BqHff-qL_BIHEA6fJmc4UTCMZKcJHA1VZxlisC6jq_30ScA/exec';
 
