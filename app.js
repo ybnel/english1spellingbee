@@ -173,32 +173,34 @@ function initApp() {
     english1CenterSelect.addEventListener('change', () => updateBranchCard(true));
   }
 
-  // Section 1 Validation & Navigation ("Berikutnya")
-  btnNext.addEventListener('click', () => {
-    const sec1Cards = section1.querySelectorAll('.form-card');
+  // Robust validation helper for any section's cards
+  function validateCardSection(section) {
+    const cards = section.querySelectorAll('.form-card');
     let isValid = true;
     let firstErrorCard = null;
 
-    sec1Cards.forEach(card => {
+    cards.forEach(card => {
       if (card.dataset.required === 'true') {
-        const textInputs = card.querySelectorAll('input[type="text"], input[type="tel"]');
-        const selects = card.querySelectorAll('select');
-        const radios = card.querySelectorAll('input[type="radio"]');
-
         let fieldValid = true;
 
-        if (textInputs.length > 0) {
-          textInputs.forEach(i => {
-            if (!i.value.trim()) fieldValid = false;
-          });
-        }
+        // 1. Text, Tel, Email, File inputs
+        const inputs = card.querySelectorAll('input:not([type="radio"]):not([type="checkbox"])');
+        inputs.forEach(input => {
+          if (input.type === 'file') {
+            if (!input.files || input.files.length === 0) fieldValid = false;
+          } else {
+            if (!input.value.trim()) fieldValid = false;
+          }
+        });
 
-        if (selects.length > 0) {
-          selects.forEach(s => {
-            if (!s.value) fieldValid = false;
-          });
-        }
+        // 2. Select dropdowns
+        const selects = card.querySelectorAll('select');
+        selects.forEach(s => {
+          if (!s.value) fieldValid = false;
+        });
 
+        // 3. Radio groups
+        const radios = card.querySelectorAll('input[type="radio"]');
         if (radios.length > 0) {
           const checked = Array.from(radios).some(r => r.checked);
           if (!checked) fieldValid = false;
@@ -216,20 +218,26 @@ function initApp() {
       }
     });
 
-    if (!isValid) {
-      if (firstErrorCard) {
-        setActiveCard(firstErrorCard);
-        firstErrorCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-      return;
+    if (!isValid && firstErrorCard) {
+      setActiveCard(firstErrorCard);
+      firstErrorCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
+
+    return isValid;
+  }
+
+  // Section 1 Validation & Navigation ("Berikutnya" / Next)
+  function goToSection2() {
+    if (!validateCardSection(section1)) return;
 
     // Switch to Section 2
     section1.style.display = 'none';
     section2.style.display = 'block';
     updateBranchCard();
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+  }
+
+  btnNext.addEventListener('click', goToSection2);
 
   // Section 2 "Kembali" Button
   btnBack.addEventListener('click', () => {
@@ -242,55 +250,14 @@ function initApp() {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    // Validate Section 2 inputs (e.g., english1Center)
-    const sec2Cards = section2.querySelectorAll('.form-card');
-    let isValid = true;
-    let firstErrorCard = null;
-
-    sec2Cards.forEach(card => {
-      if (card.dataset.required === 'true') {
-        const textInputs = card.querySelectorAll('input[type="text"], input[type="tel"]');
-        const selects = card.querySelectorAll('select');
-        const radios = card.querySelectorAll('input[type="radio"]');
-
-        let fieldValid = true;
-
-        if (textInputs.length > 0) {
-          textInputs.forEach(i => {
-            if (!i.value.trim()) fieldValid = false;
-          });
-        }
-
-        if (selects.length > 0) {
-          selects.forEach(s => {
-            if (!s.value) fieldValid = false;
-          });
-        }
-
-        if (radios.length > 0) {
-          const checked = Array.from(radios).some(r => r.checked);
-          if (!checked) fieldValid = false;
-        }
-
-        if (!fieldValid) {
-          isValid = false;
-          card.classList.add('error-state');
-          if (!firstErrorCard) {
-            firstErrorCard = card;
-          }
-        } else {
-          card.classList.remove('error-state');
-        }
-      }
-    });
-
-    if (!isValid) {
-      if (firstErrorCard) {
-        setActiveCard(firstErrorCard);
-        firstErrorCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
+    // If section 1 is currently active (e.g. user pressed Enter key in Section 1 text input)
+    if (section1.style.display !== 'none') {
+      goToSection2();
       return;
     }
+
+    // Validate Section 2 inputs (file upload receipt)
+    if (!validateCardSection(section2)) return;
 
     const formData = new FormData(form);
     const receiptFile = document.getElementById('paymentReceipt');
