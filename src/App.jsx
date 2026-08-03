@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import bannerImg from '../Banner Google Form Spelling Bee.png';
 
 const GOOGLE_SCRIPT_URL_SURABAYA = 'https://script.google.com/macros/s/AKfycbyQym6DmlPm2hxeT3ELSu9BqHff-qL_BIHEA6fJmc4UTCMZKcJHA1VZxlisC6jq_30ScA/exec';
 
@@ -391,7 +392,7 @@ export default function App() {
       {screen === 'welcome' && (
         <section id="welcomeScreen" className="welcome-card">
           <div className="welcome-banner-wrap">
-            <img src="Banner Google Form Spelling Bee.png" alt="English 1 Spelling Bee Banner" className="welcome-banner-img" />
+            <img src={bannerImg} alt="English 1 Spelling Bee Banner" className="welcome-banner-img" />
           </div>
           <div className="welcome-content">
             <div className="welcome-badge">🏆 Regional Competition 2026</div>
