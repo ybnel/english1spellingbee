@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Online Registration Form Spelling Bee Regional Competition 2026 - English 1">
-  <title>English 1 Spelling Bee Regional Competition 2026</title>
+  <title>Online Registration Form Spelling Bee Regional Competition 2026</title>
   <link rel="icon" type="image/png" href="Gemini_Generated_Image_im1c6gim1c6gim1c.png">
   <link rel="shortcut icon" type="image/png" href="Gemini_Generated_Image_im1c6gim1c6gim1c.png">
   <link rel="apple-touch-icon" href="Gemini_Generated_Image_im1c6gim1c6gim1c.png">
@@ -14,7 +14,7 @@
 
   <main class="form-container">
 
-    <!-- WELCOME / LANDING SCREEN CARD -->
+    <!-- WELCOME / LANDING SCREEN -->
     <section id="welcomeScreen" class="welcome-card">
       <div class="welcome-banner-wrap">
         <img src="Banner Google Form Spelling Bee.png" alt="English 1 Spelling Bee Banner" class="welcome-banner-img">
@@ -44,7 +44,7 @@
           </div>
         </div>
 
-        <button type="button" id="btnStartRegistration" class="btn-start-registration">
+        <button type="button" id="btnStartRegistration" class="btn-start-registration" onclick="if(document.getElementById('welcomeScreen')) document.getElementById('welcomeScreen').style.display='none'; if(document.getElementById('spellingBeeForm')) document.getElementById('spellingBeeForm').style.display='block'; window.scrollTo({top:0, behavior:'smooth'});">
           <span>Start Registration</span>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -54,8 +54,8 @@
       </div>
     </section>
 
-    <!-- Main Registration Form (Initially hidden until Start Registration is clicked) -->
-    <form id="spellingBeeForm" novalidate style="display: none;">
+    <!-- Main Registration Form -->
+    <form id="spellingBeeForm" style="display: none;" novalidate>
 
       <!-- SECTION 1: DATA PESERTA -->
       <div id="section1" class="form-section">
@@ -140,7 +140,7 @@
           </div>
         </section>
 
-        <!-- Question 5: Grade -->
+        <!-- Question 4: Grade -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
             Kelas / <em>Grade</em> <span class="required-star">*</span>
@@ -170,7 +170,7 @@
           </div>
         </section>
 
-        <!-- Question 6: Choose Group Category -->
+        <!-- Question 5: Choose Group Category -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
             Pilih kategori group kompetisi / <em>Choose your group category</em> <span class="required-star">*</span>
@@ -195,7 +195,7 @@
           </div>
         </section>
 
-        <!-- Question 7: Parents Phone Number -->
+        <!-- Question 6: Parents Phone Number -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
             Nomor telpon orang tua / <em>Parents Phone Number</em> <span class="required-star">*</span>
@@ -209,7 +209,7 @@
           </div>
         </section>
 
-        <!-- Question 8: Info Source -->
+        <!-- Question 7: Info Source -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
             Dari mana Anda mendapatkan informasi kompetisi ini? / <em>Where did you hear about this competition?</em> <span class="required-star">*</span>
@@ -237,7 +237,7 @@
           </div>
         </section>
 
-        <!-- Question 9: Is English 1 Student -->
+        <!-- Question 8: Is English 1 Student -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
             Apakah anak Anda siswa English 1? / <em>Are you currently an English 1 student?</em> <span class="required-star">*</span>
@@ -260,7 +260,7 @@
           </div>
         </section>
 
-        <!-- Question 10: English 1 Center -->
+        <!-- Question 9: English 1 Center -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
             English 1 Center <span class="required-star">*</span>
@@ -291,7 +291,7 @@
         <!-- Section 1 Actions -->
         <div class="form-actions-bar">
           <button type="button" id="btnNext" class="btn-next">Next</button>
-          <button type="button" class="btn-clear-form btn-clear-all" id="btnClearForm">Clear form</button>
+          <button type="button" class="btn-clear-form btn-clear-all">Clear form</button>
         </div>
 
       </div> <!-- End Section 1 -->
@@ -353,7 +353,7 @@
           </div>
         </section>
 
-        <!-- Payment Receipt Upload Card -->
+        <!-- Payment Receipt Upload Card (Expense Form Style) -->
         <section class="form-card" data-card data-required="true">
           <div class="card-section-header">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -413,7 +413,7 @@
     </form>
 
     <!-- Success Confirmation Receipt View -->
-    <div id="successView" class="success-card" style="display: none;">
+    <div id="successView" class="success-card">
       <h1 class="success-title">Online Registration Form Spelling Bee Regional Competition 2026</h1>
       <p class="success-message">Your response has been recorded.</p>
       <a href="#" id="btnSubmitAnother" class="submit-another-link">Submit another response</a>

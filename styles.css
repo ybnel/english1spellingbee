@@ -315,32 +315,6 @@ body {
   width: 100%;
 }
 
-.birth-fields-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 10px;
-}
-
-@media (max-width: 520px) {
-  .birth-fields-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.field-label {
-  display: block;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-}
-
-.field-label em {
-  font-style: italic;
-  color: #64748b;
-}
-
 .text-input, .select-input {
   width: 100%;
   background: var(--input-bg);
@@ -460,36 +434,26 @@ body {
   border-color: var(--accent-color);
 }
 
-/* Error Messages & Red Card Highlight */
-.form-card.error-state {
-  border: 1.5px solid #d93025 !important;
-  box-shadow: 0 1px 4px rgba(217, 48, 37, 0.15) !important;
-}
-
-.form-card.error-state .text-input,
-.form-card.error-state .select-input {
-  border-color: #d93025 !important;
-}
-
+/* Error Messages */
 .error-msg {
   display: none;
   align-items: center;
-  gap: 8px;
-  margin-top: 12px;
-  color: #d93025;
+  gap: 6px;
+  margin-top: 8px;
+  color: var(--error-color);
   font-size: 13px;
   font-weight: 500;
 }
 
 .error-msg svg {
-  width: 18px;
-  height: 18px;
-  fill: #d93025;
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
   flex-shrink: 0;
 }
 
 .form-card.error-state .error-msg {
-  display: flex !important;
+  display: flex;
 }
 
 /* Payment Info Card Header */

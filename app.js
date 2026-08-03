@@ -14,25 +14,12 @@ function initApp() {
   const welcomeScreen = document.getElementById('welcomeScreen');
   const btnStartRegistration = document.getElementById('btnStartRegistration');
 
-  // Welcome Screen -> Registration Form transition
-  if (welcomeScreen && form) {
-    welcomeScreen.style.display = 'block';
-    form.style.display = 'none';
-
-    if (btnStartRegistration) {
-      btnStartRegistration.addEventListener('click', (e) => {
-        e.preventDefault();
-        welcomeScreen.style.display = 'none';
-        form.style.display = 'block';
-        if (section1) section1.style.display = 'block';
-        if (section2) section2.style.display = 'none';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-    }
-  } else if (form) {
-    form.style.display = 'block';
-    if (section1) section1.style.display = 'block';
-    if (section2) section2.style.display = 'none';
+  if (btnStartRegistration && welcomeScreen && form) {
+    btnStartRegistration.addEventListener('click', () => {
+      welcomeScreen.style.display = 'none';
+      form.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   }
 
   // Branch Info Cards
@@ -53,7 +40,7 @@ function initApp() {
 
   let currentCalculatedBranch = '';
 
-  // Active card highlight & error removal logic
+  // Active card highlight logic
   cards.forEach(card => {
     card.addEventListener('click', () => {
       setActiveCard(card);
@@ -78,7 +65,6 @@ function initApp() {
     targetCard.classList.add('active');
   }
 
-  // File upload controls
   const paymentReceiptInput = document.getElementById('paymentReceipt');
   const btnGalleryUpload = document.getElementById('btnGalleryUpload');
   const fileStatusBox = document.getElementById('fileStatusBox');
@@ -129,11 +115,9 @@ function initApp() {
       c.classList.remove('error-state');
       c.classList.remove('active');
     });
-    allBranchCards.forEach(card => {
-      if (card) card.style.display = 'none';
-    });
-    if (section2) section2.style.display = 'none';
-    if (section1) section1.style.display = 'block';
+    allBranchCards.forEach(card => card.style.display = 'none');
+    section2.style.display = 'none';
+    section1.style.display = 'block';
     const titleCard = section1.querySelector('.title-card');
     if (titleCard) titleCard.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -142,16 +126,17 @@ function initApp() {
   // Calculate & Show Branch Info Card based on Student status + Center choice
   function updateBranchCard(shouldScroll = false) {
     const formData = new FormData(form);
-    const isStudent = formData.get('isEnglish1Student');
-    const center = formData.get('english1Center');
+    const isStudent = formData.get('isEnglish1Student'); // "Ya" or "Tidak"
+    const center = formData.get('english1Center'); // Center choice
 
-    allBranchCards.forEach(card => {
-      if (card) card.style.display = 'none';
-    });
+    allBranchCards.forEach(card => card.style.display = 'none');
     currentCalculatedBranch = '';
 
     if (!center) return;
 
+    // Group Centers:
+    // Group 1: Plaza Surabaya, Jemursari, Galaxy Mall, Purimas
+    // Group 2: Bukit Mas, Pakuwon Mall
     const group1Centers = [
       'English 1 Plaza Surabaya',
       'English 1 Jemursari',
@@ -188,14 +173,13 @@ function initApp() {
     english1CenterSelect.addEventListener('change', () => updateBranchCard(true));
   }
 
-  // Validation helper for active section cards
+  // Robust validation helper for any section's cards
   function validateCardSection(section) {
-    if (!section) return true;
-    const secCards = section.querySelectorAll('.form-card');
+    const cards = section.querySelectorAll('.form-card');
     let isValid = true;
     let firstErrorCard = null;
 
-    secCards.forEach(card => {
+    cards.forEach(card => {
       if (card.dataset.required === 'true') {
         let fieldValid = true;
 
@@ -242,44 +226,37 @@ function initApp() {
     return isValid;
   }
 
-  // Section 1 -> Section 2 Navigation
+  // Section 1 Validation & Navigation ("Berikutnya" / Next)
   function goToSection2() {
     if (!validateCardSection(section1)) return;
 
+    // Switch to Section 2
     section1.style.display = 'none';
     section2.style.display = 'block';
     updateBranchCard();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  if (btnNext) {
-    btnNext.addEventListener('click', (e) => {
-      e.preventDefault();
-      goToSection2();
-    });
-  }
+  btnNext.addEventListener('click', goToSection2);
 
-  // Section 2 -> Section 1 Navigation ("Back" Button)
-  if (btnBack) {
-    btnBack.addEventListener('click', (e) => {
-      e.preventDefault();
-      section2.style.display = 'none';
-      section1.style.display = 'block';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
+  // Section 2 "Kembali" Button
+  btnBack.addEventListener('click', () => {
+    section2.style.display = 'none';
+    section1.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 
-  // Form Submit Handler
+  // Final Form Submission Validation & Handler
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    // If Section 1 is active (e.g. user pressed Enter key in Section 1)
+    // If section 1 is currently active (e.g. user pressed Enter key in Section 1 text input)
     if (section1.style.display !== 'none') {
       goToSection2();
       return;
     }
 
-    // Validate Section 2
+    // Validate Section 2 inputs (file upload receipt)
     if (!validateCardSection(section2)) return;
 
     const formData = new FormData(form);
@@ -291,7 +268,7 @@ function initApp() {
       timestamp: new Date().toLocaleString('id-ID'),
       fullName: formData.get('fullName'),
       email: formData.get('email'),
-      birthDetails: formData.get('birthDetails') || '',
+      birthDetails: formData.get('birthDetails'),
       schoolName: formData.get('schoolName'),
       grade: formData.get('grade'),
       groupCategory: formData.get('groupCategory'),
@@ -305,15 +282,14 @@ function initApp() {
 
     saveSubmission(submission);
 
-    // Send payload + file base64 to Google Sheets (Surabaya Region)
-    const GOOGLE_SCRIPT_URL_SURABAYA = 'https://script.google.com/macros/s/AKfycbyQym6DmlPm2hxeT3ELSu9BqHff-qL_BIHEA6fJmc4UTCMZKcJHA1VZxlisC6jq_30ScA/exec';
-
-    if (receiptFile && receiptFile.files.length > 0) {
-      const file = receiptFile.files[0];
+    // Send data & uploaded file to Google Sheets (Surabaya Region)
+    const receiptInput = document.getElementById('paymentReceipt');
+    if (receiptInput && receiptInput.files.length > 0) {
+      const file = receiptInput.files[0];
       const reader = new FileReader();
       reader.onload = function(evt) {
         const fileBase64 = evt.target.result.split(',')[1];
-        sendDataToGoogleSheets(GOOGLE_SCRIPT_URL_SURABAYA, {
+        sendDataToGoogleSheets({
           ...submission,
           fileName: file.name,
           fileType: file.type,
@@ -322,22 +298,29 @@ function initApp() {
       };
       reader.readAsDataURL(file);
     } else {
-      sendDataToGoogleSheets(GOOGLE_SCRIPT_URL_SURABAYA, submission);
+      sendDataToGoogleSheets(submission);
     }
 
     // Show Success View
     form.style.display = 'none';
-    if (successView) successView.style.display = 'block';
+    successView.style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
     updateResponseCount();
   });
 
-  function sendDataToGoogleSheets(url, payload) {
-    if (!url) return;
-    fetch(url, {
+  // Google Sheets Webhook Sender
+  // Web App URL Google Apps Script Surabaya
+  const GOOGLE_SCRIPT_URL_SURABAYA = 'https://script.google.com/macros/s/AKfycbyQym6DmlPm2hxeT3ELSu9BqHff-qL_BIHEA6fJmc4UTCMZKcJHA1VZxlisC6jq_30ScA/exec';
+
+  function sendDataToGoogleSheets(payload) {
+    if (!GOOGLE_SCRIPT_URL_SURABAYA) return;
+
+    fetch(GOOGLE_SCRIPT_URL_SURABAYA, {
       method: 'POST',
       mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(payload)
     }).then(() => {
       console.log('Data pendaftaran berhasil dikirim ke Google Sheets.');
@@ -347,14 +330,12 @@ function initApp() {
   }
 
   // Submit Another Response
-  if (btnSubmitAnother) {
-    btnSubmitAnother.addEventListener('click', (e) => {
-      e.preventDefault();
-      resetForm();
-      if (successView) successView.style.display = 'none';
-      if (form) form.style.display = 'block';
-    });
-  }
+  btnSubmitAnother.addEventListener('click', (e) => {
+    e.preventDefault();
+    resetForm();
+    successView.style.display = 'none';
+    form.style.display = 'block';
+  });
 
   // LocalStorage Helper
   function getSubmissions() {
@@ -436,6 +417,7 @@ function initApp() {
       .replace(/"/g, '&quot;');
   }
 
+  // Export CSV
   if (btnExportCSV) {
     btnExportCSV.addEventListener('click', () => {
       const list = getSubmissions();
@@ -460,15 +442,15 @@ function initApp() {
 
       const rows = list.map(item => [
         `"${item.timestamp}"`,
-        `"${(item.fullName || '').replace(/"/g, '""')}"`,
-        `"${(item.birthDetails || '').replace(/"/g, '""')}"`,
-        `"${(item.schoolName || '').replace(/"/g, '""')}"`,
-        `"${item.grade || ''}"`,
-        `"${item.groupCategory || ''}"`,
-        `"${item.parentPhone || ''}"`,
-        `"${item.infoSource || ''}"`,
-        `"${item.isEnglish1Student || ''}"`,
-        `"${item.english1Center || ''}"`,
+        `"${item.fullName.replace(/"/g, '""')}"`,
+        `"${item.birthDetails.replace(/"/g, '""')}"`,
+        `"${item.schoolName.replace(/"/g, '""')}"`,
+        `"${item.grade}"`,
+        `"${item.groupCategory}"`,
+        `"${item.parentPhone}"`,
+        `"${item.infoSource}"`,
+        `"${item.isEnglish1Student}"`,
+        `"${item.english1Center}"`,
         `"${item.branchCategory || ''}"`
       ]);
 
@@ -485,6 +467,7 @@ function initApp() {
     });
   }
 
+  // Clear All Data
   if (btnClearData) {
     btnClearData.addEventListener('click', () => {
       if (confirm('Apakah Anda yakin ingin menghapus SELURUH data pendaftaran yang tersimpan di browser ini?')) {
@@ -495,6 +478,7 @@ function initApp() {
     });
   }
 
+  // Initial load
   updateResponseCount();
 }
 
