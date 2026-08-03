@@ -315,6 +315,32 @@ body {
   width: 100%;
 }
 
+.birth-fields-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+@media (max-width: 520px) {
+  .birth-fields-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.field-label em {
+  font-style: italic;
+  color: #64748b;
+}
+
 .text-input, .select-input {
   width: 100%;
   background: var(--input-bg);
