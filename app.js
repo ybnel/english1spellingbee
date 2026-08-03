@@ -189,7 +189,12 @@ function initApp() {
           if (input.type === 'file') {
             if (!input.files || input.files.length === 0) fieldValid = false;
           } else {
-            if (!input.value.trim()) fieldValid = false;
+            if (!input.value.trim()) {
+              fieldValid = false;
+            } else if (input.type === 'email') {
+              const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+              if (!emailRegex.test(input.value.trim())) fieldValid = false;
+            }
           }
         });
 
