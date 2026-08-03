@@ -251,6 +251,19 @@ function initApp() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
+  // Prevent native HTML GET submit on Enter key press and handle section navigation
+  form.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const targetTag = e.target.tagName.toLowerCase();
+      if (targetTag === 'input' && e.target.type !== 'submit') {
+        e.preventDefault();
+        if (section1.style.display !== 'none') {
+          goToSection2();
+        }
+      }
+    }
+  });
+
   // Final Form Submission Validation & Handler
   form.addEventListener('submit', (e) => {
     e.preventDefault();
