@@ -14,15 +14,25 @@ function initApp() {
   const welcomeScreen = document.getElementById('welcomeScreen');
   const btnStartRegistration = document.getElementById('btnStartRegistration');
 
-  // Welcome Screen -> Section 1 Form
-  if (btnStartRegistration && welcomeScreen && form) {
-    btnStartRegistration.addEventListener('click', () => {
-      welcomeScreen.style.display = 'none';
-      form.style.display = 'block';
-      if (section1) section1.style.display = 'block';
-      if (section2) section2.style.display = 'none';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+  // Welcome Screen -> Registration Form transition
+  if (welcomeScreen && form) {
+    welcomeScreen.style.display = 'block';
+    form.style.display = 'none';
+
+    if (btnStartRegistration) {
+      btnStartRegistration.addEventListener('click', (e) => {
+        e.preventDefault();
+        welcomeScreen.style.display = 'none';
+        form.style.display = 'block';
+        if (section1) section1.style.display = 'block';
+        if (section2) section2.style.display = 'none';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+  } else if (form) {
+    form.style.display = 'block';
+    if (section1) section1.style.display = 'block';
+    if (section2) section2.style.display = 'none';
   }
 
   // Branch Info Cards
