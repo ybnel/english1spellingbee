@@ -220,6 +220,7 @@ function initApp() {
     });
 
     if (!isValid && firstErrorCard) {
+      console.warn('Section validation failed on card:', firstErrorCard);
       setActiveCard(firstErrorCard);
       firstErrorCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
@@ -229,8 +230,13 @@ function initApp() {
 
   // Section 1 -> Section 2 Navigation
   function goToSection2() {
-    if (!validateCardSection(section1)) return;
+    console.log('goToSection2 called');
+    if (!validateCardSection(section1)) {
+      console.warn('Section 1 validation failed');
+      return;
+    }
 
+    console.log('Section 1 valid, switching to Section 2');
     section1.style.display = 'none';
     section2.style.display = 'block';
     updateBranchCard();
@@ -238,7 +244,10 @@ function initApp() {
   }
 
   if (btnNext) {
-    btnNext.addEventListener('click', goToSection2);
+    btnNext.addEventListener('click', (e) => {
+      e.preventDefault();
+      goToSection2();
+    });
   }
 
   // Section 2 -> Section 1 Navigation ("Back" Button)
