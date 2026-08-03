@@ -2,8 +2,14 @@ function initApp() {
   const form = document.getElementById('spellingBeeForm');
   const cards = document.querySelectorAll('.form-card');
   const section1 = document.getElementById('section1');
+  const section2 = document.getElementById('section2');
+  const successView = document.getElementById('successView');
+  
   const btnNext = document.getElementById('btnNext');
-  const btnClearForm = document.getElementById('btnClearForm');
+  const btnBack = document.getElementById('btnBack');
+  const btnSubmitAnother = document.getElementById('btnSubmitAnother');
+  const clearButtons = document.querySelectorAll('.btn-clear-all');
+  const english1CenterSelect = document.getElementById('english1Center');
 
   const welcomeScreen = document.getElementById('welcomeScreen');
   const btnStartRegistration = document.getElementById('btnStartRegistration');
@@ -16,42 +22,23 @@ function initApp() {
     });
   }
 
-  // Restore saved Section 1 draft from sessionStorage if available
-  restoreSection1Draft();
+  // Branch Info Cards
+  const branchStudentGroup1 = document.getElementById('branch-student-group1');
+  const branchStudentGroup2 = document.getElementById('branch-student-group2');
+  const branchNonstudentGroup1 = document.getElementById('branch-nonstudent-group1');
+  const branchNonstudentGroup2 = document.getElementById('branch-nonstudent-group2');
+  const allBranchCards = [branchStudentGroup1, branchStudentGroup2, branchNonstudentGroup1, branchNonstudentGroup2];
 
-  function restoreSection1Draft() {
-    const draftRaw = sessionStorage.getItem('spelling_bee_temp_section1');
-    if (!draftRaw || !form) return;
+  // Responses Modal Elements
+  const responseCountText = document.getElementById('responseCountText');
+  const btnOpenResponses = document.getElementById('btnOpenResponses');
+  const responsesModal = document.getElementById('responsesModal');
+  const btnCloseModal = document.getElementById('btnCloseModal');
+  const responsesTableBody = document.getElementById('responsesTableBody');
+  const btnExportCSV = document.getElementById('btnExportCSV');
+  const btnClearData = document.getElementById('btnClearData');
 
-    try {
-      const draft = JSON.parse(draftRaw);
-      if (welcomeScreen && form) {
-        welcomeScreen.style.display = 'none';
-        form.style.display = 'block';
-      }
-
-      if (draft.fullName) document.getElementById('fullName').value = draft.fullName;
-      if (draft.email) document.getElementById('email').value = draft.email;
-      if (draft.birthPlace && document.getElementById('birthPlace')) document.getElementById('birthPlace').value = draft.birthPlace;
-      if (draft.birthDate && document.getElementById('birthDate')) document.getElementById('birthDate').value = draft.birthDate;
-      if (draft.schoolName) document.getElementById('schoolName').value = draft.schoolName;
-      if (draft.grade) document.getElementById('grade').value = draft.grade;
-      if (draft.groupCategory) document.getElementById('groupCategory').value = draft.groupCategory;
-      if (draft.parentPhone) document.getElementById('parentPhone').value = draft.parentPhone;
-      if (draft.english1Center) document.getElementById('english1Center').value = draft.english1Center;
-
-      if (draft.infoSource) {
-        const radio = form.querySelector(`input[name="infoSource"][value="${draft.infoSource}"]`);
-        if (radio) radio.checked = true;
-      }
-      if (draft.isEnglish1Student) {
-        const radio = form.querySelector(`input[name="isEnglish1Student"][value="${draft.isEnglish1Student}"]`);
-        if (radio) radio.checked = true;
-      }
-    } catch (e) {
-      console.error('Failed to restore draft:', e);
-    }
-  }
+  let currentCalculatedBranch = '';
 
   // Active card highlight & error removal logic
   cards.forEach(card => {
@@ -78,25 +65,117 @@ function initApp() {
     targetCard.classList.add('active');
   }
 
-  // Clear Form handler
-  if (btnClearForm) {
-    btnClearForm.addEventListener('click', () => {
-      if (confirm('Are you sure you want to clear all fields in this form?')) {
-        form.reset();
-        sessionStorage.removeItem('spelling_bee_temp_section1');
-        cards.forEach(c => {
-          c.classList.remove('error-state');
-          c.classList.remove('active');
-        });
-        const titleCard = section1.querySelector('.title-card');
-        if (titleCard) titleCard.classList.add('active');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+  // File upload controls
+  const paymentReceiptInput = document.getElementById('paymentReceipt');
+  const btnGalleryUpload = document.getElementById('btnGalleryUpload');
+  const fileStatusBox = document.getElementById('fileStatusBox');
+  const fileNameDisplay = document.getElementById('fileNameDisplay');
+  const btnRemoveFile = document.getElementById('btnRemoveFile');
+
+  if (btnGalleryUpload && paymentReceiptInput) {
+    btnGalleryUpload.addEventListener('click', () => {
+      paymentReceiptInput.click();
+    });
+  }
+
+  if (paymentReceiptInput) {
+    paymentReceiptInput.addEventListener('change', () => {
+      if (paymentReceiptInput.files && paymentReceiptInput.files.length > 0) {
+        const file = paymentReceiptInput.files[0];
+        if (fileNameDisplay) fileNameDisplay.textContent = file.name;
+        if (fileStatusBox) fileStatusBox.style.display = 'flex';
+        
+        const uploadCard = paymentReceiptInput.closest('.form-card');
+        if (uploadCard) uploadCard.classList.remove('error-state');
       }
     });
   }
 
-  // Section 1 Validation helper
+  if (btnRemoveFile) {
+    btnRemoveFile.addEventListener('click', () => {
+      if (paymentReceiptInput) paymentReceiptInput.value = '';
+      if (fileNameDisplay) fileNameDisplay.textContent = '';
+      if (fileStatusBox) fileStatusBox.style.display = 'none';
+    });
+  }
+
+  // Clear Form handler
+  clearButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to clear all fields in this form?')) {
+        resetForm();
+      }
+    });
+  });
+
+  function resetForm() {
+    form.reset();
+    if (fileNameDisplay) fileNameDisplay.textContent = '';
+    if (fileStatusBox) fileStatusBox.style.display = 'none';
+    cards.forEach(c => {
+      c.classList.remove('error-state');
+      c.classList.remove('active');
+    });
+    allBranchCards.forEach(card => card.style.display = 'none');
+    if (section2) section2.style.display = 'none';
+    if (section1) section1.style.display = 'block';
+    const titleCard = section1.querySelector('.title-card');
+    if (titleCard) titleCard.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Calculate & Show Branch Info Card based on Student status + Center choice
+  function updateBranchCard(shouldScroll = false) {
+    const formData = new FormData(form);
+    const isStudent = formData.get('isEnglish1Student'); // "Ya" or "Tidak"
+    const center = formData.get('english1Center'); // Center choice
+
+    allBranchCards.forEach(card => {
+      if (card) card.style.display = 'none';
+    });
+    currentCalculatedBranch = '';
+
+    if (!center) return;
+
+    const group1Centers = [
+      'English 1 Plaza Surabaya',
+      'English 1 Jemursari',
+      'English 1 Galaxy Mall',
+      'English 1 Purimas'
+    ];
+
+    const isGroup1 = group1Centers.includes(center);
+    let activeCard = null;
+
+    if (isStudent === 'Ya' && isGroup1) {
+      activeCard = branchStudentGroup1;
+      currentCalculatedBranch = 'Student - Plaza/JS/GM/Purimas';
+    } else if (isStudent === 'Ya' && !isGroup1) {
+      activeCard = branchStudentGroup2;
+      currentCalculatedBranch = 'Student - BM/Pakuwon';
+    } else if (isStudent === 'Tidak' && isGroup1) {
+      activeCard = branchNonstudentGroup1;
+      currentCalculatedBranch = 'Non-Student - Plaza/JS/GM/Purimas';
+    } else {
+      activeCard = branchNonstudentGroup2;
+      currentCalculatedBranch = 'Non-Student - BM/Pakuwon';
+    }
+
+    if (activeCard) {
+      activeCard.style.display = 'block';
+      if (shouldScroll) {
+        activeCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  }
+
+  if (english1CenterSelect) {
+    english1CenterSelect.addEventListener('change', () => updateBranchCard(true));
+  }
+
+  // Validation helper for any section's cards
   function validateCardSection(section) {
+    if (!section) return true;
     const secCards = section.querySelectorAll('.form-card');
     let isValid = true;
     let firstErrorCard = null;
@@ -105,10 +184,14 @@ function initApp() {
       if (card.dataset.required === 'true') {
         let fieldValid = true;
 
-        // 1. Text, Tel, Email inputs
+        // 1. Text, Tel, Email, File inputs
         const inputs = card.querySelectorAll('input:not([type="radio"]):not([type="checkbox"])');
         inputs.forEach(input => {
-          if (!input.value.trim()) fieldValid = false;
+          if (input.type === 'file') {
+            if (!input.files || input.files.length === 0) fieldValid = false;
+          } else {
+            if (!input.value.trim()) fieldValid = false;
+          }
         });
 
         // 2. Select dropdowns
@@ -144,18 +227,50 @@ function initApp() {
     return isValid;
   }
 
-  // Form Submit Handler (Next button)
+  // Section 1 -> Section 2 Navigation
+  function goToSection2() {
+    if (!validateCardSection(section1)) return;
+
+    section1.style.display = 'none';
+    section2.style.display = 'block';
+    updateBranchCard();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  if (btnNext) {
+    btnNext.addEventListener('click', goToSection2);
+  }
+
+  // Section 2 -> Section 1 Navigation ("Back" Button)
+  if (btnBack) {
+    btnBack.addEventListener('click', () => {
+      section2.style.display = 'none';
+      section1.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // Submit Handler
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    if (!validateCardSection(section1)) return;
+    // If Section 1 is active (e.g. user pressed Enter key in Section 1)
+    if (section1.style.display !== 'none') {
+      goToSection2();
+      return;
+    }
+
+    // Validate Section 2
+    if (!validateCardSection(section2)) return;
 
     const formData = new FormData(form);
+    const receiptFile = document.getElementById('paymentReceipt');
+    let receiptFileName = receiptFile && receiptFile.files.length > 0 ? receiptFile.files[0].name : 'Tidak ada file';
 
     const rawBirthPlace = formData.get('birthPlace') || '';
     const rawBirthDate = formData.get('birthDate') || '';
 
-    // Format date nicely (e.g. "2018-05-22" -> "22 Mei 2018")
+    // Format birth date nicely (e.g. "2018-05-22" -> "22 Mei 2018")
     let formattedBirthDate = rawBirthDate;
     if (rawBirthDate) {
       const parts = rawBirthDate.split('-');
@@ -175,13 +290,16 @@ function initApp() {
 
     const combinedBirthDetails = rawBirthPlace && formattedBirthDate 
       ? `${rawBirthPlace}, ${formattedBirthDate}` 
-      : (rawBirthPlace || formattedBirthDate || '');
+      : (rawBirthPlace || formattedBirthDate || formData.get('birthDetails') || '');
 
-    const sec1Data = {
+    const submission = {
+      id: Date.now(),
+      timestamp: new Date().toLocaleString('id-ID'),
       fullName: formData.get('fullName'),
       email: formData.get('email'),
       birthPlace: rawBirthPlace,
       birthDate: rawBirthDate,
+      formattedBirthDate: formattedBirthDate,
       birthDetails: combinedBirthDetails,
       schoolName: formData.get('schoolName'),
       grade: formData.get('grade'),
@@ -189,28 +307,74 @@ function initApp() {
       parentPhone: formData.get('parentPhone'),
       infoSource: formData.get('infoSource'),
       isEnglish1Student: formData.get('isEnglish1Student'),
-      english1Center: formData.get('english1Center')
+      english1Center: formData.get('english1Center'),
+      branchCategory: currentCalculatedBranch,
+      paymentReceipt: receiptFileName
     };
 
-    // Save Section 1 data to sessionStorage
-    sessionStorage.setItem('spelling_bee_temp_section1', JSON.stringify(sec1Data));
+    saveSubmission(submission);
 
-    // Navigate to Section 2 (payment.html)
-    window.location.href = 'payment.html';
+    // Send payload + file base64 to Google Sheets (Surabaya Region)
+    const GOOGLE_SCRIPT_URL_SURABAYA = 'https://script.google.com/macros/s/AKfycbyQym6DmlPm2hxeT3ELSu9BqHff-qL_BIHEA6fJmc4UTCMZKcJHA1VZxlisC6jq_30ScA/exec';
+
+    if (receiptFile && receiptFile.files.length > 0) {
+      const file = receiptFile.files[0];
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const fileBase64 = evt.target.result.split(',')[1];
+        sendDataToGoogleSheets(GOOGLE_SCRIPT_URL_SURABAYA, {
+          ...submission,
+          fileName: file.name,
+          fileType: file.type,
+          fileData: fileBase64
+        });
+      };
+      reader.readAsDataURL(file);
+    } else {
+      sendDataToGoogleSheets(GOOGLE_SCRIPT_URL_SURABAYA, submission);
+    }
+
+    // Show Success View
+    form.style.display = 'none';
+    if (successView) successView.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    updateResponseCount();
   });
 
-  // Responses Modal Elements & Handlers
-  const responseCountText = document.getElementById('responseCountText');
-  const btnOpenResponses = document.getElementById('btnOpenResponses');
-  const responsesModal = document.getElementById('responsesModal');
-  const btnCloseModal = document.getElementById('btnCloseModal');
-  const responsesTableBody = document.getElementById('responsesTableBody');
-  const btnExportCSV = document.getElementById('btnExportCSV');
-  const btnClearData = document.getElementById('btnClearData');
+  function sendDataToGoogleSheets(url, payload) {
+    if (!url) return;
+    fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(() => {
+      console.log('Data pendaftaran berhasil dikirim ke Google Sheets.');
+    }).catch(err => {
+      console.error('Gagal mengirim data ke Google Sheets:', err);
+    });
+  }
 
+  // Submit Another Response
+  if (btnSubmitAnother) {
+    btnSubmitAnother.addEventListener('click', (e) => {
+      e.preventDefault();
+      resetForm();
+      if (successView) successView.style.display = 'none';
+      if (form) form.style.display = 'block';
+    });
+  }
+
+  // LocalStorage Helper
   function getSubmissions() {
     const data = localStorage.getItem('spelling_bee_submissions');
     return data ? JSON.parse(data) : [];
+  }
+
+  function saveSubmission(sub) {
+    const list = getSubmissions();
+    list.push(sub);
+    localStorage.setItem('spelling_bee_submissions', JSON.stringify(list));
   }
 
   function updateResponseCount() {
@@ -220,6 +384,7 @@ function initApp() {
     }
   }
 
+  // Modal handlers
   if (btnOpenResponses) {
     btnOpenResponses.addEventListener('click', () => {
       renderResponsesTable();

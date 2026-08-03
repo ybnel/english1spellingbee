@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Online Registration Form Spelling Bee Regional Competition 2026 - English 1">
+  <title>Online Registration Form Spelling Bee Regional Competition 2026</title>
+  <link rel="icon" type="image/png" href="Gemini_Generated_Image_im1c6gim1c6gim1c.png">
+  <link rel="shortcut icon" type="image/png" href="Gemini_Generated_Image_im1c6gim1c6gim1c.png">
+  <link rel="apple-touch-icon" href="Gemini_Generated_Image_im1c6gim1c6gim1c.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <main class="form-container">
+
+    <!-- Main Registration Form -->
+    <form id="spellingBeeForm" novalidate>
+
+      <!-- SECTION 1: DATA PESERTA -->
+      <div id="section1" class="form-section">
+        
+        <!-- Title Card -->
+        <section class="form-card title-card active" data-card>
+          <div class="section-indicator">Section 1 of 2</div>
+          <div class="title-header-wrap">
+            <div class="title-icon-badge">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+            </div>
+            <div>
+              <h1 class="form-title">Online Registration Form Spelling Bee Regional Competition 2026</h1>
+              <p class="form-description">To participate in the competition, please fill in the details below accurately and completely.</p>
+            </div>
+          </div>
+          <div class="required-notice">* Indicates required question</div>
+        </section>
+
+        <!-- Question 1: Participant Full Name -->
+        <section class="form-card" data-card data-required="true">
+          <h2 class="question-title">
+            Nama Lengkap Peserta / <em>Participant Full Name</em> <span class="required-star">*</span>
+          </h2>
+          <p class="question-subtext">Pastikan ejaan nama anak Anda BENAR untuk penerbitan sertifikat. / <em>Please make sure your child's name spelling is CORRECT for certificate issuing.</em></p>
+          <div class="text-input-wrap">
+            <input type="text" id="fullName" name="fullName" class="text-input" placeholder="Your answer" required>
+          </div>
+          <div class="error-msg">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <span>This question is required</span>
+          </div>
+        </section>
+
+        <!-- Question 2: Email -->
+        <section class="form-card" data-card data-required="true">
+          <h2 class="question-title">
+            Email <span class="required-star">*</span>
+          </h2>
+          <div class="text-input-wrap">
+            <input type="email" id="email" name="email" class="text-input" placeholder="Your answer (e.g. name@email.com)" required>
+          </div>
+          <div class="error-msg">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <span>This question is required</span>
+          </div>
+        </section>
+
+        <!-- Question 3: Place and Date of Birth -->
+        <section class="form-card" data-card data-required="true">
+          <h2 class="question-title">
+            Tempat dan tanggal lahir anak Anda / <em>Place and Date of Birth</em> <span class="required-star">*</span>
+          </h2>
+          <p class="question-subtext">Isi kota kelahiran dan pilih tanggal lahir anak Anda / <em>Enter place of birth and select birth date</em></p>
+
+          <div class="birth-fields-grid">
+            <div>
+              <label for="birthPlace" class="field-label">Tempat Lahir / <em>Place of Birth</em></label>
+              <input type="text" id="birthPlace" name="birthPlace" class="text-input" placeholder="e.g. Surabaya" required>
+            </div>
+            <div>
+              <label for="birthDate" class="field-label">Tanggal Lahir / <em>Date of Birth</em></label>
+              <input type="date" id="birthDate" name="birthDate" class="text-input" required>
+            </div>
+          </div>
+
+          <div class="error-msg">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <span>This question is required</span>
+          </div>
+        </section>
+
+        <!-- Question 4: School Name -->
+        <section class="form-card" data-card data-required="true">
+          <h2 class="question-title">
+            Asal sekolah anak Anda / <em>School Name</em> <span class="required-star">*</span>
+          </h2>
+          <p class="question-subtext">Gunakan nama sekolah yang sesuai. / <em>Please use the official school name.</em></p>
+          <div class="text-input-wrap">
+            <input type="text" id="schoolName" name="schoolName" class="text-input" placeholder="Your answer" required>
+          </div>
+          <div class="error-msg">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <span>This question is required</span>
+          </div>
+        </section>
+
+        <!-- Question 5: Grade -->
+        <section class="form-card" data-card data-required="true">
+          <h2 class="question-title">
+            Kelas / <em>Grade</em> <span class="required-star">*</span>
+          </h2>
+          <div class="dropdown-wrap">
+            <select id="grade" name="grade" class="select-input" required>
+              <option value="" disabled selected>Select</option>
+              <option value="1 SD">1 SD</option>
+              <option value="2 SD">2 SD</option>
+              <option value="3 SD">3 SD</option>
+              <option value="4 SD">4 SD</option>
+              <option value="5 SD">5 SD</option>
+              <option value="6 SD">6 SD</option>
+              <option value="7 SMP">7 SMP</option>
+              <option value="8 SMP">8 SMP</option>
+              <option value="9 SMP">9 SMP</option>
+            </select>
+            <div class="dropdown-icon">
+              <svg width="12" height="8" viewBox="0 0 12 8" fill="currentColor">
+                <path d="M1.41 0L6 4.58L10.59 0L12 1.41L6 7.41L0 1.41L1.41 0Z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="error-msg">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <span>This question is required</span>
+          </div>
+        </section>
+
+        <!-- Question 6: Choose Group Category -->
+        <section class="form-card" data-card data-required="true">
+          <h2 class="question-title">
+            Pilih kategori group kompetisi / <em>Choose your group category</em> <span class="required-star">*</span>
+          </h2>
+          <div class="dropdown-wrap">
+            <select id="groupCategory" name="groupCategory" class="select-input" required>
+              <option value="" disabled selected>Select</option>
+              <option value="GROUP A : Kelas 1 - 2 SD">GROUP A : Kelas 1 - 2 SD</option>
+              <option value="GROUP B : Kelas 3 - 4 SD">GROUP B : Kelas 3 - 4 SD</option>
+              <option value="GROUP C : Kelas 5 - 6 SD">GROUP C : Kelas 5 - 6 SD</option>
+              <option value="GROUP D : Kelas 7 - 9 SMP">GROUP D : Kelas 7 - 9 SMP</option>
+            </select>
+            <div class="dropdown-icon">
+              <svg width="12" height="8" viewBox="0 0 12 8" fill="currentColor">
+                <path d="M1.41 0L6 4.58L10.59 0L12 1.41L6 7.41L0 1.41L1.41 0Z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="error-msg">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <span>This question is required</span>
+          </div>
+        </section>
+
+        <!-- Question 7: Parents Phone Number -->
+        <section class="form-card" data-card data-required="true">
+          <h2 class="question-title">
+            Nomor telpon orang tua / <em>Parents Phone Number</em> <span class="required-star">*</span>
+          </h2>
+          <div class="text-input-wrap">
+            <input type="tel" id="parentPhone" name="parentPhone" class="text-input" placeholder="Your answer" required>
+          </div>
+          <div class="error-msg">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <span>This question is required</span>
+          </div>
+        </section>
+
+        <!-- Question 8: Info Source -->
+        <section class="form-card" data-card data-required="true">
+          <h2 class="question-title">
+            Dari mana Anda mendapatkan informasi kompetisi ini? / <em>Where did you hear about this competition?</em> <span class="required-star">*</span>
+          </h2>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="infoSource" value="Staff English 1 Center" required>
+              <span class="custom-radio"></span>
+              <span>Staff English 1 Center</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="infoSource" value="Iklan" required>
+              <span class="custom-radio"></span>
+              <span>Iklan / Advertisement</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="infoSource" value="Instagram" required>
+              <span class="custom-radio"></span>
+              <span>Instagram</span>
+            </label>
+          </div>
+          <div class="error-msg">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <span>This question is required</span>
+          </div>
+        </section>
+
+        <!-- Question 9: Is English 1 Student -->
+        <section class="form-card" data-card data-required="true">
+          <h2 class="question-title">
+            Apakah anak Anda siswa English 1? / <em>Are you currently an English 1 student?</em> <span class="required-star">*</span>
+          </h2>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="isEnglish1Student" value="Ya" required>
+              <span class="custom-radio"></span>
+              <span>Ya / Yes</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="isEnglish1Student" value="Tidak" required>
+              <span class="custom-radio"></span>
+              <span>Tidak / No</span>
+            </label>
+          </div>
+          <div class="error-msg">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <span>This question is required</span>
+          </div>
+        </section>
+
+        <!-- Question 10: English 1 Center -->
+        <section class="form-card" data-card data-required="true">
+          <h2 class="question-title">
+            English 1 Center <span class="required-star">*</span>
+          </h2>
+          <p class="question-subtext">Select the nearest English 1 Center or where your child currently studies.</p>
+          <div class="dropdown-wrap">
+            <select id="english1Center" name="english1Center" class="select-input" required>
+              <option value="" disabled selected>Select</option>
+              <option value="English 1 Plaza Surabaya">English 1 Plaza Surabaya</option>
+              <option value="English 1 Galaxy Mall">English 1 Galaxy Mall</option>
+              <option value="English 1 Pakuwon Mall">English 1 Pakuwon Mall</option>
+              <option value="English 1 Bukit Mas">English 1 Bukit Mas</option>
+              <option value="English 1 Jemursari">English 1 Jemursari</option>
+              <option value="English 1 Purimas">English 1 Purimas</option>
+            </select>
+            <div class="dropdown-icon">
+              <svg width="12" height="8" viewBox="0 0 12 8" fill="currentColor">
+                <path d="M1.41 0L6 4.58L10.59 0L12 1.41L6 7.41L0 1.41L1.41 0Z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="error-msg">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <span>This question is required</span>
+          </div>
+        </section>
+
+        <!-- Section 1 Actions -->
+        <div class="form-actions-bar">
+          <button type="button" id="btnNext" class="btn-next">Next</button>
+          <button type="button" class="btn-clear-form btn-clear-all" id="btnClearForm">Clear form</button>
+        </div>
+
+      </div> <!-- End Section 1 -->
+
+
+      <!-- SECTION 2: PEMBAYARAN & KONFIRMASI (DYNAMIC BRANCHES) -->
+      <div id="section2" class="form-section" style="display: none;">
+        
+        <!-- Title Card -->
+        <section class="form-card title-card" data-card>
+          <div class="section-indicator">Section 2 of 2</div>
+          <div class="title-header-wrap">
+            <div class="title-icon-badge">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                <line x1="1" y1="10" x2="23" y2="10"></line>
+              </svg>
+            </div>
+            <div>
+              <h1 class="form-title" style="font-size: 24px;">Payment & Registration Confirmation</h1>
+              <p class="form-description">Please complete the registration fee payment and upload your transfer receipt below.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Dynamic Branch Card 1: Student + Plaza, Jemursari, Galaxy Mall, Purimas -->
+        <section class="form-card payment-info-card" id="branch-student-group1" style="display: none;">
+          <div class="payment-header-bar">Registration Fee Payment Process</div>
+          <div class="payment-card-body">
+            <p class="payment-subtitle">Registration fee for English 1 students</p>
+            <p class="payment-details">Early Bird Period: <strong>Rp200.000</strong> | Transfer to bank account <strong>BCA 3842-0288-81 PT. Eduka Pratama</strong></p>
+          </div>
+        </section>
+
+        <!-- Dynamic Branch Card 2: Student + Bukit Mas, Pakuwon Mall -->
+        <section class="form-card payment-info-card" id="branch-student-group2" style="display: none;">
+          <div class="payment-header-bar">Registration Fee Payment Process</div>
+          <div class="payment-card-body">
+            <p class="payment-subtitle">Registration fee for English 1 students</p>
+            <p class="payment-details">Early Bird Period: <strong>Rp200.000</strong> | Transfer to bank account <strong>BCA 0182-6173-32 PT. Eduka Efindo</strong></p>
+          </div>
+        </section>
+
+        <!-- Dynamic Branch Card 3: Non-Student + Plaza, Jemursari, Galaxy Mall, Purimas -->
+        <section class="form-card payment-info-card" id="branch-nonstudent-group1" style="display: none;">
+          <div class="payment-header-bar">Registration Fee Payment Process</div>
+          <div class="payment-card-body">
+            <p class="payment-subtitle">Registration fee for non-English 1 students</p>
+            <p class="payment-details">Early Bird Period: <strong>Rp250.000</strong> | Transfer to bank account <strong>BCA 3842-0288-81 PT. Eduka Pratama</strong></p>
+          </div>
+        </section>
+
+        <!-- Dynamic Branch Card 4: Non-Student + Bukit Mas, Pakuwon Mall -->
+        <section class="form-card payment-info-card" id="branch-nonstudent-group2" style="display: none;">
+          <div class="payment-header-bar">Registration Fee Payment Process</div>
+          <div class="payment-card-body">
+            <p class="payment-subtitle">Registration fee for non-English 1 students</p>
+            <p class="payment-details">Early Bird Period: <strong>Rp250.000</strong> | Transfer to bank account <strong>BCA 0182-6173-32 PT. Eduka Efindo</strong></p>
+          </div>
+        </section>
+
+        <!-- Payment Receipt Upload Card -->
+        <section class="form-card" data-card data-required="true">
+          <div class="card-section-header">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <h2 class="card-section-title">Upload Payment Receipt <span class="required-star">*</span></h2>
+          </div>
+
+          <p class="question-subtext">Upload 1 supported payment receipt (PDF, Image, max 1 MB).</p>
+
+          <!-- Hidden File Input -->
+          <input type="file" id="paymentReceipt" name="paymentReceipt" class="hidden-file-input" accept="image/*,.pdf,.doc,.docx" required>
+
+          <!-- Single Action Button Tile -->
+          <div class="upload-single-tile-wrap">
+            <button type="button" class="upload-tile full-width-tile" id="btnGalleryUpload">
+              <div class="upload-tile-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                  <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+              </div>
+              <span class="upload-tile-title">Upload File / Select Image</span>
+            </button>
+          </div>
+
+          <!-- File Display Status -->
+          <div id="fileStatusBox" class="file-status-box" style="display: none;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span id="fileNameDisplay" class="file-name-display"></span>
+            <button type="button" id="btnRemoveFile" class="btn-remove-file" title="Remove file">&times;</button>
+          </div>
+
+          <div class="error-msg">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <span>This question is required</span>
+          </div>
+        </section>
+
+        <!-- Section 2 Actions -->
+        <div class="form-actions-bar">
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <button type="button" id="btnBack" class="btn-secondary">Back</button>
+            <button type="button" class="btn-clear-form btn-clear-all">Clear form</button>
+          </div>
+          <button type="submit" id="btnSubmit" class="btn-submit">Submit</button>
+        </div>
+
+      </div> <!-- End Section 2 -->
+
+    </form>
+
+    <!-- Success Confirmation Receipt View -->
+    <div id="successView" class="success-card" style="display: none;">
+      <h1 class="success-title">Online Registration Form Spelling Bee Regional Competition 2026</h1>
+      <p class="success-message">Your response has been recorded.</p>
+      <a href="#" id="btnSubmitAnother" class="submit-another-link">Submit another response</a>
+    </div>
+
+    <!-- Admin Data Drawer Link (Hidden) -->
+    <div class="view-responses-bar">
+      <span id="responseCountText">0 Jawaban tersimpan secara lokal</span>
+      <button type="button" id="btnOpenResponses" class="btn-small">Lihat Data Response</button>
+    </div>
+
+  </main>
+
+  <!-- Responses Modal -->
+  <div id="responsesModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Daftar Pendaftaran (Local Data)</h3>
+        <button type="button" class="close-modal" id="btnCloseModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="responses-table">
+            <thead>
+              <tr>
+                <th>Waktu</th>
+                <th>Nama Peserta</th>
+                <th>Tempat & Tgl Lahir</th>
+                <th>Sekolah</th>
+                <th>Kelas</th>
+                <th>Group</th>
+                <th>No Telp Ortu</th>
+                <th>Siswa E1</th>
+                <th>Center</th>
+                <th>Sumber Info</th>
+                <th>Kategori / Branch</th>
+              </tr>
+            </thead>
+            <tbody id="responsesTableBody">
+              <tr>
+                <td colspan="11" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btnExportCSV" class="btn-small" style="background:#e00078; color:white; border:none;">Export CSV</button>
+        <button type="button" id="btnClearData" class="btn-small" style="color:#d93025;">Hapus Semua Data</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
