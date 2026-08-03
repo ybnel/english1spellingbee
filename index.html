@@ -299,134 +299,13 @@
 
         <!-- Section 1 Actions -->
         <div class="form-actions-bar">
-          <button type="button" id="btnNext" class="btn-next">Next</button>
-          <button type="button" class="btn-clear-form btn-clear-all">Clear form</button>
+          <button type="submit" id="btnNext" class="btn-next">Next</button>
+          <button type="button" class="btn-clear-form btn-clear-all" id="btnClearForm">Clear form</button>
         </div>
 
       </div> <!-- End Section 1 -->
 
-
-      <!-- SECTION 2: PEMBAYARAN & KONFIRMASI (DYNAMIC BRANCHES) -->
-      <div id="section2" class="form-section" style="display: none;">
-        
-        <!-- Title Card -->
-        <section class="form-card title-card" data-card>
-          <div class="section-indicator">Section 2 of 2</div>
-          <div class="title-header-wrap">
-            <div class="title-icon-badge">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
-                <line x1="1" y1="10" x2="23" y2="10"></line>
-              </svg>
-            </div>
-            <div>
-              <h1 class="form-title" style="font-size: 24px;">Payment & Registration Confirmation</h1>
-              <p class="form-description">Please complete the registration fee payment and upload your transfer receipt below.</p>
-            </div>
-          </div>
-        </section>
-
-        <!-- Dynamic Branch Card 1: Student + Plaza, Jemursari, Galaxy Mall, Purimas -->
-        <section class="form-card payment-info-card" id="branch-student-group1" style="display: none;">
-          <div class="payment-header-bar">Registration Fee Payment Process</div>
-          <div class="payment-card-body">
-            <p class="payment-subtitle">Registration fee for English 1 students</p>
-            <p class="payment-details">Early Bird Period: <strong>Rp200.000</strong> | Transfer to bank account <strong>BCA 3842-0288-81 PT. Eduka Pratama</strong></p>
-          </div>
-        </section>
-
-        <!-- Dynamic Branch Card 2: Student + Bukit Mas, Pakuwon Mall -->
-        <section class="form-card payment-info-card" id="branch-student-group2" style="display: none;">
-          <div class="payment-header-bar">Registration Fee Payment Process</div>
-          <div class="payment-card-body">
-            <p class="payment-subtitle">Registration fee for English 1 students</p>
-            <p class="payment-details">Early Bird Period: <strong>Rp200.000</strong> | Transfer to bank account <strong>BCA 0182-6173-32 PT. Eduka Efindo</strong></p>
-          </div>
-        </section>
-
-        <!-- Dynamic Branch Card 3: Non-Student + Plaza, Jemursari, Galaxy Mall, Purimas -->
-        <section class="form-card payment-info-card" id="branch-nonstudent-group1" style="display: none;">
-          <div class="payment-header-bar">Registration Fee Payment Process</div>
-          <div class="payment-card-body">
-            <p class="payment-subtitle">Registration fee for non-English 1 students</p>
-            <p class="payment-details">Early Bird Period: <strong>Rp250.000</strong> | Transfer to bank account <strong>BCA 3842-0288-81 PT. Eduka Pratama</strong></p>
-          </div>
-        </section>
-
-        <!-- Dynamic Branch Card 4: Non-Student + Bukit Mas, Pakuwon Mall -->
-        <section class="form-card payment-info-card" id="branch-nonstudent-group2" style="display: none;">
-          <div class="payment-header-bar">Registration Fee Payment Process</div>
-          <div class="payment-card-body">
-            <p class="payment-subtitle">Registration fee for non-English 1 students</p>
-            <p class="payment-details">Early Bird Period: <strong>Rp250.000</strong> | Transfer to bank account <strong>BCA 0182-6173-32 PT. Eduka Efindo</strong></p>
-          </div>
-        </section>
-
-        <!-- Payment Receipt Upload Card (Expense Form Style) -->
-        <section class="form-card" data-card data-required="true">
-          <div class="card-section-header">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <polyline points="17 8 12 3 7 8"></polyline>
-              <line x1="12" y1="3" x2="12" y2="15"></line>
-            </svg>
-            <h2 class="card-section-title">Upload Payment Receipt <span class="required-star">*</span></h2>
-          </div>
-
-          <p class="question-subtext">Upload 1 supported payment receipt (PDF, Image, max 1 MB).</p>
-
-          <!-- Hidden File Input -->
-          <input type="file" id="paymentReceipt" name="paymentReceipt" class="hidden-file-input" accept="image/*,.pdf,.doc,.docx" required>
-
-          <!-- Single Action Button Tile -->
-          <div class="upload-single-tile-wrap">
-            <button type="button" class="upload-tile full-width-tile" id="btnGalleryUpload">
-              <div class="upload-tile-icon">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                  <polyline points="21 15 16 10 5 21"></polyline>
-                </svg>
-              </div>
-              <span class="upload-tile-title">Upload File / Select Image</span>
-            </button>
-          </div>
-
-          <!-- File Display Status -->
-          <div id="fileStatusBox" class="file-status-box" style="display: none;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-              <polyline points="22 4 12 14.01 9 11.01"></polyline>
-            </svg>
-            <span id="fileNameDisplay" class="file-name-display"></span>
-            <button type="button" id="btnRemoveFile" class="btn-remove-file" title="Remove file">&times;</button>
-          </div>
-
-          <div class="error-msg">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-            <span>This question is required</span>
-          </div>
-        </section>
-
-        <!-- Section 2 Actions -->
-        <div class="form-actions-bar">
-          <div style="display: flex; gap: 8px; align-items: center;">
-            <button type="button" id="btnBack" class="btn-secondary">Back</button>
-            <button type="button" class="btn-clear-form btn-clear-all">Clear form</button>
-          </div>
-          <button type="submit" id="btnSubmit" class="btn-submit">Submit</button>
-        </div>
-
-      </div> <!-- End Section 2 -->
-
     </form>
-
-    <!-- Success Confirmation Receipt View -->
-    <div id="successView" class="success-card">
-      <h1 class="success-title">Online Registration Form Spelling Bee Regional Competition 2026</h1>
-      <p class="success-message">Your response has been recorded.</p>
-      <a href="#" id="btnSubmitAnother" class="submit-another-link">Submit another response</a>
-    </div>
 
     <!-- Admin Data Drawer Link (Hidden) -->
     <div class="view-responses-bar">
