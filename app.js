@@ -269,38 +269,18 @@ function initApp() {
 
     const rawBirthPlace = formData.get('birthPlace') || '';
     const rawBirthDate = formData.get('birthDate') || '';
+    let birthDetails = formData.get('birthDetails') || '';
 
-    // Format birth date nicely (e.g. "2018-05-22" -> "22 Mei 2018")
-    let formattedBirthDate = rawBirthDate;
-    if (rawBirthDate) {
-      const parts = rawBirthDate.split('-');
-      if (parts.length === 3) {
-        const year = parts[0];
-        const monthNames = [
-          'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-          'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-        ];
-        const monthIndex = parseInt(parts[1], 10) - 1;
-        const day = parseInt(parts[2], 10);
-        if (monthIndex >= 0 && monthIndex < 12) {
-          formattedBirthDate = `${day} ${monthNames[monthIndex]} ${year}`;
-        }
-      }
+    if (!birthDetails && (rawBirthPlace || rawBirthDate)) {
+      birthDetails = rawBirthPlace && rawBirthDate ? `${rawBirthPlace}, ${rawBirthDate}` : (rawBirthPlace || rawBirthDate);
     }
-
-    const combinedBirthDetails = rawBirthPlace && formattedBirthDate 
-      ? `${rawBirthPlace}, ${formattedBirthDate}` 
-      : (rawBirthPlace || formattedBirthDate || formData.get('birthDetails') || '');
 
     const submission = {
       id: Date.now(),
       timestamp: new Date().toLocaleString('id-ID'),
       fullName: formData.get('fullName'),
       email: formData.get('email'),
-      birthPlace: rawBirthPlace,
-      birthDate: rawBirthDate,
-      formattedBirthDate: formattedBirthDate,
-      birthDetails: combinedBirthDetails,
+      birthDetails: birthDetails,
       schoolName: formData.get('schoolName'),
       grade: formData.get('grade'),
       groupCategory: formData.get('groupCategory'),
