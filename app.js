@@ -65,6 +65,14 @@ function initApp() {
     targetCard.classList.add('active');
   }
 
+  // Restrict parentPhone to numbers only
+  const parentPhoneInput = document.getElementById('parentPhone');
+  if (parentPhoneInput) {
+    parentPhoneInput.addEventListener('input', (e) => {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    });
+  }
+
   const paymentReceiptInput = document.getElementById('paymentReceipt');
   const btnGalleryUpload = document.getElementById('btnGalleryUpload');
   const fileStatusBox = document.getElementById('fileStatusBox');
@@ -363,12 +371,30 @@ function initApp() {
       sendDataToGoogleSheets(submission);
     }
 
+    // Send Response Receipt Email via DirectAdmin PHP Script (info.ef@edukagroup.com)
+    sendResponseReceiptEmail(submission);
+
     // Show Success View
     form.style.display = 'none';
     successView.style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
     updateResponseCount();
   });
+
+  // PHP Email Receipt Sender (info.ef@edukagroup.com)
+  function sendResponseReceiptEmail(payload) {
+    if (!payload.email) return;
+
+    fetch('./api/send-email.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    }).then(res => res.json())
+      .then(data => console.log('Response Receipt Email status:', data))
+      .catch(err => console.error('Gagal mengirim email response receipt:', err));
+  }
 
   // Google Sheets Webhook Sender
   // Web App URL Google Apps Script Surabaya
