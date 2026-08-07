@@ -139,6 +139,10 @@ body {
   }
 }
 
+.highlight-item.full-width {
+  grid-column: 1 / -1;
+}
+
 .highlight-item {
   background: var(--input-bg);
   border: 1px solid var(--input-border);

@@ -35,7 +35,7 @@ $htmlMessage = '
           <!-- Header Banner Image / Key Visual (Google Style Centered Top Banner) -->
           <tr>
             <td style="padding: 32px 32px 16px 32px; text-align: center; background-color: #ffffff;">
-              <img src="https://english1spellingbee.com/Surabaya/api/assets_email/SB19th_e-Mail-Banner-01.png" alt="TERIMA KASIH! Pendaftaran Anda sedang diproses - English 1 Spelling Bee 2026" style="max-width: 100%; width: 540px; height: auto; display: block; margin: 0 auto; border: 0; border-radius: 8px;">
+              <img src="https://english1spellingbee.com/Bali/api/assets_email/SB19th_e-Mail-Banner-01.png" alt="TERIMA KASIH! Pendaftaran Anda sedang diproses - English 1 Spelling Bee 2026" style="max-width: 100%; width: 540px; height: auto; display: block; margin: 0 auto; border: 0; border-radius: 8px;">
             </td>
           </tr>
 
@@ -67,7 +67,7 @@ $htmlMessage = '
                     
                     <!-- English 1 Logo Image -->
                     <div style="margin: 16px 0;">
-                      <img src="https://english1spellingbee.com/Surabaya/api/assets_email/english1.png" alt="English 1 Logo" style="height: 38px; width: auto; display: block; border: 0;">
+                      <img src="https://english1spellingbee.com/Bali/api/assets_email/english1.png" alt="English 1 Logo" style="height: 38px; width: auto; display: block; border: 0;">
                     </div>
 
                     <p style="margin:0 0 4px 0; font-weight:600; color:#1e293b;">English 1 Eduka Group</p>
