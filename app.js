@@ -371,9 +371,19 @@ function initApp() {
       sendDataToGoogleSheets(submission);
     }
 
-    // Send Response Receipt Email & Confirmation Email sequentially (info.ef@edukagroup.com)
+    // Send Response Receipt Email & Confirmation Email sequentially with 1.5s delay (info.ef@edukagroup.com)
     sendResponseReceiptEmail(submission)
-      .then(() => sendConfirmationEmail(submission))
+      .then((res1) => {
+        console.log('Email 1 (Copy Receipt) result:', res1);
+        return new Promise(resolve => setTimeout(resolve, 1500));
+      })
+      .then(() => {
+        console.log('Mengirim Email 2 (Terima Kasih + Banner)...');
+        return sendConfirmationEmail(submission);
+      })
+      .then((res2) => {
+        console.log('Email 2 (Konfirmasi) result:', res2);
+      })
       .catch(err => console.error('Error pengiriman email:', err));
 
     // Show Success View
@@ -385,7 +395,7 @@ function initApp() {
 
   // PHP Email Receipt Sender (info.ef@edukagroup.com)
   function sendResponseReceiptEmail(payload) {
-    if (!payload.email) return Promise.resolve();
+    if (!payload.email) return Promise.resolve(null);
 
     return fetch('./api/send-email.php', {
       method: 'POST',
@@ -398,12 +408,15 @@ function initApp() {
         console.log('Response Receipt Email status:', data);
         return data;
       })
-      .catch(err => console.error('Gagal mengirim email response receipt:', err));
+      .catch(err => {
+        console.error('Gagal mengirim email response receipt:', err);
+        return null;
+      });
   }
 
   // PHP Email Confirmation Sender with Banner (info.ef@edukagroup.com)
   function sendConfirmationEmail(payload) {
-    if (!payload.email) return Promise.resolve();
+    if (!payload.email) return Promise.resolve(null);
 
     return fetch('./api/send-confirmation-email.php', {
       method: 'POST',
@@ -416,7 +429,10 @@ function initApp() {
         console.log('Confirmation Email status:', data);
         return data;
       })
-      .catch(err => console.error('Gagal mengirim email konfirmasi:', err));
+      .catch(err => {
+        console.error('Gagal mengirim email konfirmasi:', err);
+        return null;
+      });
   }
 
   // Google Sheets Webhook Sender
