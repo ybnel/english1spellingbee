@@ -48,11 +48,11 @@ $htmlMessage = '
               </p>
 
               <p style="font-size:15px; color:#0f172a; margin:16px 0; line-height:1.6;">
-                Jika ada pertanyaan atau kendala, silahkan menghubungi official hotline number English 1 Surabaya di <strong>0822-2000-1000</strong>.
+                Jika ada pertanyaan atau kendala, silahkan menghubungi official hotline number English 1 Bali.
               </p>
 
               <p style="font-size:16px; font-weight:600; color:#e00078; margin:24px 0 0 0;">
-                Sampai jumpa di The 19th Spelling Bee Regional Competition!
+                Sampai jumpa di The 19th Spelling Bee Regional Competition Bali!
               </p>
 
               <hr style="border:0; border-top:1px solid #e2e8f0; margin: 28px 0;">
@@ -62,7 +62,7 @@ $htmlMessage = '
                 <tr>
                   <td style="font-size:14px; color:#475569; line-height:1.5;">
                     <p style="margin:0 0 12px 0;">Regards,</p>
-                    <p style="margin:0 0 2px 0; font-weight:700; color:#0f172a; font-size:15px;">English1 Surabaya</p>
+                    <p style="margin:0 0 2px 0; font-weight:700; color:#0f172a; font-size:15px;">English 1 Bali</p>
                     <p style="margin:0 0 16px 0; color:#64748b; font-size:13px;">Marketing Communication English 1 Eduka Group</p>
                     
                     <!-- English 1 Logo Image -->
@@ -71,8 +71,6 @@ $htmlMessage = '
                     </div>
 
                     <p style="margin:0 0 4px 0; font-weight:600; color:#1e293b;">English 1 Eduka Group</p>
-                    <p style="margin:0 0 4px 0; color:#64748b; font-size:13px;">Jl. Pemuda 33-37 Surabaya</p>
-                    <p style="margin:0 0 4px 0; color:#64748b; font-size:13px;">P: (031) 5484000 | M: +6282257922728</p>
                     <p style="margin:0;">
                       <a href="https://www.english1.co.id" target="_blank" style="color:#e00078; text-decoration:none; font-weight:500; font-size:13px;">www.english1.co.id</a>
                     </p>
@@ -105,7 +103,7 @@ function sendGmailSMTP($to, $subject, $htmlContent) {
     $username = 'info.ef@edukagroup.com';
     $password = 'cncuqdjtgnctwcuo'; // Gmail App Password 16 Digit
     $fromEmail = 'info.ef@edukagroup.com';
-    $fromName = 'English 1 Surabaya';
+    $fromName = 'English 1 Bali';
 
     $socket = @fsockopen($smtpHost, $smtpPort, $errno, $errstr, 15);
     if (!$socket) {

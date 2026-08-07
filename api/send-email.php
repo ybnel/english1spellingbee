@@ -45,12 +45,12 @@ $htmlMessage = '
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['fullName'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Email</div>
-                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['email'] ?? '-') . '</div>
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Tempat & Tanggal Lahir / Place and Date of Birth</div>
+                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['birthDetails'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Tempat dan Tanggal Lahir / Place and Date of Birth</div>
-                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['birthDetails'] ?? '-') . '</div>
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Status WNI/WNA / Citizenship Status</div>
+                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['citizenshipStatus'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
                 <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Asal Sekolah / School Name</div>
@@ -65,8 +65,24 @@ $htmlMessage = '
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['groupCategory'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Nomor Telpon Orang Tua / Parents Phone Number</div>
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Nama Orang Tua / Parent\'s Name</div>
+                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['parentName'] ?? '-') . '</div>
+              </div>
+              <div style="margin-bottom:16px;">
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">No Telp Orang Tua (WA) / Parents WhatsApp Number</div>
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['parentPhone'] ?? '-') . '</div>
+              </div>
+              <div style="margin-bottom:16px;">
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Email Orang Tua / Parent\'s Email</div>
+                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['email'] ?? '-') . '</div>
+              </div>
+              <div style="margin-bottom:16px;">
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Sumber Informasi / Info Source</div>
+                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['infoSource'] ?? '-') . '</div>
+              </div>
+              <div style="margin-bottom:16px;">
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Apakah Siswa English 1 / Is English 1 Student</div>
+                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['isEnglish1Student'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
                 <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">English 1 Center</div>
@@ -80,8 +96,7 @@ $htmlMessage = '
           </tr>
           <tr>
             <td style="padding:20px 32px; background-color:#f8f9fa; border-top:1px solid #dadce0; text-align:center; font-size:12px; color:#70757a;">
-              Email ini dikirim secara otomatis oleh <strong>English 1 Surabaya</strong>.<br>
-              Pertanyaan? Hubungi WhatsApp English 1 Surabaya di <strong>082220001000</strong>.
+              Email ini dikirim secara otomatis oleh <strong>English 1 Regional Bali</strong>.
             </td>
           </tr>
         </table>
@@ -99,7 +114,7 @@ function sendGmailSMTP($to, $subject, $htmlContent) {
     $username = 'info.ef@edukagroup.com';
     $password = 'cncuqdjtgnctwcuo'; // Gmail App Password 16 Digit
     $fromEmail = 'info.ef@edukagroup.com';
-    $fromName = 'English 1 Surabaya';
+    $fromName = 'English 1 Bali';
 
     $socket = @fsockopen($smtpHost, $smtpPort, $errno, $errstr, 15);
     if (!$socket) {

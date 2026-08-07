@@ -143,13 +143,11 @@ function initApp() {
     if (!center) return;
 
     // Group Centers:
-    // Group 1: Plaza Surabaya, Jemursari, Galaxy Mall, Purimas
-    // Group 2: Bukit Mas, Pakuwon Mall
+    // Group 1: Bali HW (Hayam Wuruk), Bali Kuta
+    // Group 2: Bali Gianyar, Bali Gatsu
     const group1Centers = [
-      'English 1 Plaza Surabaya',
-      'English 1 Jemursari',
-      'English 1 Galaxy Mall',
-      'English 1 Purimas'
+      'English 1 Bali HW (Hayam Wuruk)',
+      'English 1 Bali Kuta'
     ];
 
     const isGroup1 = group1Centers.includes(center);
@@ -157,19 +155,35 @@ function initApp() {
 
     if (isStudent === 'Ya' && isGroup1) {
       activeCard = branchStudentGroup1;
-      currentCalculatedBranch = 'Student - Plaza/JS/GM/Purimas';
+      currentCalculatedBranch = 'Siswa English 1 (HW / Kuta)';
     } else if (isStudent === 'Ya' && !isGroup1) {
       activeCard = branchStudentGroup2;
-      currentCalculatedBranch = 'Student - BM/Pakuwon';
+      currentCalculatedBranch = 'Siswa English 1 (Gianyar / Gatsu)';
     } else if (isStudent === 'Tidak' && isGroup1) {
       activeCard = branchNonstudentGroup1;
-      currentCalculatedBranch = 'Non-Student - Plaza/JS/GM/Purimas';
+      currentCalculatedBranch = 'Non-Siswa English 1 (HW / Kuta)';
     } else {
       activeCard = branchNonstudentGroup2;
-      currentCalculatedBranch = 'Non-Student - BM/Pakuwon';
+      currentCalculatedBranch = 'Non-Siswa English 1 (Gianyar / Gatsu)';
     }
 
     if (activeCard) {
+      const cutoffDate = new Date('2026-09-10T23:59:59');
+      const isEarlyBird = new Date() <= cutoffDate;
+      const detailsEl = activeCard.querySelector('.payment-details');
+      const bankAccount = isGroup1 ? 'BCA 7730234443 PT. EDUKA BALI UTAMA' : 'BCA 3845205200 PT. Aplus Lorem Indo';
+      const isStudentBool = isStudent === 'Ya';
+
+      if (detailsEl) {
+        if (isEarlyBird) {
+          const fee = isStudentBool ? 'Rp. 200.000' : 'Rp. 250.000';
+          detailsEl.innerHTML = `Early Bird Period (s.d 10 September 2026): <strong>${fee}</strong> | Transfer to bank account <strong>${bankAccount}</strong>`;
+        } else {
+          const fee = isStudentBool ? 'Rp. 250.000' : 'Rp. 300.000';
+          detailsEl.innerHTML = `Normal Registration Period: <strong>${fee}</strong> | Transfer to bank account <strong>${bankAccount}</strong>`;
+        }
+      }
+
       activeCard.style.display = 'block';
       if (shouldScroll) {
         activeCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -354,7 +368,7 @@ function initApp() {
 
     saveSubmission(submission);
 
-    // Send data & uploaded file to Google Sheets (Surabaya Region)
+    // Send data & uploaded file to Google Sheets (Bali Region)
     const receiptInput = document.getElementById('paymentReceipt');
     if (receiptInput && receiptInput.files.length > 0) {
       const file = receiptInput.files[0];
