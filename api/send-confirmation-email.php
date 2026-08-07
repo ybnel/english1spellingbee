@@ -62,7 +62,7 @@ $htmlMessage = '
                 <tr>
                   <td style="font-size:14px; color:#475569; line-height:1.5;">
                     <p style="margin:0 0 12px 0;">Regards,</p>
-                    <p style="margin:0 0 2px 0; font-weight:700; color:#0f172a; font-size:15px;">Farid</p>
+                    <p style="margin:0 0 2px 0; font-weight:700; color:#0f172a; font-size:15px;">English1 Surabaya</p>
                     <p style="margin:0 0 16px 0; color:#64748b; font-size:13px;">Marketing Communication English 1 Eduka Group</p>
                     
                     <!-- English 1 Logo Image -->

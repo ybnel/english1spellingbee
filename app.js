@@ -371,8 +371,9 @@ function initApp() {
       sendDataToGoogleSheets(submission);
     }
 
-    // Send Response Receipt Email via DirectAdmin PHP Script (info.ef@edukagroup.com)
+    // Send Response Receipt Email & Confirmation Email via DirectAdmin PHP Script (info.ef@edukagroup.com)
     sendResponseReceiptEmail(submission);
+    sendConfirmationEmail(submission);
 
     // Show Success View
     form.style.display = 'none';
@@ -394,6 +395,21 @@ function initApp() {
     }).then(res => res.json())
       .then(data => console.log('Response Receipt Email status:', data))
       .catch(err => console.error('Gagal mengirim email response receipt:', err));
+  }
+
+  // PHP Email Confirmation Sender with Banner (info.ef@edukagroup.com)
+  function sendConfirmationEmail(payload) {
+    if (!payload.email) return;
+
+    fetch('./api/send-confirmation-email.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    }).then(res => res.json())
+      .then(data => console.log('Confirmation Email status:', data))
+      .catch(err => console.error('Gagal mengirim email konfirmasi:', err));
   }
 
   // Google Sheets Webhook Sender
