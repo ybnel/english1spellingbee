@@ -371,9 +371,10 @@ function initApp() {
       sendDataToGoogleSheets(submission);
     }
 
-    // Send Response Receipt Email & Confirmation Email via DirectAdmin PHP Script (info.ef@edukagroup.com)
-    sendResponseReceiptEmail(submission);
-    sendConfirmationEmail(submission);
+    // Send Response Receipt Email & Confirmation Email sequentially (info.ef@edukagroup.com)
+    sendResponseReceiptEmail(submission)
+      .then(() => sendConfirmationEmail(submission))
+      .catch(err => console.error('Error pengiriman email:', err));
 
     // Show Success View
     form.style.display = 'none';
@@ -384,31 +385,37 @@ function initApp() {
 
   // PHP Email Receipt Sender (info.ef@edukagroup.com)
   function sendResponseReceiptEmail(payload) {
-    if (!payload.email) return;
+    if (!payload.email) return Promise.resolve();
 
-    fetch('./api/send-email.php', {
+    return fetch('./api/send-email.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload)
     }).then(res => res.json())
-      .then(data => console.log('Response Receipt Email status:', data))
+      .then(data => {
+        console.log('Response Receipt Email status:', data);
+        return data;
+      })
       .catch(err => console.error('Gagal mengirim email response receipt:', err));
   }
 
   // PHP Email Confirmation Sender with Banner (info.ef@edukagroup.com)
   function sendConfirmationEmail(payload) {
-    if (!payload.email) return;
+    if (!payload.email) return Promise.resolve();
 
-    fetch('./api/send-confirmation-email.php', {
+    return fetch('./api/send-confirmation-email.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload)
     }).then(res => res.json())
-      .then(data => console.log('Confirmation Email status:', data))
+      .then(data => {
+        console.log('Confirmation Email status:', data);
+        return data;
+      })
       .catch(err => console.error('Gagal mengirim email konfirmasi:', err));
   }
 
