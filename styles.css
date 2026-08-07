@@ -258,6 +258,14 @@ body {
   margin-top: 8px;
 }
 
+.form-description p {
+  margin-bottom: 6px;
+}
+
+.form-description p:last-child {
+  margin-bottom: 0;
+}
+
 .section-indicator {
   display: none !important;
 }

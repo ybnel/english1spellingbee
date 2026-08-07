@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import bannerImg from './assets/banner.png';
 
-const GOOGLE_SCRIPT_URL_SURABAYA = 'https://script.google.com/macros/s/AKfycbyQym6DmlPm2hxeT3ELSu9BqHff-qL_BIHEA6fJmc4UTCMZKcJHA1VZxlisC6jq_30ScA/exec';
+// Web App URL Google Apps Script Regional Bali
+const GOOGLE_SCRIPT_URL_BALI = 'https://script.google.com/macros/s/AKfycbz2k2PP8Dp7_6gtvh_AqjvqeJrdU7ddUWxW9DeUIrlNWn9sAzMVJe70AzkYKgEFMCWOww/exec';
 
 const GROUP_1_CENTERS = [
   'English 1 Plaza Surabaya',
@@ -21,12 +22,14 @@ export default function App() {
   // Form State
   const [formData, setFormData] = useState({
     fullName: '',
-    email: '',
     birthDetails: '',
+    citizenshipStatus: '',
     schoolName: '',
     grade: '',
     groupCategory: '',
+    parentName: '',
     parentPhone: '',
+    email: '',
     infoSource: '',
     isEnglish1Student: '',
     english1Center: '',
@@ -38,12 +41,14 @@ export default function App() {
   const cardRefs = {
     title1: useRef(null),
     fullName: useRef(null),
-    email: useRef(null),
     birthDetails: useRef(null),
+    citizenshipStatus: useRef(null),
     schoolName: useRef(null),
     grade: useRef(null),
     groupCategory: useRef(null),
+    parentName: useRef(null),
     parentPhone: useRef(null),
+    email: useRef(null),
     infoSource: useRef(null),
     isEnglish1Student: useRef(null),
     english1Center: useRef(null),
@@ -53,12 +58,14 @@ export default function App() {
 
   const inputRefs = {
     fullName: useRef(null),
-    email: useRef(null),
     birthDetails: useRef(null),
+    citizenshipStatus: useRef(null),
     schoolName: useRef(null),
     grade: useRef(null),
     groupCategory: useRef(null),
+    parentName: useRef(null),
     parentPhone: useRef(null),
+    email: useRef(null),
     infoSource: useRef(null),
     isEnglish1Student: useRef(null),
     english1Center: useRef(null),
@@ -122,33 +129,19 @@ export default function App() {
     const isGroup1 = GROUP_1_CENTERS.includes(english1Center);
     const isStudent = isEnglish1Student === 'Ya';
 
-    if (isStudent && isGroup1) {
+    if (isStudent) {
       return {
-        category: 'Student - Plaza/JS/GM/Purimas',
-        title: 'Registration fee for English 1 students',
+        category: 'Siswa English 1',
+        title: 'Biaya Pendaftaran Siswa English 1',
         amount: 'Rp200.000',
-        account: 'BCA 3842-0288-81 PT. Eduka Pratama'
-      };
-    } else if (isStudent && !isGroup1) {
-      return {
-        category: 'Student - BM/Pakuwon',
-        title: 'Registration fee for English 1 students',
-        amount: 'Rp200.000',
-        account: 'BCA 0182-6173-32 PT. Eduka Efindo'
-      };
-    } else if (!isStudent && isGroup1) {
-      return {
-        category: 'Non-Student - Plaza/JS/GM/Purimas',
-        title: 'Registration fee for non-English 1 students',
-        amount: 'Rp250.000',
         account: 'BCA 3842-0288-81 PT. Eduka Pratama'
       };
     } else {
       return {
-        category: 'Non-Student - BM/Pakuwon',
-        title: 'Registration fee for non-English 1 students',
+        category: 'Non-Siswa English 1',
+        title: 'Biaya Pendaftaran Non-Siswa English 1',
         amount: 'Rp250.000',
-        account: 'BCA 0182-6173-32 PT. Eduka Efindo'
+        account: 'BCA 3842-0288-81 PT. Eduka Pratama'
       };
     }
   };
@@ -159,12 +152,14 @@ export default function App() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!formData.fullName.trim()) newErrors.fullName = true;
-    if (!formData.email.trim() || !emailRegex.test(formData.email.trim())) newErrors.email = true;
     if (!formData.birthDetails.trim()) newErrors.birthDetails = true;
+    if (!formData.citizenshipStatus) newErrors.citizenshipStatus = true;
     if (!formData.schoolName.trim()) newErrors.schoolName = true;
     if (!formData.grade) newErrors.grade = true;
     if (!formData.groupCategory) newErrors.groupCategory = true;
+    if (!formData.parentName.trim()) newErrors.parentName = true;
     if (!formData.parentPhone.trim()) newErrors.parentPhone = true;
+    if (!formData.email.trim() || !emailRegex.test(formData.email.trim())) newErrors.email = true;
     if (!formData.infoSource) newErrors.infoSource = true;
     if (!formData.isEnglish1Student) newErrors.isEnglish1Student = true;
     if (!formData.english1Center) newErrors.english1Center = true;
@@ -212,12 +207,14 @@ export default function App() {
   // Enter Key Field-to-Field Navigation
   const fieldOrderSection1 = [
     'fullName',
-    'email',
     'birthDetails',
+    'citizenshipStatus',
     'schoolName',
     'grade',
     'groupCategory',
+    'parentName',
     'parentPhone',
+    'email',
     'infoSource',
     'isEnglish1Student',
     'english1Center'
@@ -247,12 +244,14 @@ export default function App() {
   const resetForm = () => {
     setFormData({
       fullName: '',
-      email: '',
       birthDetails: '',
+      citizenshipStatus: '',
       schoolName: '',
       grade: '',
       groupCategory: '',
+      parentName: '',
       parentPhone: '',
+      email: '',
       infoSource: '',
       isEnglish1Student: '',
       english1Center: '',
@@ -284,12 +283,14 @@ export default function App() {
       id: Date.now(),
       timestamp: new Date().toLocaleString('id-ID'),
       fullName: formData.fullName,
-      email: formData.email,
       birthDetails: formData.birthDetails,
+      citizenshipStatus: formData.citizenshipStatus,
       schoolName: formData.schoolName,
       grade: formData.grade,
       groupCategory: formData.groupCategory,
+      parentName: formData.parentName,
       parentPhone: formData.parentPhone,
+      email: formData.email,
       infoSource: formData.infoSource,
       isEnglish1Student: formData.isEnglish1Student,
       english1Center: formData.english1Center,
@@ -321,8 +322,8 @@ export default function App() {
   };
 
   const sendToGoogleSheets = (payload) => {
-    if (!GOOGLE_SCRIPT_URL_SURABAYA) return;
-    fetch(GOOGLE_SCRIPT_URL_SURABAYA, {
+    if (!GOOGLE_SCRIPT_URL_BALI) return;
+    fetch(GOOGLE_SCRIPT_URL_BALI, {
       method: 'POST',
       mode: 'no-cors',
       headers: {
@@ -343,10 +344,13 @@ export default function App() {
       'Timestamp',
       'Nama Lengkap Peserta',
       'Tempat & Tgl Lahir',
+      'Status WNI/WNA',
       'Asal Sekolah',
       'Kelas',
       'Kategori Group',
-      'No Telpon Ortu',
+      'Nama Orang Tua',
+      'No WA Ortu',
+      'Email Ortu',
       'Sumber Informasi',
       'Siswa English 1',
       'English 1 Center',
@@ -357,10 +361,13 @@ export default function App() {
       `"${item.timestamp}"`,
       `"${(item.fullName || '').replace(/"/g, '""')}"`,
       `"${(item.birthDetails || '').replace(/"/g, '""')}"`,
+      `"${(item.citizenshipStatus || '').replace(/"/g, '""')}"`,
       `"${(item.schoolName || '').replace(/"/g, '""')}"`,
       `"${item.grade || ''}"`,
       `"${item.groupCategory || ''}"`,
+      `"${(item.parentName || '').replace(/"/g, '""')}"`,
       `"${item.parentPhone || ''}"`,
+      `"${item.email || ''}"`,
       `"${item.infoSource || ''}"`,
       `"${item.isEnglish1Student || ''}"`,
       `"${item.english1Center || ''}"`,
@@ -398,9 +405,9 @@ export default function App() {
             <div className="welcome-badge">🏆 Regional Competition 2026</div>
             <h1 className="welcome-title">English 1 Spelling Bee Regional Competition 2026</h1>
             <div className="welcome-desc">
-              <p>Selamat datang di <strong>Kompetisi Spelling Bee 2026 Regional Bali</strong>.</p>
+              <p>Selamat datang di Kompetisi Spelling Bee 2026 Regional Bali.</p>
               <p>Kompetisi mengeja kosakata dalam bahasa Inggris yang diadakan setiap satu tahun sekali, dimana setiap tahunnya diikuti oleh siswa tingkat SD dan SMP dari berbagai kota di Bali. Kompetisi ini merupakan kesempatan bagi para siswa untuk melatih kemandirian, keberanian berbicara bahasa Inggris serta mempraktekan pengetahuan bahasa Inggris secara langsung.</p>
-              <p>Kompetisi Spelling Bee akan dilaksanakan pada <strong>hari Minggu, tanggal 18 Oktober 2026</strong> di Gedung Dharma Negara Alaya, Jl. Mulawarman, Dauh Puri Kaja, Kota Denpasar.</p>
+              <p>Kompetisi Spelling Bee akan dilaksanakan pada hari <strong>Minggu, tanggal 18 Oktober 2026 di Gedung Dharma Negara Alaya, Jl. Mulawarman, Dauh Puri Kaja, Kota Denpasar.</strong></p>
             </div>
 
             <div className="event-highlights">
@@ -464,7 +471,15 @@ export default function App() {
                   </div>
                   <div>
                     <h1 className="form-title">Online Registration Form Spelling Bee Regional Competition 2026</h1>
-                    <p className="form-description">To participate in the competition, please fill in the details below accurately and completely.</p>
+                    <div className="form-description">
+                      <p style={{ marginBottom: '12px' }}>Isi data diri di bawah dengan <strong>LENGKAP</strong> dan <strong>BENAR</strong>.</p>
+                      <p style={{ marginTop: '8px' }}><strong>Biaya Pendaftaran Early Bird (s.d tgl 10 September 2026) :</strong></p>
+                      <p><strong>English 1 Students : Rp. 200.000</strong></p>
+                      <p><strong>Non English 1 Students : Rp. 250.000</strong></p>
+                      <p style={{ marginTop: '12px' }}><strong>Biaya Pendaftaran Normal :</strong></p>
+                      <p><strong>English 1 Students : Rp. 250.000</strong></p>
+                      <p><strong>Non English 1 Students : Rp. 300.000</strong></p>
+                    </div>
                   </div>
                 </div>
                 <div className="required-notice">* Indicates required question</div>
@@ -499,56 +514,65 @@ export default function App() {
                 </div>
               </section>
 
-              {/* Question 2: Email */}
-              <section
-                ref={cardRefs.email}
-                className={`form-card ${activeCard === 'email' ? 'active' : ''} ${errors.email ? 'error-state' : ''}`}
-                onClick={() => setActiveCard('email')}
-              >
-                <h2 className="question-title">
-                  Email <span className="required-star">*</span>
-                </h2>
-                <div className="text-input-wrap">
-                  <input
-                    ref={inputRefs.email}
-                    type="email"
-                    className="text-input"
-                    placeholder="Your answer (e.g. name@email.com)"
-                    value={formData.email}
-                    onChange={(e) => handleInputChange('email', e.target.value)}
-                    onFocus={() => setActiveCard('email')}
-                    onKeyDown={(e) => handleKeyDown(e, 'email')}
-                    required
-                  />
-                </div>
-                <div className="error-msg">
-                  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                  <span>Please provide a valid email address</span>
-                </div>
-              </section>
-
-              {/* Question 3: Place and Date of Birth */}
+              {/* Question 2: Place and Date of Birth */}
               <section
                 ref={cardRefs.birthDetails}
                 className={`form-card ${activeCard === 'birthDetails' ? 'active' : ''} ${errors.birthDetails ? 'error-state' : ''}`}
                 onClick={() => setActiveCard('birthDetails')}
               >
                 <h2 className="question-title">
-                  Tempat dan tanggal lahir anak Anda / <em>Place and Date of Birth</em> <span className="required-star">*</span>
+                  Tempat & Tgl Lahir Anak Anda / <em>Place and Date of Birth</em> <span className="required-star">*</span>
                 </h2>
-                <p className="question-subtext">Contoh pengisian: Surabaya, 1 Januari 2018 / <em>Example: Surabaya, 1 January 2018</em></p>
+                <p className="question-subtext">Contoh pengisian: Denpasar, 1 Januari 2018 / <em>Example: Denpasar, 1 January 2018</em></p>
                 <div className="text-input-wrap">
                   <input
                     ref={inputRefs.birthDetails}
                     type="text"
                     className="text-input"
-                    placeholder="Your answer (e.g. Surabaya, 1 Januari 2018)"
+                    placeholder="Your answer (e.g. Denpasar, 1 Januari 2018)"
                     value={formData.birthDetails}
                     onChange={(e) => handleInputChange('birthDetails', e.target.value)}
                     onFocus={() => setActiveCard('birthDetails')}
                     onKeyDown={(e) => handleKeyDown(e, 'birthDetails')}
                     required
                   />
+                </div>
+                <div className="error-msg">
+                  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                  <span>This question is required</span>
+                </div>
+              </section>
+
+              {/* Question 3: Citizenship Status WNI/WNA */}
+              <section
+                ref={cardRefs.citizenshipStatus}
+                className={`form-card ${activeCard === 'citizenshipStatus' ? 'active' : ''} ${errors.citizenshipStatus ? 'error-state' : ''}`}
+                onClick={() => setActiveCard('citizenshipStatus')}
+              >
+                <h2 className="question-title">
+                  Status WNI/WNA / <em>Citizenship Status</em> <span className="required-star">*</span>
+                </h2>
+                <div className="radio-group">
+                  {[
+                    { label: 'WNI (Warga Negara Indonesia)', value: 'WNI' },
+                    { label: 'WNA (Warga Negara Asing)', value: 'WNA' }
+                  ].map(item => (
+                    <label key={item.value} className="radio-option">
+                      <input
+                        ref={item.value === 'WNI' ? inputRefs.citizenshipStatus : null}
+                        type="radio"
+                        name="citizenshipStatus"
+                        value={item.value}
+                        checked={formData.citizenshipStatus === item.value}
+                        onChange={(e) => handleInputChange('citizenshipStatus', e.target.value)}
+                        onFocus={() => setActiveCard('citizenshipStatus')}
+                        onKeyDown={(e) => handleKeyDown(e, 'citizenshipStatus')}
+                        required
+                      />
+                      <span className="custom-radio"></span>
+                      <span>{item.label}</span>
+                    </label>
+                  ))}
                 </div>
                 <div className="error-msg">
                   <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
@@ -563,7 +587,7 @@ export default function App() {
                 onClick={() => setActiveCard('schoolName')}
               >
                 <h2 className="question-title">
-                  Asal sekolah anak Anda / <em>School Name</em> <span className="required-star">*</span>
+                  Asal Sekolah Anak Anda / <em>School Name</em> <span className="required-star">*</span>
                 </h2>
                 <p className="question-subtext">Gunakan nama sekolah yang sesuai. / <em>Please use the official school name.</em></p>
                 <div className="text-input-wrap">
@@ -634,7 +658,7 @@ export default function App() {
                 onClick={() => setActiveCard('groupCategory')}
               >
                 <h2 className="question-title">
-                  Pilih kategori group kompetisi / <em>Choose your group category</em> <span className="required-star">*</span>
+                  Pilih Kategori Group Kompetisi / <em>Choose your group category</em> <span className="required-star">*</span>
                 </h2>
                 <div className="dropdown-wrap">
                   <select
@@ -664,21 +688,51 @@ export default function App() {
                 </div>
               </section>
 
-              {/* Question 7: Parents Phone Number */}
+              {/* Question 7: Parent Name */}
+              <section
+                ref={cardRefs.parentName}
+                className={`form-card ${activeCard === 'parentName' ? 'active' : ''} ${errors.parentName ? 'error-state' : ''}`}
+                onClick={() => setActiveCard('parentName')}
+              >
+                <h2 className="question-title">
+                  Nama Orang Tua / <em>Parent's Name</em> <span className="required-star">*</span>
+                </h2>
+                <p className="question-subtext">Nama lengkap orang tua / wali. / <em>Full name of parent or guardian.</em></p>
+                <div className="text-input-wrap">
+                  <input
+                    ref={inputRefs.parentName}
+                    type="text"
+                    className="text-input"
+                    placeholder="Your answer"
+                    value={formData.parentName}
+                    onChange={(e) => handleInputChange('parentName', e.target.value)}
+                    onFocus={() => setActiveCard('parentName')}
+                    onKeyDown={(e) => handleKeyDown(e, 'parentName')}
+                    required
+                  />
+                </div>
+                <div className="error-msg">
+                  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                  <span>This question is required</span>
+                </div>
+              </section>
+
+              {/* Question 8: Parents WhatsApp Phone Number */}
               <section
                 ref={cardRefs.parentPhone}
                 className={`form-card ${activeCard === 'parentPhone' ? 'active' : ''} ${errors.parentPhone ? 'error-state' : ''}`}
                 onClick={() => setActiveCard('parentPhone')}
               >
                 <h2 className="question-title">
-                  Nomor telpon orang tua / <em>Parents Phone Number</em> <span className="required-star">*</span>
+                  No Telp Orang Tua Yg Tersambung Dng WA / <em>Parents WhatsApp Number</em> <span className="required-star">*</span>
                 </h2>
+                <p className="question-subtext">Pastikan nomor aktif WhatsApp untuk konfirmasi. / <em>Ensure number is active on WhatsApp.</em></p>
                 <div className="text-input-wrap">
                   <input
                     ref={inputRefs.parentPhone}
                     type="tel"
                     className="text-input"
-                    placeholder="Your answer"
+                    placeholder="Your answer (e.g. 08123456789)"
                     value={formData.parentPhone}
                     onChange={(e) => handleInputChange('parentPhone', e.target.value)}
                     onFocus={() => setActiveCard('parentPhone')}
@@ -692,17 +746,52 @@ export default function App() {
                 </div>
               </section>
 
-              {/* Question 8: Info Source */}
+              {/* Question 9: Email Orang Tua */}
+              <section
+                ref={cardRefs.email}
+                className={`form-card ${activeCard === 'email' ? 'active' : ''} ${errors.email ? 'error-state' : ''}`}
+                onClick={() => setActiveCard('email')}
+              >
+                <h2 className="question-title">
+                  Email Orang Tua / <em>Parent's Email</em> <span className="required-star">*</span>
+                </h2>
+                <p className="question-subtext">Email aktif untuk penerimaan bukti & konfirmasi pendaftaran. / <em>Active email for confirmation receipt.</em></p>
+                <div className="text-input-wrap">
+                  <input
+                    ref={inputRefs.email}
+                    type="email"
+                    className="text-input"
+                    placeholder="Your answer (e.g. name@email.com)"
+                    value={formData.email}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    onFocus={() => setActiveCard('email')}
+                    onKeyDown={(e) => handleKeyDown(e, 'email')}
+                    required
+                  />
+                </div>
+                <div className="error-msg">
+                  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                  <span>Please provide a valid email address</span>
+                </div>
+              </section>
+
+              {/* Question 10: Info Source */}
               <section
                 ref={cardRefs.infoSource}
                 className={`form-card ${activeCard === 'infoSource' ? 'active' : ''} ${errors.infoSource ? 'error-state' : ''}`}
                 onClick={() => setActiveCard('infoSource')}
               >
                 <h2 className="question-title">
-                  Dari mana Anda mendapatkan informasi kompetisi ini? / <em>Where did you hear about this competition?</em> <span className="required-star">*</span>
+                  Dari Mana Anda Mendapatkan Informasi Kompetisi / <em>Where did you hear about this competition?</em> <span className="required-star">*</span>
                 </h2>
                 <div className="radio-group">
-                  {['Staff English 1 Center', 'Iklan', 'Instagram'].map(option => (
+                  {[
+                    'Staff English 1 Center',
+                    'Iklan / Advertisement',
+                    'Instagram',
+                    'Sekolah / School',
+                    'Teman / Kerabat'
+                  ].map(option => (
                     <label key={option} className="radio-option">
                       <input
                         ref={option === 'Staff English 1 Center' ? inputRefs.infoSource : null}
@@ -716,7 +805,7 @@ export default function App() {
                         required
                       />
                       <span className="custom-radio"></span>
-                      <span>{option === 'Iklan' ? 'Iklan / Advertisement' : option}</span>
+                      <span>{option}</span>
                     </label>
                   ))}
                 </div>
@@ -726,14 +815,14 @@ export default function App() {
                 </div>
               </section>
 
-              {/* Question 9: Is English 1 Student */}
+              {/* Question 11: Is English 1 Student */}
               <section
                 ref={cardRefs.isEnglish1Student}
                 className={`form-card ${activeCard === 'isEnglish1Student' ? 'active' : ''} ${errors.isEnglish1Student ? 'error-state' : ''}`}
                 onClick={() => setActiveCard('isEnglish1Student')}
               >
                 <h2 className="question-title">
-                  Apakah anak Anda siswa English 1? / <em>Are you currently an English 1 student?</em> <span className="required-star">*</span>
+                  Apakah Anak Anda Siswa English 1 / <em>Are you currently an English 1 student?</em> <span className="required-star">*</span>
                 </h2>
                 <div className="radio-group">
                   {[
@@ -763,7 +852,7 @@ export default function App() {
                 </div>
               </section>
 
-              {/* Question 10: English 1 Center */}
+              {/* Question 12: English 1 Center */}
               <section
                 ref={cardRefs.english1Center}
                 className={`form-card ${activeCard === 'english1Center' ? 'active' : ''} ${errors.english1Center ? 'error-state' : ''}`}
@@ -772,7 +861,7 @@ export default function App() {
                 <h2 className="question-title">
                   English 1 Center <span className="required-star">*</span>
                 </h2>
-                <p className="question-subtext">Select the nearest English 1 Center or where your child currently studies.</p>
+                <p className="question-subtext">Pilih cabang English 1 tempat anak Anda belajar (atau pilih 'Bukan Siswa English 1' jika non-siswa). / <em>Select the English 1 Center or select 'Non-English 1 Student'.</em></p>
                 <div className="dropdown-wrap">
                   <select
                     ref={inputRefs.english1Center}
@@ -784,12 +873,9 @@ export default function App() {
                     required
                   >
                     <option value="" disabled>Select</option>
-                    <option value="English 1 Plaza Surabaya">English 1 Plaza Surabaya</option>
-                    <option value="English 1 Galaxy Mall">English 1 Galaxy Mall</option>
-                    <option value="English 1 Pakuwon Mall">English 1 Pakuwon Mall</option>
-                    <option value="English 1 Bukit Mas">English 1 Bukit Mas</option>
-                    <option value="English 1 Jemursari">English 1 Jemursari</option>
-                    <option value="English 1 Purimas">English 1 Purimas</option>
+                    <option value="English 1 Denpasar">English 1 Denpasar</option>
+                    <option value="English 1 Bali">English 1 Bali</option>
+                    <option value="Bukan Siswa English 1 / Non-English 1 Student">Bukan Siswa English 1 / Non-English 1 Student</option>
                   </select>
                   <div className="dropdown-icon">
                     <svg width="12" height="8" viewBox="0 0 12 8" fill="currentColor">
@@ -961,20 +1047,22 @@ export default function App() {
                       <th>Waktu</th>
                       <th>Nama Peserta</th>
                       <th>Tempat & Tgl Lahir</th>
+                      <th>Status</th>
                       <th>Sekolah</th>
                       <th>Kelas</th>
                       <th>Group</th>
-                      <th>No Telp Ortu</th>
+                      <th>Nama Ortu</th>
+                      <th>No WA Ortu</th>
+                      <th>Email Ortu</th>
+                      <th>Sumber Info</th>
                       <th>Siswa E1</th>
                       <th>Center</th>
-                      <th>Sumber Info</th>
-                      <th>Kategori / Branch</th>
                     </tr>
                   </thead>
                   <tbody>
                     {submissions.length === 0 ? (
                       <tr>
-                        <td colSpan="11" style={{ textAlign: 'center', padding: '20px', color: '#70757a' }}>Belum ada pendaftaran.</td>
+                        <td colSpan="13" style={{ textAlign: 'center', padding: '20px', color: '#70757a' }}>Belum ada pendaftaran.</td>
                       </tr>
                     ) : (
                       submissions.map(item => (
@@ -982,18 +1070,16 @@ export default function App() {
                           <td>{item.timestamp}</td>
                           <td><strong>{item.fullName}</strong></td>
                           <td>{item.birthDetails}</td>
+                          <td>{item.citizenshipStatus}</td>
                           <td>{item.schoolName}</td>
                           <td>{item.grade}</td>
                           <td>{item.groupCategory}</td>
+                          <td>{item.parentName}</td>
                           <td>{item.parentPhone}</td>
+                          <td>{item.email}</td>
+                          <td>{item.infoSource}</td>
                           <td>{item.isEnglish1Student}</td>
                           <td>{item.english1Center}</td>
-                          <td>{item.infoSource}</td>
-                          <td>
-                            <span style={{ background: '#fceef4', color: '#e00078', padding: '2px 6px', borderRadius: '4px', fontWeight: 500 }}>
-                              {item.branchCategory || '-'}
-                            </span>
-                          </td>
                         </tr>
                       ))
                     )}

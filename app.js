@@ -337,12 +337,14 @@ function initApp() {
       id: Date.now(),
       timestamp: new Date().toLocaleString('id-ID'),
       fullName: formData.get('fullName'),
-      email: formData.get('email'),
       birthDetails: formData.get('birthDetails'),
+      citizenshipStatus: formData.get('citizenshipStatus'),
       schoolName: formData.get('schoolName'),
       grade: formData.get('grade'),
       groupCategory: formData.get('groupCategory'),
+      parentName: formData.get('parentName'),
       parentPhone: formData.get('parentPhone'),
+      email: formData.get('email'),
       infoSource: formData.get('infoSource'),
       isEnglish1Student: formData.get('isEnglish1Student'),
       english1Center: formData.get('english1Center'),
@@ -436,13 +438,13 @@ function initApp() {
   }
 
   // Google Sheets Webhook Sender
-  // Web App URL Google Apps Script Surabaya
-  const GOOGLE_SCRIPT_URL_SURABAYA = 'https://script.google.com/macros/s/AKfycbyQym6DmlPm2hxeT3ELSu9BqHff-qL_BIHEA6fJmc4UTCMZKcJHA1VZxlisC6jq_30ScA/exec';
+  // Web App URL Google Apps Script Regional Bali
+  const GOOGLE_SCRIPT_URL_BALI = 'https://script.google.com/macros/s/AKfycbz2k2PP8Dp7_6gtvh_AqjvqeJrdU7ddUWxW9DeUIrlNWn9sAzMVJe70AzkYKgEFMCWOww/exec';
 
   function sendDataToGoogleSheets(payload) {
-    if (!GOOGLE_SCRIPT_URL_SURABAYA) return;
+    if (!GOOGLE_SCRIPT_URL_BALI) return;
 
-    fetch(GOOGLE_SCRIPT_URL_SURABAYA, {
+    fetch(GOOGLE_SCRIPT_URL_BALI, {
       method: 'POST',
       mode: 'no-cors',
       headers: {
@@ -512,7 +514,7 @@ function initApp() {
     if (list.length === 0) {
       responsesTableBody.innerHTML = `
         <tr>
-          <td colspan="11" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
+          <td colspan="13" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
         </tr>
       `;
       return;
@@ -523,14 +525,16 @@ function initApp() {
         <td>${escapeHtml(item.timestamp)}</td>
         <td><strong>${escapeHtml(item.fullName)}</strong></td>
         <td>${escapeHtml(item.birthDetails)}</td>
+        <td>${escapeHtml(item.citizenshipStatus)}</td>
         <td>${escapeHtml(item.schoolName)}</td>
         <td>${escapeHtml(item.grade)}</td>
         <td>${escapeHtml(item.groupCategory)}</td>
+        <td>${escapeHtml(item.parentName)}</td>
         <td>${escapeHtml(item.parentPhone)}</td>
+        <td>${escapeHtml(item.email)}</td>
+        <td>${escapeHtml(item.infoSource)}</td>
         <td>${escapeHtml(item.isEnglish1Student)}</td>
         <td>${escapeHtml(item.english1Center)}</td>
-        <td>${escapeHtml(item.infoSource)}</td>
-        <td><span style="background:#fceef4; color:#e00078; padding:2px 6px; border-radius:4px; font-weight:500;">${escapeHtml(item.branchCategory || '-')}</span></td>
       </tr>
     `).join('');
   }
@@ -557,28 +561,32 @@ function initApp() {
         'Timestamp',
         'Nama Lengkap Peserta',
         'Tempat & Tgl Lahir',
+        'Status WNI/WNA',
         'Asal Sekolah',
         'Kelas',
         'Kategori Group',
-        'No Telpon Ortu',
+        'Nama Orang Tua',
+        'No WA Ortu',
+        'Email Ortu',
         'Sumber Informasi',
         'Siswa English 1',
-        'English 1 Center',
-        'Kategori Branch'
+        'English 1 Center'
       ];
 
       const rows = list.map(item => [
         `"${item.timestamp}"`,
-        `"${item.fullName.replace(/"/g, '""')}"`,
-        `"${item.birthDetails.replace(/"/g, '""')}"`,
-        `"${item.schoolName.replace(/"/g, '""')}"`,
-        `"${item.grade}"`,
-        `"${item.groupCategory}"`,
-        `"${item.parentPhone}"`,
-        `"${item.infoSource}"`,
-        `"${item.isEnglish1Student}"`,
-        `"${item.english1Center}"`,
-        `"${item.branchCategory || ''}"`
+        `"${(item.fullName || '').replace(/"/g, '""')}"`,
+        `"${(item.birthDetails || '').replace(/"/g, '""')}"`,
+        `"${(item.citizenshipStatus || '').replace(/"/g, '""')}"`,
+        `"${(item.schoolName || '').replace(/"/g, '""')}"`,
+        `"${item.grade || ''}"`,
+        `"${item.groupCategory || ''}"`,
+        `"${(item.parentName || '').replace(/"/g, '""')}"`,
+        `"${item.parentPhone || ''}"`,
+        `"${item.email || ''}"`,
+        `"${item.infoSource || ''}"`,
+        `"${item.isEnglish1Student || ''}"`,
+        `"${item.english1Center || ''}"`
       ]);
 
       const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' 

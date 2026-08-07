@@ -23,9 +23,9 @@
         <div class="welcome-badge">🏆 Regional Competition 2026</div>
         <h1 class="welcome-title">English 1 Spelling Bee Regional Competition 2026</h1>
         <div class="welcome-desc">
-          <p>Selamat datang di <strong>Kompetisi Spelling Bee 2026 Regional Bali</strong>.</p>
+          <p>Selamat datang di Kompetisi Spelling Bee 2026 Regional Bali.</p>
           <p>Kompetisi mengeja kosakata dalam bahasa Inggris yang diadakan setiap satu tahun sekali, dimana setiap tahunnya diikuti oleh siswa tingkat SD dan SMP dari berbagai kota di Bali. Kompetisi ini merupakan kesempatan bagi para siswa untuk melatih kemandirian, keberanian berbicara bahasa Inggris serta mempraktekan pengetahuan bahasa Inggris secara langsung.</p>
-          <p>Kompetisi Spelling Bee akan dilaksanakan pada <strong>hari Minggu, tanggal 18 Oktober 2026</strong> di Gedung Dharma Negara Alaya, Jl. Mulawarman, Dauh Puri Kaja, Kota Denpasar.</p>
+          <p>Kompetisi Spelling Bee akan dilaksanakan pada hari <strong>Minggu, tanggal 18 Oktober 2026 di Gedung Dharma Negara Alaya, Jl. Mulawarman, Dauh Puri Kaja, Kota Denpasar.</strong></p>
         </div>
 
         <div class="event-highlights">
@@ -76,7 +76,15 @@
             </div>
             <div>
               <h1 class="form-title">Online Registration Form Spelling Bee Regional Competition 2026</h1>
-              <p class="form-description">To participate in the competition, please fill in the details below accurately and completely.</p>
+              <div class="form-description">
+                <p style="margin-bottom: 12px;">Isi data diri di bawah dengan <strong>LENGKAP</strong> dan <strong>BENAR</strong>.</p>
+                <p style="margin-top: 8px;"><strong>Biaya Pendaftaran Early Bird (s.d tgl 10 September 2026) :</strong></p>
+                <p><strong>English 1 Students : Rp. 200.000</strong></p>
+                <p><strong>Non English 1 Students : Rp. 250.000</strong></p>
+                <p style="margin-top: 12px;"><strong>Biaya Pendaftaran Normal :</strong></p>
+                <p><strong>English 1 Students : Rp. 250.000</strong></p>
+                <p><strong>Non English 1 Students : Rp. 300.000</strong></p>
+              </div>
             </div>
           </div>
           <div class="required-notice">* Indicates required question</div>
@@ -97,13 +105,14 @@
           </div>
         </section>
 
-        <!-- Question 2: Email -->
+        <!-- Question 2: Place and Date of Birth -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
-            Email <span class="required-star">*</span>
+            Tempat & Tgl Lahir Anak Anda / <em>Place and Date of Birth</em> <span class="required-star">*</span>
           </h2>
+          <p class="question-subtext">Contoh pengisian: Denpasar, 1 Januari 2018 / <em>Example: Denpasar, 1 January 2018</em></p>
           <div class="text-input-wrap">
-            <input type="email" id="email" name="email" class="text-input" placeholder="Your answer (e.g. name@email.com)" required>
+            <input type="text" id="birthDetails" name="birthDetails" class="text-input" placeholder="Your answer (e.g. Denpasar, 1 Januari 2018)" required>
           </div>
           <div class="error-msg">
             <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
@@ -111,14 +120,22 @@
           </div>
         </section>
 
-        <!-- Question 3: Place and Date of Birth -->
+        <!-- Question 3: Status WNI/WNA -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
-            Tempat dan tanggal lahir anak Anda / <em>Place and Date of Birth</em> <span class="required-star">*</span>
+            Status WNI/WNA / <em>Citizenship Status</em> <span class="required-star">*</span>
           </h2>
-          <p class="question-subtext">Contoh pengisian: Surabaya, 1 Januari 2018 / <em>Example: Surabaya, 1 January 2018</em></p>
-          <div class="text-input-wrap">
-            <input type="text" id="birthDetails" name="birthDetails" class="text-input" placeholder="Your answer (e.g. Surabaya, 1 Januari 2018)" required>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="citizenshipStatus" value="WNI" required>
+              <span class="custom-radio"></span>
+              <span>WNI (Warga Negara Indonesia)</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="citizenshipStatus" value="WNA" required>
+              <span class="custom-radio"></span>
+              <span>WNA (Warga Negara Asing)</span>
+            </label>
           </div>
           <div class="error-msg">
             <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
@@ -129,7 +146,7 @@
         <!-- Question 4: School Name -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
-            Asal sekolah anak Anda / <em>School Name</em> <span class="required-star">*</span>
+            Asal Sekolah Anak Anda / <em>School Name</em> <span class="required-star">*</span>
           </h2>
           <p class="question-subtext">Gunakan nama sekolah yang sesuai. / <em>Please use the official school name.</em></p>
           <div class="text-input-wrap">
@@ -141,7 +158,7 @@
           </div>
         </section>
 
-        <!-- Question 4: Grade -->
+        <!-- Question 5: Grade -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
             Kelas / <em>Grade</em> <span class="required-star">*</span>
@@ -171,10 +188,10 @@
           </div>
         </section>
 
-        <!-- Question 5: Choose Group Category -->
+        <!-- Question 6: Choose Group Category -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
-            Pilih kategori group kompetisi / <em>Choose your group category</em> <span class="required-star">*</span>
+            Pilih Kategori Group Kompetisi / <em>Choose your group category</em> <span class="required-star">*</span>
           </h2>
           <div class="dropdown-wrap">
             <select id="groupCategory" name="groupCategory" class="select-input" required>
@@ -196,11 +213,27 @@
           </div>
         </section>
 
-        <!-- Question 6: Parents Phone Number -->
+        <!-- Question 7: Parent Name -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
-            Nomor telpon orang tua / <em>Parents Phone Number</em> <span class="required-star">*</span>
+            Nama Orang Tua / <em>Parent's Name</em> <span class="required-star">*</span>
           </h2>
+          <p class="question-subtext">Nama lengkap orang tua / wali. / <em>Full name of parent or guardian.</em></p>
+          <div class="text-input-wrap">
+            <input type="text" id="parentName" name="parentName" class="text-input" placeholder="Your answer" required>
+          </div>
+          <div class="error-msg">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <span>This question is required</span>
+          </div>
+        </section>
+
+        <!-- Question 8: Parents WhatsApp Phone Number -->
+        <section class="form-card" data-card data-required="true">
+          <h2 class="question-title">
+            No Telp Orang Tua Yg Tersambung Dng WA / <em>Parents WhatsApp Number</em> <span class="required-star">*</span>
+          </h2>
+          <p class="question-subtext">Pastikan nomor aktif WhatsApp untuk konfirmasi. / <em>Ensure number is active on WhatsApp.</em></p>
           <div class="text-input-wrap">
             <input type="tel" id="parentPhone" name="parentPhone" class="text-input" placeholder="Your answer (e.g. 08123456789)" inputmode="numeric" pattern="[0-9]*" required>
           </div>
@@ -210,10 +243,25 @@
           </div>
         </section>
 
-        <!-- Question 7: Info Source -->
+        <!-- Question 9: Email Orang Tua -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
-            Dari mana Anda mendapatkan informasi kompetisi ini? / <em>Where did you hear about this competition?</em> <span class="required-star">*</span>
+            Email Orang Tua / <em>Parent's Email</em> <span class="required-star">*</span>
+          </h2>
+          <p class="question-subtext">Email aktif untuk penerimaan bukti & konfirmasi pendaftaran. / <em>Active email for confirmation receipt.</em></p>
+          <div class="text-input-wrap">
+            <input type="email" id="email" name="email" class="text-input" placeholder="Your answer (e.g. name@email.com)" required>
+          </div>
+          <div class="error-msg">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <span>This question is required</span>
+          </div>
+        </section>
+
+        <!-- Question 10: Info Source -->
+        <section class="form-card" data-card data-required="true">
+          <h2 class="question-title">
+            Dari Mana Anda Mendapatkan Informasi Kompetisi / <em>Where did you hear about this competition?</em> <span class="required-star">*</span>
           </h2>
           <div class="radio-group">
             <label class="radio-option">
@@ -222,7 +270,7 @@
               <span>Staff English 1 Center</span>
             </label>
             <label class="radio-option">
-              <input type="radio" name="infoSource" value="Iklan" required>
+              <input type="radio" name="infoSource" value="Iklan / Advertisement" required>
               <span class="custom-radio"></span>
               <span>Iklan / Advertisement</span>
             </label>
@@ -231,6 +279,16 @@
               <span class="custom-radio"></span>
               <span>Instagram</span>
             </label>
+            <label class="radio-option">
+              <input type="radio" name="infoSource" value="Sekolah / School" required>
+              <span class="custom-radio"></span>
+              <span>Sekolah / School</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="infoSource" value="Teman / Kerabat" required>
+              <span class="custom-radio"></span>
+              <span>Teman / Kerabat</span>
+            </label>
           </div>
           <div class="error-msg">
             <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
@@ -238,10 +296,10 @@
           </div>
         </section>
 
-        <!-- Question 8: Is English 1 Student -->
+        <!-- Question 11: Is English 1 Student -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
-            Apakah anak Anda siswa English 1? / <em>Are you currently an English 1 student?</em> <span class="required-star">*</span>
+            Apakah Anak Anda Siswa English 1 / <em>Are you currently an English 1 student?</em> <span class="required-star">*</span>
           </h2>
           <div class="radio-group">
             <label class="radio-option">
@@ -261,21 +319,18 @@
           </div>
         </section>
 
-        <!-- Question 9: English 1 Center -->
+        <!-- Question 12: English 1 Center -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
             English 1 Center <span class="required-star">*</span>
           </h2>
-          <p class="question-subtext">Pilih cabang English 1 terdekat atau tempat anak Anda belajar saat ini. / <em>Select the nearest English 1 Center or where your child currently studies.</em></p>
+          <p class="question-subtext">Pilih cabang English 1 tempat anak Anda belajar (atau pilih 'Bukan Siswa English 1' jika non-siswa). / <em>Select the English 1 Center or select 'Non-English 1 Student'.</em></p>
           <div class="dropdown-wrap">
             <select id="english1Center" name="english1Center" class="select-input" required>
               <option value="" disabled selected>Select</option>
-              <option value="English 1 Plaza Surabaya">English 1 Plaza Surabaya</option>
-              <option value="English 1 Galaxy Mall">English 1 Galaxy Mall</option>
-              <option value="English 1 Pakuwon Mall">English 1 Pakuwon Mall</option>
-              <option value="English 1 Bukit Mas">English 1 Bukit Mas</option>
-              <option value="English 1 Jemursari">English 1 Jemursari</option>
-              <option value="English 1 Purimas">English 1 Purimas</option>
+              <option value="English 1 Denpasar">English 1 Denpasar</option>
+              <option value="English 1 Bali">English 1 Bali</option>
+              <option value="Bukan Siswa English 1 / Non-English 1 Student">Bukan Siswa English 1 / Non-English 1 Student</option>
             </select>
             <div class="dropdown-icon">
               <svg width="12" height="8" viewBox="0 0 12 8" fill="currentColor">
@@ -449,19 +504,21 @@
                 <th>Waktu</th>
                 <th>Nama Peserta</th>
                 <th>Tempat & Tgl Lahir</th>
+                <th>Status</th>
                 <th>Sekolah</th>
                 <th>Kelas</th>
                 <th>Group</th>
-                <th>No Telp Ortu</th>
+                <th>Nama Ortu</th>
+                <th>No WA Ortu</th>
+                <th>Email Ortu</th>
+                <th>Sumber Info</th>
                 <th>Siswa E1</th>
                 <th>Center</th>
-                <th>Sumber Info</th>
-                <th>Kategori / Branch</th>
               </tr>
             </thead>
             <tbody id="responsesTableBody">
               <tr>
-                <td colspan="11" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
+                <td colspan="13" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
               </tr>
             </tbody>
           </table>
