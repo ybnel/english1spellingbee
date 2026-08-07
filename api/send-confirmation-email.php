@@ -186,7 +186,33 @@ function sendGmailSMTP($to, $subject, $htmlContent) {
 $result = sendGmailSMTP($to, $subject, $htmlMessage);
 
 if ($result['status']) {
-    echo json_encode(["status" => "success", "message" => "Email konfirmasi berhasil terkirim ke " . $to]);
+    // Opsional: Jika dikirimkan appsScriptUrl & rowIndex, update otomatis Kolom Status Email di Google Sheets ke TRUE
+    if (!empty($data['appsScriptUrl']) && !empty($data['rowIndex'])) {
+        $updatePayload = json_encode([
+            "action" => "updateStatus",
+            "rowIndex" => $data['rowIndex'],
+            "statusValue" => true
+        ]);
+        
+        $ch = curl_init($data['appsScriptUrl']);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $updatePayload);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        curl_exec($ch);
+        curl_close($ch);
+    }
+
+    echo json_encode([
+        "status" => "success", 
+        "emailSent" => true,
+        "statusValue" => true,
+        "message" => "Email konfirmasi berhasil terkirim ke " . $to
+    ]);
 } else {
-    echo json_encode(["status" => "error", "message" => $result['message']]);
+    echo json_encode([
+        "status" => "error", 
+        "emailSent" => false,
+        "statusValue" => false,
+        "message" => $result['message']
+    ]);
 }
