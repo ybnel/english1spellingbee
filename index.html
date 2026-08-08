@@ -18,14 +18,14 @@
     <!-- WELCOME / LANDING SCREEN -->
     <section id="welcomeScreen" class="welcome-card">
       <div class="welcome-banner-wrap">
-        <img src="./src/assets/banner.png" alt="English 1 Spelling Bee Banner" class="welcome-banner-img">
+        <img src="./src/assets/bannerbali.png" alt="English 1 Spelling Bee Banner" class="welcome-banner-img">
       </div>
       <div class="welcome-content">
         <div class="welcome-badge">🏆 Regional Competition 2026</div>
         <h1 class="welcome-title">English 1 Spelling Bee Regional Competition 2026</h1>
         <div class="welcome-desc">
           <p>Selamat datang di Kompetisi Spelling Bee 2026 Regional Bali.</p>
-          <p>Kompetisi mengeja kosakata dalam bahasa Inggris yang diadakan setiap satu tahun sekali, dimana setiap tahunnya diikuti oleh siswa tingkat SD dan SMP dari berbagai kota di Bali. Kompetisi ini merupakan kesempatan bagi para siswa untuk melatih kemandirian, keberanian berbicara bahasa Inggris serta mempraktekan pengetahuan bahasa Inggris secara langsung.</p>
+          <p>Kompetisi mengeja kosakata dalam bahasa Inggris yang diadakan setiap satu tahun sekali, dimana setiap tahunnya diikuti oleh siswa tingkat SD dan SMP berkewarganegaraan Indonesia dari berbagai kota di Bali. Kompetisi ini merupakan kesempatan bagi para siswa untuk melatih kemandirian, keberanian berbicara bahasa Inggris serta mempraktekan pengetahuan bahasa Inggris secara langsung.</p>
           <p>Kompetisi Spelling Bee akan dilaksanakan pada hari :</p>
         </div>
 
@@ -51,6 +51,13 @@
               <p>Gedung Dharma Negara Alaya, Jl. Mulawarman, Dauh Puri Kaja, Kota Denpasar</p>
             </div>
           </div>
+          <div class="highlight-item full-width">
+            <span class="highlight-icon"><i class="fas fa-headset" style="font-size:24px; color:#e00078;"></i></span>
+            <div>
+              <strong>Contact</strong>
+              <p>WhatsApp 08989000025 / DM Instagram @english1.bali</p>
+            </div>
+          </div>
         </div>
 
         <button type="button" id="btnStartRegistration" class="btn-start-registration" onclick="if(document.getElementById('welcomeScreen')) document.getElementById('welcomeScreen').style.display='none'; if(document.getElementById('spellingBeeForm')) document.getElementById('spellingBeeForm').style.display='block'; window.scrollTo({top:0, behavior:'smooth'});">
@@ -64,7 +71,7 @@
     </section>
 
     <!-- Main Registration Form -->
-    <form id="spellingBeeForm" onsubmit="event.preventDefault(); return false;" style="display: none;" autocomplete="off" novalidate>
+    <form id="spellingBeeForm" onsubmit="event.preventDefault(); return false;" style="display: none;" novalidate>
 
       <!-- SECTION 1: DATA PESERTA -->
       <div id="section1" class="form-section">
@@ -84,18 +91,15 @@
             </div>
             <div>
               <h1 class="form-title">Online Registration Form Spelling Bee Regional Competition 2026</h1>
-            </div>
-          </div>
-
-          <div class="form-description">
-            <p>Isi data diri di bawah dengan <strong>LENGKAP</strong> dan <strong>BENAR</strong>.</p>
-            <div style="margin-top: 14px; background: #fff5f8; border: 1px dashed #e00078; border-radius: 8px; padding: 12px 16px;">
-              <p><strong>Biaya Pendaftaran Early Bird (s.d tgl 10 September 2026) :</strong></p>
-              <p><strong>English 1 Students : Rp. 200.000</strong></p>
-              <p><strong>Non English 1 Students : Rp. 250.000</strong></p>
-              <p style="margin-top: 12px;"><strong>Biaya Pendaftaran Normal :</strong></p>
-              <p><strong>English 1 Students : Rp. 250.000</strong></p>
-              <p><strong>Non English 1 Students : Rp. 300.000</strong></p>
+              <div class="form-description">
+                <p style="margin-top: 8px;"><strong>Biaya Pendaftaran Early Bird (s.d tgl 10 September 2026) :</strong></p>
+                <p><strong>English 1 Students : Rp. 175.000</strong></p>
+                <p><strong>Non English 1 Students : Rp. 250.000</strong></p>
+                <p style="margin-top: 12px;"><strong>Biaya Pendaftaran Normal :</strong></p>
+                <p><strong>English 1 Students : Rp. 200.000</strong></p>
+                <p><strong>Non English 1 Students : Rp. 300.000</strong></p>
+                <p style="margin-top: 12px; margin-bottom: 12px;">Lengkapi data diri di bawah ini dengan <strong>BENAR</strong>.</p>
+              </div>
             </div>
           </div>
           <div class="required-notice">* Indicates required question</div>
@@ -108,7 +112,7 @@
           </h2>
           <p class="question-subtext">Pastikan ejaan nama anak Anda BENAR untuk penerbitan sertifikat. / <em>Please make sure your child's name spelling is CORRECT for certificate issuing.</em></p>
           <div class="text-input-wrap">
-            <input type="text" id="fullName" name="fullName" class="text-input" placeholder="Your answer" autocomplete="off" required>
+            <input type="text" id="fullName" name="fullName" class="text-input" placeholder="Your answer" required>
           </div>
           <div class="error-msg">
             <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
@@ -119,11 +123,11 @@
         <!-- Question 2: Place and Date of Birth -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
-            Tempat & Tgl Lahir Anak Anda / <em>Place and Date of Birth</em> <span class="required-star">*</span>
+            Tempat & Tgl Lahir anak Anda / <em>Place and Date of Birth</em> <span class="required-star">*</span>
           </h2>
           <p class="question-subtext">Contoh pengisian: Denpasar, 1 Januari 2018 / <em>Example: Denpasar, 1 January 2018</em></p>
           <div class="text-input-wrap">
-            <input type="text" id="birthDetails" name="birthDetails" class="text-input" placeholder="Your answer (e.g. Denpasar, 1 Januari 2018)" autocomplete="off" required>
+            <input type="text" id="birthDetails" name="birthDetails" class="text-input" placeholder="Your answer (e.g. Denpasar, 1 Januari 2018)" required>
           </div>
           <div class="error-msg">
             <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
@@ -131,16 +135,14 @@
           </div>
         </section>
 
-
-
-        <!-- Question 4: School Name -->
+        <!-- Question 3: School Name -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
-            Asal Sekolah Anak Anda / <em>School Name</em> <span class="required-star">*</span>
+            Asal sekolah anak Anda / <em>School Name</em> <span class="required-star">*</span>
           </h2>
           <p class="question-subtext">Gunakan nama sekolah yang sesuai. / <em>Please use the official school name.</em></p>
           <div class="text-input-wrap">
-            <input type="text" id="schoolName" name="schoolName" class="text-input" placeholder="Your answer" autocomplete="off" required>
+            <input type="text" id="schoolName" name="schoolName" class="text-input" placeholder="Your answer" required>
           </div>
           <div class="error-msg">
             <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
@@ -148,7 +150,7 @@
           </div>
         </section>
 
-        <!-- Question 5: Grade -->
+        <!-- Question 4: Grade -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
             Kelas / <em>Grade</em> <span class="required-star">*</span>
@@ -178,10 +180,10 @@
           </div>
         </section>
 
-        <!-- Question 6: Choose Group Category -->
+        <!-- Question 5: Choose Group Category -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
-            Pilih Kategori Group Kompetisi / <em>Choose your group category</em> <span class="required-star">*</span>
+            Pilih kategori group kompetisi / <em>Choose your group category</em> <span class="required-star">*</span>
           </h2>
           <div class="dropdown-wrap">
             <select id="groupCategory" name="groupCategory" class="select-input" required>
@@ -203,14 +205,14 @@
           </div>
         </section>
 
-        <!-- Question 7: Parent Name -->
+        <!-- Question 6: Parent Name -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
             Nama Orangtua / <em>Parent's Name</em> <span class="required-star">*</span>
           </h2>
           <p class="question-subtext">Nama lengkap orang tua / wali. / <em>Full name of parent or guardian.</em></p>
           <div class="text-input-wrap">
-            <input type="text" id="parentName" name="parentName" class="text-input" placeholder="Your answer" autocomplete="off" required>
+            <input type="text" id="parentName" name="parentName" class="text-input" placeholder="Your answer" required>
           </div>
           <div class="error-msg">
             <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
@@ -218,14 +220,14 @@
           </div>
         </section>
 
-        <!-- Question 8: Parents WhatsApp Phone Number -->
+        <!-- Question 7: Parents WhatsApp Phone Number -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
             No Telpon Orangtua yang tersambung dengan WA / <em>Parents WhatsApp Number</em> <span class="required-star">*</span>
           </h2>
-          <p class="question-subtext">Pastikan nomor aktif WhatsApp untuk konfirmasi. / <em>Ensure number is active on WhatsApp.</em></p>
+          <p class="question-subtext">Pastikan nomor aktif WhatsApp untuk penerimaan bukti & konfirmasi pembayaran / <em>Please ensure your WhatsApp number is active to receive payment confirmation and receipt.</em></p>
           <div class="text-input-wrap">
-            <input type="tel" id="parentPhone" name="parentPhone" class="text-input" placeholder="Your answer (e.g. 08123456789)" inputmode="numeric" pattern="[0-9]*" autocomplete="off" required>
+            <input type="tel" id="parentPhone" name="parentPhone" class="text-input" placeholder="Your answer (e.g. 08123456789)" inputmode="numeric" pattern="[0-9]*" required>
           </div>
           <div class="error-msg">
             <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
@@ -233,14 +235,14 @@
           </div>
         </section>
 
-        <!-- Question 9: Email Orang Tua -->
+        <!-- Question 8: Email Orang Tua -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
             Email Orangtua / <em>Parent's Email</em> <span class="required-star">*</span>
           </h2>
-          <p class="question-subtext">Email aktif untuk penerimaan bukti & konfirmasi pendaftaran. / <em>Active email for confirmation receipt.</em></p>
+          <p class="question-subtext">Email aktif untuk konfirmasi pendaftaran. / <em>Active email for confirmation registration.</em></p>
           <div class="text-input-wrap">
-            <input type="email" id="email" name="email" class="text-input" placeholder="Your answer (e.g. name@email.com)" autocomplete="off" required>
+            <input type="email" id="email" name="email" class="text-input" placeholder="Your answer (e.g. name@email.com)" required>
           </div>
           <div class="error-msg">
             <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
@@ -248,10 +250,10 @@
           </div>
         </section>
 
-        <!-- Question 10: Info Source -->
+        <!-- Question 9: Info Source -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
-            Dari Mana Anda Mendapatkan Informasi Kompetisi / <em>Where did you hear about this competition?</em> <span class="required-star">*</span>
+            Dari mana Anda mendapatkan informasi kompetisi / <em>Where did you hear about this competition?</em> <span class="required-star">*</span>
           </h2>
           <div class="dropdown-wrap">
             <select id="infoSource" name="infoSource" class="select-input" required>
@@ -274,10 +276,10 @@
           </div>
         </section>
 
-        <!-- Question 11: Is English 1 Student -->
+        <!-- Question 10: Is English 1 Student -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
-            Apakah Anak Anda Siswa English 1 / <em>Are you currently an English 1 student?</em> <span class="required-star">*</span>
+            Apakah anak Anda siswa English 1 / <em>Are you currently an English 1 student?</em> <span class="required-star">*</span>
           </h2>
           <div class="radio-group">
             <label class="radio-option">
@@ -297,7 +299,7 @@
           </div>
         </section>
 
-        <!-- Question 12: English 1 Center -->
+        <!-- Question 11: English 1 Center -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
             English 1 Center <span class="required-star">*</span>
@@ -306,10 +308,10 @@
           <div class="dropdown-wrap">
             <select id="english1Center" name="english1Center" class="select-input" required>
               <option value="" disabled selected>Select</option>
-              <option value="English 1 Bali HW (Hayam Wuruk)">English 1 Bali HW (Hayam Wuruk)</option>
+              <option value="English 1 Bali HW (Hayam Wuruk)">English 1 Bali Hayam Wuruk</option>
               <option value="English 1 Bali Kuta">English 1 Bali Kuta</option>
               <option value="English 1 Bali Gianyar">English 1 Bali Gianyar</option>
-              <option value="English 1 Bali Gatsu">English 1 Bali Gatsu</option>
+              <option value="English 1 Bali Gatsu Barat">English 1 Bali Gatsu Barat</option>
             </select>
             <div class="dropdown-icon">
               <svg width="12" height="8" viewBox="0 0 12 8" fill="currentColor">
@@ -356,17 +358,17 @@
         <section class="form-card payment-info-card" id="branch-student-group1" style="display: none;">
           <div class="payment-header-bar">Registration Fee Payment Process</div>
           <div class="payment-card-body">
-            <p class="payment-subtitle">Registration fee for English 1 students (HW / Kuta)</p>
-            <p class="payment-details">Early Bird Period: <strong>Rp200.000</strong> | Transfer to bank account <strong>BCA 7730234443 PT. EDUKA BALI UTAMA</strong></p>
+            <p class="payment-subtitle">Registration fee for English 1 students (Hayam Wuruk / Kuta)</p>
+            <p class="payment-details">Early Bird Period: <strong>Rp175.000</strong> | Transfer to bank account <strong>BCA 7730234443 PT. EDUKA BALI UTAMA</strong></p>
           </div>
         </section>
 
-        <!-- Dynamic Branch Card 2: Student + Gianyar / Gatsu -->
+        <!-- Dynamic Branch Card 2: Student + Gianyar / Gatsu Barat -->
         <section class="form-card payment-info-card" id="branch-student-group2" style="display: none;">
           <div class="payment-header-bar">Registration Fee Payment Process</div>
           <div class="payment-card-body">
-            <p class="payment-subtitle">Registration fee for English 1 students (Gianyar / Gatsu)</p>
-            <p class="payment-details">Early Bird Period: <strong>Rp200.000</strong> | Transfer to bank account <strong>BCA 3845205200 PT. Aplus Lorem Indo</strong></p>
+            <p class="payment-subtitle">Registration fee for English 1 students (Gianyar / Gatsu Barat)</p>
+            <p class="payment-details">Early Bird Period: <strong>Rp175.000</strong> | Transfer to bank account <strong>BCA 3845205200 PT. Aplus Lorem Indo</strong></p>
           </div>
         </section>
 
@@ -374,16 +376,16 @@
         <section class="form-card payment-info-card" id="branch-nonstudent-group1" style="display: none;">
           <div class="payment-header-bar">Registration Fee Payment Process</div>
           <div class="payment-card-body">
-            <p class="payment-subtitle">Registration fee for non-English 1 students (HW / Kuta)</p>
+            <p class="payment-subtitle">Registration fee for non-English 1 students (Hayam Wuruk / Kuta)</p>
             <p class="payment-details">Early Bird Period: <strong>Rp250.000</strong> | Transfer to bank account <strong>BCA 7730234443 PT. EDUKA BALI UTAMA</strong></p>
           </div>
         </section>
 
-        <!-- Dynamic Branch Card 4: Non-Student + Gianyar / Gatsu -->
+        <!-- Dynamic Branch Card 4: Non-Student + Gianyar / Gatsu Barat -->
         <section class="form-card payment-info-card" id="branch-nonstudent-group2" style="display: none;">
           <div class="payment-header-bar">Registration Fee Payment Process</div>
           <div class="payment-card-body">
-            <p class="payment-subtitle">Registration fee for non-English 1 students (Gianyar / Gatsu)</p>
+            <p class="payment-subtitle">Registration fee for non-English 1 students (Gianyar / Gatsu Barat)</p>
             <p class="payment-details">Early Bird Period: <strong>Rp250.000</strong> | Transfer to bank account <strong>BCA 3845205200 PT. Aplus Lorem Indo</strong></p>
           </div>
         </section>
@@ -454,7 +456,7 @@
         <h2 class="success-subtitle">PENDAFTARAN BERHASIL!</h2>
         <p class="success-text">Konfirmasi pendaftaran telah dikirimkan ke email Anda.</p>
         <p class="success-text">Tim English 1 akan segera menghubungi Anda melalui WhatsApp untuk informasi selanjutnya. Mohon menunggu dalam waktu 3x24 jam.</p>
-        <p class="success-text">Jika mengalami kendala silahkan menghubungi WA English 1 Bali.</p>
+	        <p class="success-text">Jika mengalami kendala silahkan menghubungi WhatsApp 08989000025 / DM Instagram @english1.bali</p>
         <p class="success-text success-thanks">Terima kasih!</p>
       </div>
       <a href="#" id="btnSubmitAnother" class="submit-another-link">Submit another response</a>

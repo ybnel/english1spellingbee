@@ -144,7 +144,7 @@ function initApp() {
 
     // Group Centers:
     // Group 1: Bali HW (Hayam Wuruk), Bali Kuta
-    // Group 2: Bali Gianyar, Bali Gatsu
+    // Group 2: Bali Gianyar, Bali Gatsu Barat
     const group1Centers = [
       'English 1 Bali HW (Hayam Wuruk)',
       'English 1 Bali Kuta'
@@ -158,13 +158,13 @@ function initApp() {
       currentCalculatedBranch = 'Siswa English 1 (HW / Kuta)';
     } else if (isStudent === 'Ya' && !isGroup1) {
       activeCard = branchStudentGroup2;
-      currentCalculatedBranch = 'Siswa English 1 (Gianyar / Gatsu)';
+      currentCalculatedBranch = 'Siswa English 1 (Gianyar / Gatsu Barat)';
     } else if (isStudent === 'Tidak' && isGroup1) {
       activeCard = branchNonstudentGroup1;
       currentCalculatedBranch = 'Non-Siswa English 1 (HW / Kuta)';
     } else {
       activeCard = branchNonstudentGroup2;
-      currentCalculatedBranch = 'Non-Siswa English 1 (Gianyar / Gatsu)';
+      currentCalculatedBranch = 'Non-Siswa English 1 (Gianyar / Gatsu Barat)';
     }
 
     if (activeCard) {
@@ -176,10 +176,10 @@ function initApp() {
 
       if (detailsEl) {
         if (isEarlyBird) {
-          const fee = isStudentBool ? 'Rp. 200.000' : 'Rp. 250.000';
+          const fee = isStudentBool ? 'Rp. 175.000' : 'Rp. 250.000';
           detailsEl.innerHTML = `Early Bird Period (s.d 10 September 2026): <strong>${fee}</strong> | Transfer to bank account <strong>${bankAccount}</strong>`;
         } else {
-          const fee = isStudentBool ? 'Rp. 250.000' : 'Rp. 300.000';
+          const fee = isStudentBool ? 'Rp. 200.000' : 'Rp. 300.000';
           detailsEl.innerHTML = `Normal Registration Period: <strong>${fee}</strong> | Transfer to bank account <strong>${bankAccount}</strong>`;
         }
       }

@@ -44,11 +44,11 @@ $htmlMessage = '
             <td style="padding:32px; font-size:15px; line-height:1.6; color:#334155;">
               
               <p style="margin-top:0; font-size:15px; color:#0f172a; line-height:1.6;">
-                Saat ini, tim English 1 sedang melakukan proses verifikasi kelengkapan data diri dan pembayaran yang sudah terproses. Tim kami akan menghubungi Anda melalui <strong>WhatsApp</strong> dan mengirimkan <strong>bukti pembayaran</strong> jika proses verifikasi telah selesai.
+                Saat ini, tim English 1 Bali sedang melakukan proses verifikasi kelengkapan data diri dan pembayaran yang sudah terproses. Tim kami akan menghubungi Anda melalui <strong>WhatsApp</strong> dan mengirimkan <strong>bukti pembayaran</strong> jika proses verifikasi telah selesai.
               </p>
 
               <p style="font-size:15px; color:#0f172a; margin:16px 0; line-height:1.6;">
-                Jika ada pertanyaan atau kendala, silahkan menghubungi official hotline number English 1 Bali.
+                Jika ada pertanyaan atau kendala, silahkan menghubungi WhatsApp 08989000025 / DM Instagram @english1.bali
               </p>
 
               <p style="font-size:16px; font-weight:600; color:#e00078; margin:24px 0 0 0;">
@@ -63,14 +63,11 @@ $htmlMessage = '
                   <td style="font-size:14px; color:#475569; line-height:1.5;">
                     <p style="margin:0 0 12px 0;">Regards,</p>
                     <p style="margin:0 0 2px 0; font-weight:700; color:#0f172a; font-size:15px;">English 1 Bali</p>
-                    <p style="margin:0 0 16px 0; color:#64748b; font-size:13px;">Marketing Communication English 1 Eduka Group</p>
-                    
+
                     <!-- English 1 Logo Image -->
                     <div style="margin: 16px 0;">
                       <img src="https://english1spellingbee.com/Bali/api/assets_email/english1.png" alt="English 1 Logo" style="height: 38px; width: auto; display: block; border: 0;">
                     </div>
-
-                    <p style="margin:0 0 4px 0; font-weight:600; color:#1e293b;">English 1 Eduka Group</p>
                     <p style="margin:0;">
                       <a href="https://www.english1.co.id" target="_blank" style="color:#e00078; text-decoration:none; font-weight:500; font-size:13px;">www.english1.co.id</a>
                     </p>
@@ -80,14 +77,6 @@ $htmlMessage = '
 
             </td>
           </tr>
-
-          <!-- Footer -->
-          <tr>
-            <td style="padding:16px 32px; background-color:#f8fafc; border-top:1px solid #e2e8f0; text-align:center; font-size:12px; color:#94a3b8;">
-              © 2026 English 1 Eduka Group. All rights reserved.
-            </td>
-          </tr>
-
         </table>
       </td>
     </tr>
