@@ -352,7 +352,6 @@ function initApp() {
       timestamp: new Date().toLocaleString('id-ID'),
       fullName: formData.get('fullName'),
       birthDetails: formData.get('birthDetails'),
-      citizenshipStatus: formData.get('citizenshipStatus'),
       schoolName: formData.get('schoolName'),
       grade: formData.get('grade'),
       groupCategory: formData.get('groupCategory'),
