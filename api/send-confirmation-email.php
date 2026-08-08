@@ -63,16 +63,12 @@ $htmlMessage = '
                   <td style="font-size:14px; color:#475569; line-height:1.5;">
                     <p style="margin:0 0 12px 0;">Regards,</p>
                     <p style="margin:0 0 2px 0; font-weight:700; color:#0f172a; font-size:15px;">English1 Surabaya</p>
-                    <p style="margin:0 0 16px 0; color:#64748b; font-size:13px;">Marketing Communication English 1 Eduka Group</p>
-                    
+
                     <!-- English 1 Logo Image -->
                     <div style="margin: 16px 0;">
                       <img src="https://english1spellingbee.com/Surabaya/api/assets_email/english1.png" alt="English 1 Logo" style="height: 38px; width: auto; display: block; border: 0;">
                     </div>
 
-                    <p style="margin:0 0 4px 0; font-weight:600; color:#1e293b;">English 1 Eduka Group</p>
-                    <p style="margin:0 0 4px 0; color:#64748b; font-size:13px;">Jl. Pemuda 33-37 Surabaya</p>
-                    <p style="margin:0 0 4px 0; color:#64748b; font-size:13px;">P: (031) 5484000 | M: +6282257922728</p>
                     <p style="margin:0;">
                       <a href="https://www.english1.co.id" target="_blank" style="color:#e00078; text-decoration:none; font-weight:500; font-size:13px;">www.english1.co.id</a>
                     </p>
@@ -82,14 +78,6 @@ $htmlMessage = '
 
             </td>
           </tr>
-
-          <!-- Footer -->
-          <tr>
-            <td style="padding:16px 32px; background-color:#f8fafc; border-top:1px solid #e2e8f0; text-align:center; font-size:12px; color:#94a3b8;">
-              © 2026 English 1 Eduka Group. All rights reserved.
-            </td>
-          </tr>
-
         </table>
       </td>
     </tr>
