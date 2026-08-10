@@ -23,7 +23,7 @@ $htmlMessage = '
 <head><meta charset="utf-8"></head>
 <body style="margin:0; padding:0; background-color:#e8f0fe; font-family:\'Roboto\',Arial,sans-serif; color:#202124;">
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#e8f0fe; padding:32px 16px;">
-    <tr>
+    <tr>  
       <td align="center">
         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:640px; background-color:#ffffff; border-radius:8px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.12);">
           <tr><td style="background-color:#e00078; height:10px;"></td></tr>

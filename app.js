@@ -149,15 +149,7 @@ function initApp() {
 
     if (!center) return;
 
-    // Group Centers:
-    // Group 1: Bali Hayam Wuruk, Bali Kuta
-    // Group 2: Bali Gianyar, Bali Gatsu
-    const group1Centers = [
-      'English 1 Bali Hayam Wuruk',
-      'English 1 Bali Kuta'
-    ];
-
-    const isGroup1 = group1Centers.includes(center);
+    const isGroup1 = center.includes('Hayam Wuruk') || center.includes('HW') || center.includes('Kuta');
     let activeCard = null;
 
     if (isStudent === 'Ya' && isGroup1) {
