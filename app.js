@@ -183,10 +183,10 @@ function initApp() {
 
       if (detailsEl) {
         if (isEarlyBird) {
-          const fee = isStudentBool ? 'Rp. 175.000' : 'Rp. 250.000';
+          const fee = isStudentBool ? 'Rp. 200.000' : 'Rp. 250.000';
           detailsEl.innerHTML = `Early Bird Period (s.d 10 September 2026): <strong>${fee}</strong> | Transfer to bank account <strong>${bankAccount}</strong>`;
         } else {
-          const fee = isStudentBool ? 'Rp. 200.000' : 'Rp. 300.000';
+          const fee = isStudentBool ? 'Rp. 250.000' : 'Rp. 300.000';
           detailsEl.innerHTML = `Normal Registration Period: <strong>${fee}</strong> | Transfer to bank account <strong>${bankAccount}</strong>`;
         }
       }
