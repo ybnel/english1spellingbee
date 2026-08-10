@@ -143,10 +143,10 @@ function initApp() {
     if (!center) return;
 
     // Group Centers:
-    // Group 1: Bali HW (Hayam Wuruk), Bali Kuta
-    // Group 2: Bali Gianyar, Bali Gatsu Barat
+    // Group 1: Bali Hayam Wuruk, Bali Kuta
+    // Group 2: Bali Gianyar, Bali Gatsu
     const group1Centers = [
-      'English 1 Bali HW (Hayam Wuruk)',
+      'English 1 Bali Hayam Wuruk',
       'English 1 Bali Kuta'
     ];
 
@@ -155,13 +155,13 @@ function initApp() {
 
     if (isStudent === 'Ya' && isGroup1) {
       activeCard = branchStudentGroup1;
-      currentCalculatedBranch = 'Siswa English 1 (HW / Kuta)';
+      currentCalculatedBranch = 'Siswa English 1 (Hayam Wuruk/ Kuta)';
     } else if (isStudent === 'Ya' && !isGroup1) {
       activeCard = branchStudentGroup2;
       currentCalculatedBranch = 'Siswa English 1 (Gianyar / Gatsu Barat)';
     } else if (isStudent === 'Tidak' && isGroup1) {
       activeCard = branchNonstudentGroup1;
-      currentCalculatedBranch = 'Non-Siswa English 1 (HW / Kuta)';
+      currentCalculatedBranch = 'Non-Siswa English 1 (Hayam Wuruk / Kuta)';
     } else {
       activeCard = branchNonstudentGroup2;
       currentCalculatedBranch = 'Non-Siswa English 1 (Gianyar / Gatsu Barat)';
