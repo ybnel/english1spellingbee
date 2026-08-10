@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Online Registration Form Spelling Bee Regional Competition 2026 - English 1">
-  <title>Online Registration Form Spelling Bee Regional Competition 2026</title>
+  <meta name="description" content="Online Registration Form Kolektif Sekolah Spelling Bee Regional Competition 2026 - English 1">
+  <title>Online Registration Form Kolektif Sekolah Spelling Bee Regional Competition 2026</title>
   <link rel="icon" type="image/png" href="./src/assets/logo-web.png">
   <link rel="shortcut icon" type="image/png" href="./src/assets/logo-web.png">
   <link rel="apple-touch-icon" href="./src/assets/logo-web.png">
@@ -22,7 +22,7 @@
       </div>
       <div class="welcome-content">
         <div class="welcome-badge">🏆 Regional Competition 2026</div>
-        <h1 class="welcome-title">English 1 Spelling Bee Regional Competition 2026</h1>
+        <h1 class="welcome-title">Online Registration Form Kolektif Sekolah Spelling Bee Regional Competition 2026</h1>
         <div class="welcome-desc">
           <p>Selamat datang di Kompetisi Spelling Bee 2026 Regional Bali.</p>
           <p>Kompetisi mengeja kosakata dalam bahasa Inggris yang diadakan setiap satu tahun sekali, dimana setiap tahunnya diikuti oleh siswa tingkat SD dan SMP berkewarganegaraan Indonesia dari berbagai kota di Bali. Kompetisi ini merupakan kesempatan bagi para siswa untuk melatih kemandirian, keberanian berbicara bahasa Inggris serta mempraktekan pengetahuan bahasa Inggris secara langsung.</p>
@@ -90,7 +90,7 @@
               </svg>
             </div>
             <div>
-              <h1 class="form-title">Online Registration Form Spelling Bee Regional Competition 2026</h1>
+              <h1 class="form-title">Online Registration Form Kolektif Sekolah Spelling Bee Regional Competition 2026</h1>
               <div class="form-description">
                 <p style="margin-top: 8px;"><strong>Biaya Pendaftaran Early Bird (s.d tgl 10 September 2026) :</strong></p>
                 <p><strong>English 1 Students : Rp. 175.000</strong></p>
@@ -390,6 +390,36 @@
           </div>
         </section>
 
+        <!-- Question: Teacher Name (Nama Guru Pendamping) -->
+        <section class="form-card" data-card data-required="true">
+          <h2 class="question-title">
+            Nama Guru Pendamping / <em>Accompanying Teacher's Name</em> <span class="required-star">*</span>
+          </h2>
+          <p class="question-subtext">Nama lengkap guru / penanggung jawab pendamping. / <em>Full name of the accompanying teacher.</em></p>
+          <div class="text-input-wrap">
+            <input type="text" id="teacherName" name="teacherName" class="text-input" placeholder="Your answer" required>
+          </div>
+          <div class="error-msg">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <span>This question is required</span>
+          </div>
+        </section>
+
+        <!-- Question: Teacher Phone (No Telp Guru Pendamping WA) -->
+        <section class="form-card" data-card data-required="true">
+          <h2 class="question-title">
+            No Telp Guru Pendamping (WA) / <em>Accompanying Teacher's WhatsApp Number</em> <span class="required-star">*</span>
+          </h2>
+          <p class="question-subtext">Pastikan nomor aktif WhatsApp guru pendamping. / <em>Please ensure the teacher's WhatsApp number is active.</em></p>
+          <div class="text-input-wrap">
+            <input type="tel" id="teacherPhone" name="teacherPhone" class="text-input" placeholder="Your answer (e.g. 08123456789)" inputmode="numeric" pattern="[0-9]*" required>
+          </div>
+          <div class="error-msg">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <span>This question is required</span>
+          </div>
+        </section>
+
         <!-- Payment Receipt Upload Card (Expense Form Style) -->
         <section class="form-card" data-card data-required="true">
           <div class="card-section-header">
@@ -451,7 +481,7 @@
 
     <!-- Success Confirmation Receipt View -->
     <div id="successView" class="success-card">
-      <h1 class="success-title">Online Registration Form Spelling Bee Regional Competition 2026</h1>
+      <h1 class="success-title">Online Registration Form Kolektif Sekolah Spelling Bee Regional Competition 2026</h1>
       <div class="success-body">
         <h2 class="success-subtitle">PENDAFTARAN BERHASIL!</h2>
         <p class="success-text">Konfirmasi pendaftaran telah dikirimkan ke email Anda.</p>
@@ -492,6 +522,8 @@
                 <th>Nama Ortu</th>
                 <th>No WA Ortu</th>
                 <th>Email Ortu</th>
+                <th>Nama Guru Pendamping</th>
+                <th>No WA Guru</th>
                 <th>Sumber Info</th>
                 <th>Siswa E1</th>
                 <th>Center</th>
@@ -499,7 +531,7 @@
             </thead>
             <tbody id="responsesTableBody">
               <tr>
-                <td colspan="13" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
+                <td colspan="15" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
               </tr>
             </tbody>
           </table>

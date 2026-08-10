@@ -65,10 +65,17 @@ function initApp() {
     targetCard.classList.add('active');
   }
 
-  // Restrict parentPhone to numbers only
+  // Restrict parentPhone & teacherPhone to numbers only
   const parentPhoneInput = document.getElementById('parentPhone');
   if (parentPhoneInput) {
     parentPhoneInput.addEventListener('input', (e) => {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    });
+  }
+
+  const teacherPhoneInput = document.getElementById('teacherPhone');
+  if (teacherPhoneInput) {
+    teacherPhoneInput.addEventListener('input', (e) => {
       e.target.value = e.target.value.replace(/[^0-9]/g, '');
     });
   }
@@ -350,6 +357,8 @@ function initApp() {
     const submission = {
       id: Date.now(),
       timestamp: new Date().toLocaleString('id-ID'),
+      formType: 'Kolektif Sekolah',
+      targetSheet: 'Kolektif',
       fullName: formData.get('fullName'),
       birthDetails: formData.get('birthDetails'),
       schoolName: formData.get('schoolName'),
@@ -358,6 +367,8 @@ function initApp() {
       parentName: formData.get('parentName'),
       parentPhone: formData.get('parentPhone'),
       email: formData.get('email'),
+      teacherName: formData.get('teacherName'),
+      teacherPhone: formData.get('teacherPhone'),
       infoSource: formData.get('infoSource'),
       isEnglish1Student: formData.get('isEnglish1Student'),
       english1Center: formData.get('english1Center'),
@@ -527,7 +538,7 @@ function initApp() {
     if (list.length === 0) {
       responsesTableBody.innerHTML = `
         <tr>
-          <td colspan="13" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
+          <td colspan="15" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
         </tr>
       `;
       return;
@@ -545,6 +556,8 @@ function initApp() {
         <td>${escapeHtml(item.parentName)}</td>
         <td>${escapeHtml(item.parentPhone)}</td>
         <td>${escapeHtml(item.email)}</td>
+        <td>${escapeHtml(item.teacherName)}</td>
+        <td>${escapeHtml(item.teacherPhone)}</td>
         <td>${escapeHtml(item.infoSource)}</td>
         <td>${escapeHtml(item.isEnglish1Student)}</td>
         <td>${escapeHtml(item.english1Center)}</td>
@@ -581,6 +594,8 @@ function initApp() {
         'Nama Orang Tua',
         'No WA Ortu',
         'Email Ortu',
+        'Nama Guru Pendamping',
+        'No WA Guru',
         'Sumber Informasi',
         'Siswa English 1',
         'English 1 Center'
@@ -597,6 +612,8 @@ function initApp() {
         `"${(item.parentName || '').replace(/"/g, '""')}"`,
         `"${item.parentPhone || ''}"`,
         `"${item.email || ''}"`,
+        `"${(item.teacherName || '').replace(/"/g, '""')}"`,
+        `"${item.teacherPhone || ''}"`,
         `"${item.infoSource || ''}"`,
         `"${item.isEnglish1Student || ''}"`,
         `"${item.english1Center || ''}"`

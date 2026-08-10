@@ -15,7 +15,7 @@ if (!$data || !isset($data['email'])) {
 
 $to = $data['email'];
 $participantName = htmlspecialchars($data['fullName'] ?? 'Peserta');
-$subject = "Konfirmasi Pendaftaran - The 19th Spelling Bee Regional Competition 2026";
+$subject = "Konfirmasi Pendaftaran Kolektif Sekolah - The 19th Spelling Bee Regional Competition 2026";
 
 // Template HTML Email Konfirmasi Pendaftaran (Sesuai Wording & KV MarCom Farid)
 $htmlMessage = '
@@ -24,7 +24,7 @@ $htmlMessage = '
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Konfirmasi Pendaftaran Spelling Bee 2026</title>
+  <title>Konfirmasi Pendaftaran Kolektif Sekolah Spelling Bee 2026</title>
 </head>
 <body style="margin:0; padding:0; background-color:#f1f5f9; font-family:\'Segoe UI\', Roboto, Helvetica, Arial, sans-serif; color:#1e293b;">
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#f1f5f9; padding:32px 16px;">
@@ -44,7 +44,7 @@ $htmlMessage = '
             <td style="padding:32px; font-size:15px; line-height:1.6; color:#334155;">
               
               <p style="margin-top:0; font-size:15px; color:#0f172a; line-height:1.6;">
-                Saat ini, tim English 1 Bali sedang melakukan proses verifikasi kelengkapan data diri dan pembayaran yang sudah terproses. Tim kami akan menghubungi Anda melalui <strong>WhatsApp</strong> dan mengirimkan <strong>bukti pembayaran</strong> jika proses verifikasi telah selesai.
+                Saat ini, tim English 1 Bali sedang melakukan proses verifikasi kelengkapan data diri pendaftaran kolektif sekolah dan pembayaran yang sudah terproses. Tim kami akan menghubungi guru pendamping / orang tua melalui <strong>WhatsApp</strong> dan mengirimkan <strong>bukti pembayaran</strong> jika proses verifikasi telah selesai.
               </p>
 
               <p style="font-size:15px; color:#0f172a; margin:16px 0; line-height:1.6;">
