@@ -350,6 +350,7 @@ function initApp() {
     const submission = {
       id: Date.now(),
       timestamp: new Date().toLocaleString('id-ID'),
+      targetSheet: 'Individu',
       fullName: formData.get('fullName'),
       birthDetails: formData.get('birthDetails'),
       schoolName: formData.get('schoolName'),
@@ -357,6 +358,7 @@ function initApp() {
       groupCategory: formData.get('groupCategory'),
       parentName: formData.get('parentName'),
       parentPhone: formData.get('parentPhone'),
+      address: formData.get('address'),
       email: formData.get('email'),
       infoSource: formData.get('infoSource'),
       isEnglish1Student: formData.get('isEnglish1Student'),

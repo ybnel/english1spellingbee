@@ -69,6 +69,10 @@ $htmlMessage = '
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['parentPhone'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Alamat Lengkap Peserta / Participant Full Address</div>
+                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['address'] ?? '-') . '</div>
+              </div>
+              <div style="margin-bottom:16px;">
                 <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Email Orang Tua / Parent\'s Email</div>
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['email'] ?? '-') . '</div>
               </div>
