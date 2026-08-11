@@ -358,6 +358,7 @@ function initApp() {
       groupCategory: formData.get('groupCategory'),
       parentName: formData.get('parentName'),
       parentPhone: formData.get('parentPhone'),
+      address: formData.get('address'),
       email: formData.get('email'),
       teacherName: formData.get('teacherName'),
       teacherPhone: formData.get('teacherPhone'),
@@ -530,7 +531,7 @@ function initApp() {
     if (list.length === 0) {
       responsesTableBody.innerHTML = `
         <tr>
-          <td colspan="15" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
+          <td colspan="16" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
         </tr>
       `;
       return;
@@ -547,6 +548,7 @@ function initApp() {
         <td>${escapeHtml(item.groupCategory)}</td>
         <td>${escapeHtml(item.parentName)}</td>
         <td>${escapeHtml(item.parentPhone)}</td>
+        <td>${escapeHtml(item.address)}</td>
         <td>${escapeHtml(item.email)}</td>
         <td>${escapeHtml(item.teacherName)}</td>
         <td>${escapeHtml(item.teacherPhone)}</td>
@@ -585,6 +587,7 @@ function initApp() {
         'Kategori Group',
         'Nama Orang Tua',
         'No WA Ortu',
+        'Alamat Peserta',
         'Email Ortu',
         'Nama Guru Pendamping',
         'No WA Guru',
@@ -603,6 +606,7 @@ function initApp() {
         `"${item.groupCategory || ''}"`,
         `"${(item.parentName || '').replace(/"/g, '""')}"`,
         `"${item.parentPhone || ''}"`,
+        `"${(item.address || '').replace(/"/g, '""')}"`,
         `"${item.email || ''}"`,
         `"${(item.teacherName || '').replace(/"/g, '""')}"`,
         `"${item.teacherPhone || ''}"`,

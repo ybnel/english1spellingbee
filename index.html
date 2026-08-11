@@ -231,6 +231,21 @@
           </div>
         </section>
 
+        <!-- Question: Participant Address -->
+        <section class="form-card" data-card data-required="true">
+          <h2 class="question-title">
+            Alamat Peserta / <em>Participant's Address</em> <span class="required-star">*</span>
+          </h2>
+          <p class="question-subtext">Alamat lengkap tempat tinggal peserta. / <em>Full home address of the participant.</em></p>
+          <div class="text-input-wrap">
+            <input type="text" id="address" name="address" class="text-input" placeholder="Your answer" required>
+          </div>
+          <div class="error-msg">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <span>This question is required</span>
+          </div>
+        </section>
+
         <!-- Question 8: Email Orang Tua -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
@@ -517,6 +532,7 @@
                 <th>Group</th>
                 <th>Nama Ortu</th>
                 <th>No WA Ortu</th>
+                <th>Alamat Peserta</th>
                 <th>Email Ortu</th>
                 <th>Nama Guru Pendamping</th>
                 <th>No WA Guru</th>
@@ -527,7 +543,7 @@
             </thead>
             <tbody id="responsesTableBody">
               <tr>
-                <td colspan="15" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
+                <td colspan="16" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
               </tr>
             </tbody>
           </table>
