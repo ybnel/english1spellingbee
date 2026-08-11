@@ -147,6 +147,7 @@ function initApp() {
     // Group 2: Bali Gianyar, Bali Gatsu
     const group1Centers = [
       'English 1 Bali Hayam Wuruk',
+      'English 1 Bali HW (Hayam Wuruk)',
       'English 1 Bali Kuta'
     ];
 
