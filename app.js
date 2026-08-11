@@ -152,18 +152,12 @@ function initApp() {
     const isGroup1 = center.includes('Hayam Wuruk') || center.includes('HW') || center.includes('Kuta');
     let activeCard = null;
 
-    if (isStudent === 'Ya' && isGroup1) {
-      activeCard = branchStudentGroup1;
-      currentCalculatedBranch = 'Siswa English 1 (Hayam Wuruk/ Kuta)';
-    } else if (isStudent === 'Ya' && !isGroup1) {
-      activeCard = branchStudentGroup2;
-      currentCalculatedBranch = 'Siswa English 1 (Gianyar / Gatsu Barat)';
-    } else if (isStudent === 'Tidak' && isGroup1) {
-      activeCard = branchNonstudentGroup1;
-      currentCalculatedBranch = 'Non-Siswa English 1 (Hayam Wuruk / Kuta)';
+    if (isGroup1) {
+      activeCard = (isStudent === 'Tidak') ? branchNonstudentGroup1 : branchStudentGroup1;
+      currentCalculatedBranch = 'Hayam Wuruk / Kuta';
     } else {
-      activeCard = branchNonstudentGroup2;
-      currentCalculatedBranch = 'Non-Siswa English 1 (Gianyar / Gatsu Barat)';
+      activeCard = (isStudent === 'Tidak') ? branchNonstudentGroup2 : branchStudentGroup2;
+      currentCalculatedBranch = 'Gianyar / Gatsu Barat';
     }
 
     if (activeCard) {
@@ -171,7 +165,6 @@ function initApp() {
       const isEarlyBird = new Date() <= cutoffDate;
       const detailsEl = activeCard.querySelector('.payment-details');
       const bankAccount = isGroup1 ? 'BCA 7730234443 PT. EDUKA BALI UTAMA' : 'BCA 3845205200 PT. Aplus Lorem Indo';
-      const isStudentBool = isStudent === 'Ya';
 
       if (detailsEl) {
         if (isEarlyBird) {
@@ -193,6 +186,11 @@ function initApp() {
   if (english1CenterSelect) {
     english1CenterSelect.addEventListener('change', () => updateBranchCard(true));
   }
+
+  const isStudentRadios = document.querySelectorAll('input[name="isEnglish1Student"]');
+  isStudentRadios.forEach(radio => {
+    radio.addEventListener('change', () => updateBranchCard(false));
+  });
 
   // Robust validation helper for any section's cards
   function validateCardSection(section) {
