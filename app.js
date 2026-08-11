@@ -9,7 +9,8 @@ function initApp() {
   const btnBack = document.getElementById('btnBack');
   const btnSubmitAnother = document.getElementById('btnSubmitAnother');
   const clearButtons = document.querySelectorAll('.btn-clear-all');
-  const english1CenterSelect = document.getElementById('english1Center');
+  const isStudentRadios = document.querySelectorAll('input[name="isEnglish1Student"]');
+  const wasStudentCard = document.getElementById('wasStudentCard');
 
   const welcomeScreen = document.getElementById('welcomeScreen');
   const btnStartRegistration = document.getElementById('btnStartRegistration');
@@ -131,42 +132,37 @@ function initApp() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Calculate & Show Branch Info Card based on Student status + Center choice
+  // Calculate & Show Branch Info Card based on Student status (Lombok)
   function updateBranchCard(shouldScroll = false) {
     const formData = new FormData(form);
     const isStudent = formData.get('isEnglish1Student'); // "Ya" or "Tidak"
-    const center = formData.get('english1Center'); // Center choice
 
     allBranchCards.forEach(card => card.style.display = 'none');
     currentCalculatedBranch = '';
 
-    if (!center) return;
+    if (!isStudent) return;
 
-    // Group Centers:
-    // Group 1: Plaza Surabaya, Jemursari, Galaxy Mall, Purimas
-    // Group 2: Bukit Mas, Pakuwon Mall
-    const group1Centers = [
-      'English 1 Plaza Surabaya',
-      'English 1 Jemursari',
-      'English 1 Galaxy Mall',
-      'English 1 Purimas'
-    ];
-
-    const isGroup1 = group1Centers.includes(center);
     let activeCard = null;
 
-    if (isStudent === 'Ya' && isGroup1) {
+    if (isStudent === 'Ya') {
       activeCard = branchStudentGroup1;
-      currentCalculatedBranch = 'Student - Plaza/JS/GM/Purimas';
-    } else if (isStudent === 'Ya' && !isGroup1) {
-      activeCard = branchStudentGroup2;
-      currentCalculatedBranch = 'Student - BM/Pakuwon';
-    } else if (isStudent === 'Tidak' && isGroup1) {
-      activeCard = branchNonstudentGroup1;
-      currentCalculatedBranch = 'Non-Student - Plaza/JS/GM/Purimas';
+      currentCalculatedBranch = 'Siswa English 1 - Rp 100.000';
+      if (wasStudentCard) {
+        wasStudentCard.style.display = 'none';
+        wasStudentCard.dataset.required = 'false';
+        wasStudentCard.classList.remove('error-state');
+        const wasRadios = wasStudentCard.querySelectorAll('input[type="radio"]');
+        wasRadios.forEach(r => { r.checked = false; r.removeAttribute('required'); });
+      }
     } else {
-      activeCard = branchNonstudentGroup2;
-      currentCalculatedBranch = 'Non-Student - BM/Pakuwon';
+      activeCard = branchNonstudentGroup1;
+      currentCalculatedBranch = 'Non-Siswa English 1 (Umum) - Rp 200.000';
+      if (wasStudentCard) {
+        wasStudentCard.style.display = 'block';
+        wasStudentCard.dataset.required = 'true';
+        const wasRadios = wasStudentCard.querySelectorAll('input[type="radio"]');
+        wasRadios.forEach(r => r.setAttribute('required', 'required'));
+      }
     }
 
     if (activeCard) {
@@ -177,9 +173,9 @@ function initApp() {
     }
   }
 
-  if (english1CenterSelect) {
-    english1CenterSelect.addEventListener('change', () => updateBranchCard(true));
-  }
+  isStudentRadios.forEach(radio => {
+    radio.addEventListener('change', () => updateBranchCard(true));
+  });
 
   // Robust validation helper for any section's cards
   function validateCardSection(section) {
@@ -216,6 +212,13 @@ function initApp() {
         const radios = card.querySelectorAll('input[type="radio"]');
         if (radios.length > 0) {
           const checked = Array.from(radios).some(r => r.checked);
+          if (!checked) fieldValid = false;
+        }
+
+        // 4. Checkbox groups
+        const checkboxes = card.querySelectorAll('input[type="checkbox"]');
+        if (checkboxes.length > 0) {
+          const checked = Array.from(checkboxes).some(cb => cb.checked);
           if (!checked) fieldValid = false;
         }
 
@@ -344,15 +347,18 @@ function initApp() {
       groupCategory: formData.get('groupCategory'),
       parentPhone: formData.get('parentPhone'),
       infoSource: formData.get('infoSource'),
+      isIndonesianCitizen: formData.get('isIndonesianCitizen') || 'Ya',
       isEnglish1Student: formData.get('isEnglish1Student'),
-      english1Center: formData.get('english1Center'),
+      wasEnglish1Student: formData.get('wasEnglish1Student') || '-',
+      dataAgreement: formData.get('dataAgreement') || 'Setuju',
+      english1Center: 'English 1 Lombok',
       branchCategory: currentCalculatedBranch,
       paymentReceipt: receiptFileName
     };
 
     saveSubmission(submission);
 
-    // Send data & uploaded file to Google Sheets (Surabaya Region)
+    // Send data & uploaded file to Google Sheets (Lombok Region)
     const receiptInput = document.getElementById('paymentReceipt');
     if (receiptInput && receiptInput.files.length > 0) {
       const file = receiptInput.files[0];
@@ -371,8 +377,20 @@ function initApp() {
       sendDataToGoogleSheets(submission);
     }
 
-    // Send Response Receipt Email via DirectAdmin PHP Script (info.ef@edukagroup.com)
-    sendResponseReceiptEmail(submission);
+    // Send Response Receipt Email & Confirmation Email sequentially with 1.5s delay (info.ef@edukagroup.com)
+    sendResponseReceiptEmail(submission)
+      .then((res1) => {
+        console.log('Email 1 (Copy Receipt) result:', res1);
+        return new Promise(resolve => setTimeout(resolve, 1500));
+      })
+      .then(() => {
+        console.log('Mengirim Email 2 (Terima Kasih + Banner)...');
+        return sendConfirmationEmail(submission);
+      })
+      .then((res2) => {
+        console.log('Email 2 (Konfirmasi) result:', res2);
+      })
+      .catch(err => console.error('Error pengiriman email:', err));
 
     // Show Success View
     form.style.display = 'none';
@@ -383,27 +401,54 @@ function initApp() {
 
   // PHP Email Receipt Sender (info.ef@edukagroup.com)
   function sendResponseReceiptEmail(payload) {
-    if (!payload.email) return;
+    if (!payload.email) return Promise.resolve(null);
 
-    fetch('./api/send-email.php', {
+    return fetch('./api/send-email.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload)
     }).then(res => res.json())
-      .then(data => console.log('Response Receipt Email status:', data))
-      .catch(err => console.error('Gagal mengirim email response receipt:', err));
+      .then(data => {
+        console.log('Response Receipt Email status:', data);
+        return data;
+      })
+      .catch(err => {
+        console.error('Gagal mengirim email response receipt:', err);
+        return null;
+      });
+  }
+
+  // PHP Email Confirmation Sender with Banner (info.ef@edukagroup.com)
+  function sendConfirmationEmail(payload) {
+    if (!payload.email) return Promise.resolve(null);
+
+    return fetch('./api/send-confirmation-email.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    }).then(res => res.json())
+      .then(data => {
+        console.log('Confirmation Email status:', data);
+        return data;
+      })
+      .catch(err => {
+        console.error('Gagal mengirim email konfirmasi:', err);
+        return null;
+      });
   }
 
   // Google Sheets Webhook Sender
-  // Web App URL Google Apps Script Surabaya
-  const GOOGLE_SCRIPT_URL_SURABAYA = 'https://script.google.com/macros/s/AKfycbyQym6DmlPm2hxeT3ELSu9BqHff-qL_BIHEA6fJmc4UTCMZKcJHA1VZxlisC6jq_30ScA/exec';
+  // Web App URL Google Apps Script Lombok
+  const GOOGLE_SCRIPT_URL_LOMBOK = 'https://script.google.com/macros/s/AKfycbz-n7THfpRXveG99qX5BTRQsS-T4BBgF_bIKXfPZk_US8mx6W-DsmT1aRz0yxgavQYoHQ/exec';
 
   function sendDataToGoogleSheets(payload) {
-    if (!GOOGLE_SCRIPT_URL_SURABAYA) return;
+    if (!GOOGLE_SCRIPT_URL_LOMBOK) return;
 
-    fetch(GOOGLE_SCRIPT_URL_SURABAYA, {
+    fetch(GOOGLE_SCRIPT_URL_LOMBOK, {
       method: 'POST',
       mode: 'no-cors',
       headers: {
@@ -473,7 +518,7 @@ function initApp() {
     if (list.length === 0) {
       responsesTableBody.innerHTML = `
         <tr>
-          <td colspan="11" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
+          <td colspan="14" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
         </tr>
       `;
       return;
@@ -483,15 +528,18 @@ function initApp() {
       <tr>
         <td>${escapeHtml(item.timestamp)}</td>
         <td><strong>${escapeHtml(item.fullName)}</strong></td>
+        <td>${escapeHtml(item.email)}</td>
         <td>${escapeHtml(item.birthDetails)}</td>
+        <td>${escapeHtml(item.isIndonesianCitizen || 'Ya')}</td>
         <td>${escapeHtml(item.schoolName)}</td>
         <td>${escapeHtml(item.grade)}</td>
         <td>${escapeHtml(item.groupCategory)}</td>
         <td>${escapeHtml(item.parentPhone)}</td>
-        <td>${escapeHtml(item.isEnglish1Student)}</td>
-        <td>${escapeHtml(item.english1Center)}</td>
         <td>${escapeHtml(item.infoSource)}</td>
+        <td>${escapeHtml(item.isEnglish1Student)}</td>
+        <td>${escapeHtml(item.wasEnglish1Student || '-')}</td>
         <td><span style="background:#fceef4; color:#e00078; padding:2px 6px; border-radius:4px; font-weight:500;">${escapeHtml(item.branchCategory || '-')}</span></td>
+        <td>${escapeHtml(item.paymentReceipt || '-')}</td>
       </tr>
     `).join('');
   }
@@ -517,29 +565,35 @@ function initApp() {
       const headers = [
         'Timestamp',
         'Nama Lengkap Peserta',
+        'Email',
         'Tempat & Tgl Lahir',
+        'Kewarganegaraan WNI',
         'Asal Sekolah',
         'Kelas',
         'Kategori Group',
         'No Telpon Ortu',
         'Sumber Informasi',
         'Siswa English 1',
-        'English 1 Center',
-        'Kategori Branch'
+        'Pernah Siswa English 1',
+        'Kategori Branch',
+        'Bukti Transfer'
       ];
 
       const rows = list.map(item => [
         `"${item.timestamp}"`,
-        `"${item.fullName.replace(/"/g, '""')}"`,
-        `"${item.birthDetails.replace(/"/g, '""')}"`,
-        `"${item.schoolName.replace(/"/g, '""')}"`,
-        `"${item.grade}"`,
-        `"${item.groupCategory}"`,
-        `"${item.parentPhone}"`,
-        `"${item.infoSource}"`,
-        `"${item.isEnglish1Student}"`,
-        `"${item.english1Center}"`,
-        `"${item.branchCategory || ''}"`
+        `"${(item.fullName || '').replace(/"/g, '""')}"`,
+        `"${(item.email || '').replace(/"/g, '""')}"`,
+        `"${(item.birthDetails || '').replace(/"/g, '""')}"`,
+        `"${item.isIndonesianCitizen || 'Ya'}"`,
+        `"${(item.schoolName || '').replace(/"/g, '""')}"`,
+        `"${item.grade || ''}"`,
+        `"${item.groupCategory || ''}"`,
+        `"${item.parentPhone || ''}"`,
+        `"${item.infoSource || ''}"`,
+        `"${item.isEnglish1Student || ''}"`,
+        `"${item.wasEnglish1Student || '-'}"`,
+        `"${item.branchCategory || ''}"`,
+        `"${(item.paymentReceipt || '').replace(/"/g, '""')}"`
       ]);
 
       const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' 

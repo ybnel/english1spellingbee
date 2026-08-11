@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Online Registration Form Spelling Bee Regional Competition 2026 - English 1">
-  <title>Online Registration Form Spelling Bee Regional Competition 2026</title>
+  <meta name="description" content="Online Registration Form Spelling Bee Lombok Regional Competition 2026 - English 1">
+  <title>Online Registration Form Spelling Bee Lombok Regional Competition 2026</title>
   <link rel="icon" type="image/png" href="./src/assets/logo-web.png">
   <link rel="shortcut icon" type="image/png" href="./src/assets/logo-web.png">
   <link rel="apple-touch-icon" href="./src/assets/logo-web.png">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+
 <body>
 
   <main class="form-container">
@@ -17,26 +20,34 @@
     <!-- WELCOME / LANDING SCREEN -->
     <section id="welcomeScreen" class="welcome-card">
       <div class="welcome-banner-wrap">
-        <img src="./src/assets/banner.png" alt="English 1 Spelling Bee Banner" class="welcome-banner-img">
+        <img src="./src/assets/bannerlombok.png" alt="English 1 Spelling Bee Lombok Banner" class="welcome-banner-img">
       </div>
       <div class="welcome-content">
-        <div class="welcome-badge">🏆 Regional Competition 2026</div>
-        <h1 class="welcome-title">English 1 Spelling Bee Regional Competition 2026</h1>
+        <div class="welcome-badge">🏆 Lombok Regional Competition 2026</div>
+        <h1 class="welcome-title">English 1 Spelling Bee Lombok Regional Competition 2026</h1>
         <p class="welcome-desc">
-          Welcome to the official registration portal for the <strong>19th Annual Spelling Bee Regional Competition</strong>. 
+          Welcome to the official registration portal for the <strong>Spelling Bee Lombok Regional Competition
+            2026</strong>.
           Please prepare your participant details and click the button below to start registration.
         </p>
 
         <div class="event-highlights">
           <div class="highlight-item">
-            <span class="highlight-icon">📅</span>
+            <span class="highlight-icon"><i class="fas fa-calendar-alt" style="font-size:24px; color:#e00078;"></i></span>
             <div>
               <strong>Event Date</strong>
-              <p>October 25, 2026</p>
+              <p>25 Oktober 2026</p>
             </div>
           </div>
           <div class="highlight-item">
-            <span class="highlight-icon">🎓</span>
+            <span class="highlight-icon"><i class="fas fa-map-marker-alt" style="font-size:24px; color:#e00078;"></i></span>
+            <div>
+              <strong>Location</strong>
+              <p>English 1 Lombok</p>
+            </div>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon"><i class="fas fa-graduation-cap" style="font-size:24px; color:#e00078;"></i></span>
             <div>
               <strong>Categories</strong>
               <p>Groups A - D (Grades 1 - 9)</p>
@@ -44,9 +55,11 @@
           </div>
         </div>
 
-        <button type="button" id="btnStartRegistration" class="btn-start-registration" onclick="if(document.getElementById('welcomeScreen')) document.getElementById('welcomeScreen').style.display='none'; if(document.getElementById('spellingBeeForm')) document.getElementById('spellingBeeForm').style.display='block'; window.scrollTo({top:0, behavior:'smooth'});">
+        <button type="button" id="btnStartRegistration" class="btn-start-registration"
+          onclick="if(document.getElementById('welcomeScreen')) document.getElementById('welcomeScreen').style.display='none'; if(document.getElementById('spellingBeeForm')) document.getElementById('spellingBeeForm').style.display='block'; window.scrollTo({top:0, behavior:'smooth'});">
           <span>Start Registration</span>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"></line>
             <polyline points="12 5 19 12 12 19"></polyline>
           </svg>
@@ -59,13 +72,14 @@
 
       <!-- SECTION 1: DATA PESERTA -->
       <div id="section1" class="form-section">
-        
+
         <!-- Title Card -->
         <section class="form-card title-card active" data-card>
           <div class="section-indicator">Section 1 of 2</div>
           <div class="title-header-wrap">
             <div class="title-icon-badge">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                 <polyline points="14 2 14 8 20 8"></polyline>
                 <line x1="16" y1="13" x2="8" y2="13"></line>
@@ -74,8 +88,9 @@
               </svg>
             </div>
             <div>
-              <h1 class="form-title">Online Registration Form Spelling Bee Regional Competition 2026</h1>
-              <p class="form-description">To participate in the competition, please fill in the details below accurately and completely.</p>
+              <h1 class="form-title">Online Registration Form Spelling Bee Lombok Regional Competition 2026</h1>
+              <p class="form-description">To participate in the competition, please fill in the details below accurately
+                and completely.</p>
             </div>
           </div>
           <div class="required-notice">* Indicates required question</div>
@@ -86,12 +101,16 @@
           <h2 class="question-title">
             Nama Lengkap Peserta / <em>Participant Full Name</em> <span class="required-star">*</span>
           </h2>
-          <p class="question-subtext">Pastikan ejaan nama anak Anda BENAR untuk penerbitan sertifikat. / <em>Please make sure your child's name spelling is CORRECT for certificate issuing.</em></p>
+          <p class="question-subtext">Pastikan ejaan nama anak Anda BENAR untuk penerbitan sertifikat. / <em>Please make
+              sure your child's name spelling is CORRECT for certificate issuing.</em></p>
           <div class="text-input-wrap">
             <input type="text" id="fullName" name="fullName" class="text-input" placeholder="Your answer" required>
           </div>
           <div class="error-msg">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+            </svg>
             <span>This question is required</span>
           </div>
         </section>
@@ -102,10 +121,14 @@
             Email <span class="required-star">*</span>
           </h2>
           <div class="text-input-wrap">
-            <input type="email" id="email" name="email" class="text-input" placeholder="Your answer (e.g. name@email.com)" required>
+            <input type="email" id="email" name="email" class="text-input"
+              placeholder="Your answer (e.g. name@email.com)" required>
           </div>
           <div class="error-msg">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+            </svg>
             <span>This question is required</span>
           </div>
         </section>
@@ -115,12 +138,39 @@
           <h2 class="question-title">
             Tempat dan tanggal lahir anak Anda / <em>Place and Date of Birth</em> <span class="required-star">*</span>
           </h2>
-          <p class="question-subtext">Contoh pengisian: Surabaya, 1 Januari 2018 / <em>Example: Surabaya, 1 January 2018</em></p>
+          <p class="question-subtext">Contoh pengisian: Surabaya, 1 Januari 2018 / <em>Example: Surabaya, 1 January
+              2018</em></p>
           <div class="text-input-wrap">
-            <input type="text" id="birthDetails" name="birthDetails" class="text-input" placeholder="Your answer (e.g. Surabaya, 1 Januari 2018)" required>
+            <input type="text" id="birthDetails" name="birthDetails" class="text-input"
+              placeholder="Your answer (e.g. Surabaya, 1 Januari 2018)" required>
           </div>
           <div class="error-msg">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+            </svg>
+            <span>This question is required</span>
+          </div>
+        </section>
+
+        <!-- Question 3B: Indonesian Citizenship -->
+        <section class="form-card" data-card data-required="true">
+          <h2 class="question-title">
+            Apakah anak Anda berkewarganegaraan Indonesia? / <em>Is your child an Indonesian citizen?</em> <span
+              class="required-star">*</span>
+          </h2>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="isIndonesianCitizen" value="Ya" required>
+              <span class="custom-radio"></span>
+              <span>Ya / Yes</span>
+            </label>
+          </div>
+          <div class="error-msg">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+            </svg>
             <span>This question is required</span>
           </div>
         </section>
@@ -130,12 +180,16 @@
           <h2 class="question-title">
             Asal sekolah anak Anda / <em>School Name</em> <span class="required-star">*</span>
           </h2>
-          <p class="question-subtext">Gunakan nama sekolah yang sesuai. / <em>Please use the official school name.</em></p>
+          <p class="question-subtext">Gunakan nama sekolah yang sesuai. / <em>Please use the official school name.</em>
+          </p>
           <div class="text-input-wrap">
             <input type="text" id="schoolName" name="schoolName" class="text-input" placeholder="Your answer" required>
           </div>
           <div class="error-msg">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+            </svg>
             <span>This question is required</span>
           </div>
         </section>
@@ -160,12 +214,15 @@
             </select>
             <div class="dropdown-icon">
               <svg width="12" height="8" viewBox="0 0 12 8" fill="currentColor">
-                <path d="M1.41 0L6 4.58L10.59 0L12 1.41L6 7.41L0 1.41L1.41 0Z"/>
+                <path d="M1.41 0L6 4.58L10.59 0L12 1.41L6 7.41L0 1.41L1.41 0Z" />
               </svg>
             </div>
           </div>
           <div class="error-msg">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+            </svg>
             <span>This question is required</span>
           </div>
         </section>
@@ -185,12 +242,15 @@
             </select>
             <div class="dropdown-icon">
               <svg width="12" height="8" viewBox="0 0 12 8" fill="currentColor">
-                <path d="M1.41 0L6 4.58L10.59 0L12 1.41L6 7.41L0 1.41L1.41 0Z"/>
+                <path d="M1.41 0L6 4.58L10.59 0L12 1.41L6 7.41L0 1.41L1.41 0Z" />
               </svg>
             </div>
           </div>
           <div class="error-msg">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+            </svg>
             <span>This question is required</span>
           </div>
         </section>
@@ -201,10 +261,14 @@
             Nomor telpon orang tua / <em>Parents Phone Number</em> <span class="required-star">*</span>
           </h2>
           <div class="text-input-wrap">
-            <input type="tel" id="parentPhone" name="parentPhone" class="text-input" placeholder="Your answer (e.g. 08123456789)" inputmode="numeric" pattern="[0-9]*" required>
+            <input type="tel" id="parentPhone" name="parentPhone" class="text-input"
+              placeholder="Your answer (e.g. 08123456789)" inputmode="numeric" pattern="[0-9]*" required>
           </div>
           <div class="error-msg">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+            </svg>
             <span>This question is required</span>
           </div>
         </section>
@@ -212,7 +276,8 @@
         <!-- Question 7: Info Source -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
-            Dari mana Anda mendapatkan informasi kompetisi ini? / <em>Where did you hear about this competition?</em> <span class="required-star">*</span>
+            Dari mana Anda mendapatkan informasi kompetisi ini? / <em>Where did you hear about this competition?</em>
+            <span class="required-star">*</span>
           </h2>
           <div class="radio-group">
             <label class="radio-option">
@@ -232,7 +297,10 @@
             </label>
           </div>
           <div class="error-msg">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+            </svg>
             <span>This question is required</span>
           </div>
         </section>
@@ -240,7 +308,8 @@
         <!-- Question 8: Is English 1 Student -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
-            Apakah anak Anda siswa English 1? / <em>Are you currently an English 1 student?</em> <span class="required-star">*</span>
+            Apakah anak Anda siswa English 1? / <em>Are you currently an English 1 student?</em> <span
+              class="required-star">*</span>
           </h2>
           <div class="radio-group">
             <label class="radio-option">
@@ -255,38 +324,69 @@
             </label>
           </div>
           <div class="error-msg">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+            </svg>
             <span>This question is required</span>
           </div>
         </section>
 
-        <!-- Question 9: English 1 Center -->
-        <section class="form-card" data-card data-required="true">
+        <!-- Question 8B: Was English 1 Student (Conditional: shows when isEnglish1Student is 'Tidak') -->
+        <section class="form-card" id="wasStudentCard" data-card data-required="false" style="display: none;">
           <h2 class="question-title">
-            English 1 Center <span class="required-star">*</span>
+            Apakah anak Anda pernah jadi siswa English 1? / <em>Has your child ever been an English 1 student?</em>
+            <span class="required-star">*</span>
           </h2>
-          <p class="question-subtext">Pilih cabang English 1 terdekat atau tempat anak Anda belajar saat ini. / <em>Select the nearest English 1 Center or where your child currently studies.</em></p>
-          <div class="dropdown-wrap">
-            <select id="english1Center" name="english1Center" class="select-input" required>
-              <option value="" disabled selected>Select</option>
-              <option value="English 1 Plaza Surabaya">English 1 Plaza Surabaya</option>
-              <option value="English 1 Galaxy Mall">English 1 Galaxy Mall</option>
-              <option value="English 1 Pakuwon Mall">English 1 Pakuwon Mall</option>
-              <option value="English 1 Bukit Mas">English 1 Bukit Mas</option>
-              <option value="English 1 Jemursari">English 1 Jemursari</option>
-              <option value="English 1 Purimas">English 1 Purimas</option>
-            </select>
-            <div class="dropdown-icon">
-              <svg width="12" height="8" viewBox="0 0 12 8" fill="currentColor">
-                <path d="M1.41 0L6 4.58L10.59 0L12 1.41L6 7.41L0 1.41L1.41 0Z"/>
-              </svg>
-            </div>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="wasEnglish1Student" value="Ya">
+              <span class="custom-radio"></span>
+              <span>Ya / Yes</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="wasEnglish1Student" value="Tidak">
+              <span class="custom-radio"></span>
+              <span>Tidak / No</span>
+            </label>
           </div>
           <div class="error-msg">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+            </svg>
             <span>This question is required</span>
           </div>
         </section>
+
+        <!-- Data Verification Statement -->
+        <section class="form-card" data-card data-required="true">
+          <h2 class="question-title" style="font-size: 15px; line-height: 1.5;">
+            Pernyataan Kebenaran Data / <em>Data Verification Statement</em> <span class="required-star">*</span>
+          </h2>
+          <p class="question-subtext"
+            style="color: #202124; font-weight: 500; font-size: 14px; margin-bottom: 16px; line-height: 1.6;">
+            "Dengan ini saya tegaskan bahwa seluruh data yang saya masukkan adalah benar. Saya setuju bahwa data yang
+            dimasukkan akan digunakan untuk kepentingan Spelling Bee English 1 Lombok"
+          </p>
+          <div class="radio-group">
+            <label class="radio-option" style="align-items: flex-start;">
+              <input type="checkbox" id="dataAgreement" name="dataAgreement" value="Ya, saya setuju"
+                style="margin-top: 3px; width: 18px; height: 18px; cursor: pointer;" required>
+              <span style="font-size: 14px; font-weight: 500; color: #202124;">Saya setuju & data sudah benar / <em>I
+                  agree & data is correct</em></span>
+            </label>
+          </div>
+          <div class="error-msg">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+            </svg>
+            <span>This question is required</span>
+          </div>
+        </section>
+
+
 
         <!-- Section 1 Actions -->
         <div class="form-actions-bar">
@@ -299,64 +399,67 @@
 
       <!-- SECTION 2: PEMBAYARAN & KONFIRMASI (DYNAMIC BRANCHES) -->
       <div id="section2" class="form-section" style="display: none;">
-        
+
         <!-- Title Card -->
         <section class="form-card title-card" data-card>
           <div class="section-indicator">Section 2 of 2</div>
           <div class="title-header-wrap">
             <div class="title-icon-badge">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
                 <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
                 <line x1="1" y1="10" x2="23" y2="10"></line>
               </svg>
             </div>
             <div>
               <h1 class="form-title" style="font-size: 24px;">Payment & Registration Confirmation</h1>
-              <p class="form-description">Please complete the registration fee payment and upload your transfer receipt below.</p>
+              <p class="form-description">Please complete the registration fee payment and upload your transfer receipt
+                below.</p>
             </div>
           </div>
         </section>
 
-        <!-- Dynamic Branch Card 1: Student + Plaza, Jemursari, Galaxy Mall, Purimas -->
+        <!-- Dynamic Branch Card 1: Student -->
         <section class="form-card payment-info-card" id="branch-student-group1" style="display: none;">
           <div class="payment-header-bar">Registration Fee Payment Process</div>
           <div class="payment-card-body">
-            <p class="payment-subtitle">Registration fee for English 1 students</p>
-            <p class="payment-details">Early Bird Period: <strong>Rp200.000</strong> | Transfer to bank account <strong>BCA 3842-0288-81 PT. Eduka Pratama</strong></p>
+            <p class="payment-subtitle">Biaya Pendaftaran Siswa English 1 Lombok</p>
+            <p class="payment-details">Early Bird Period: <strong>Rp100.000</strong> (Normal: Rp125.000) | Transfer ke bank account <strong>BCA 3845205200 PT. Aplus Lorem Indo</strong></p>
           </div>
         </section>
 
-        <!-- Dynamic Branch Card 2: Student + Bukit Mas, Pakuwon Mall -->
+        <!-- Dynamic Branch Card 2: Student Backup -->
         <section class="form-card payment-info-card" id="branch-student-group2" style="display: none;">
           <div class="payment-header-bar">Registration Fee Payment Process</div>
           <div class="payment-card-body">
-            <p class="payment-subtitle">Registration fee for English 1 students</p>
-            <p class="payment-details">Early Bird Period: <strong>Rp200.000</strong> | Transfer to bank account <strong>BCA 0182-6173-32 PT. Eduka Efindo</strong></p>
+            <p class="payment-subtitle">Biaya Pendaftaran Siswa English 1 Lombok</p>
+            <p class="payment-details">Early Bird Period: <strong>Rp100.000</strong> (Normal: Rp125.000) | Transfer ke bank account <strong>BCA 3845205200 PT. Aplus Lorem Indo</strong></p>
           </div>
         </section>
 
-        <!-- Dynamic Branch Card 3: Non-Student + Plaza, Jemursari, Galaxy Mall, Purimas -->
+        <!-- Dynamic Branch Card 3: Non-Student -->
         <section class="form-card payment-info-card" id="branch-nonstudent-group1" style="display: none;">
           <div class="payment-header-bar">Registration Fee Payment Process</div>
           <div class="payment-card-body">
-            <p class="payment-subtitle">Registration fee for non-English 1 students</p>
-            <p class="payment-details">Early Bird Period: <strong>Rp250.000</strong> | Transfer to bank account <strong>BCA 3842-0288-81 PT. Eduka Pratama</strong></p>
+            <p class="payment-subtitle">Biaya Pendaftaran Non-Siswa English 1 Lombok (Umum)</p>
+            <p class="payment-details">Early Bird Period: <strong>Rp200.000</strong> (Normal: Rp250.000) | Transfer ke bank account <strong>BCA 3845205200 PT. Aplus Lorem Indo</strong></p>
           </div>
         </section>
 
-        <!-- Dynamic Branch Card 4: Non-Student + Bukit Mas, Pakuwon Mall -->
+        <!-- Dynamic Branch Card 4: Non-Student Backup -->
         <section class="form-card payment-info-card" id="branch-nonstudent-group2" style="display: none;">
           <div class="payment-header-bar">Registration Fee Payment Process</div>
           <div class="payment-card-body">
-            <p class="payment-subtitle">Registration fee for non-English 1 students</p>
-            <p class="payment-details">Early Bird Period: <strong>Rp250.000</strong> | Transfer to bank account <strong>BCA 0182-6173-32 PT. Eduka Efindo</strong></p>
+            <p class="payment-subtitle">Biaya Pendaftaran Non-Siswa English 1 Lombok (Umum)</p>
+            <p class="payment-details">Early Bird Period: <strong>Rp200.000</strong> (Normal: Rp250.000) | Transfer ke bank account <strong>BCA 3845205200 PT. Aplus Lorem Indo</strong></p>
           </div>
         </section>
 
         <!-- Payment Receipt Upload Card (Expense Form Style) -->
         <section class="form-card" data-card data-required="true">
           <div class="card-section-header">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
               <polyline points="17 8 12 3 7 8"></polyline>
               <line x1="12" y1="3" x2="12" y2="15"></line>
@@ -367,13 +470,15 @@
           <p class="question-subtext">Upload 1 supported payment receipt (PDF, Image, max 1 MB).</p>
 
           <!-- Hidden File Input -->
-          <input type="file" id="paymentReceipt" name="paymentReceipt" class="hidden-file-input" accept="image/*,.pdf,.doc,.docx" required>
+          <input type="file" id="paymentReceipt" name="paymentReceipt" class="hidden-file-input"
+            accept="image/*,.pdf,.doc,.docx" required>
 
           <!-- Single Action Button Tile -->
           <div class="upload-single-tile-wrap">
             <button type="button" class="upload-tile full-width-tile" id="btnGalleryUpload">
               <div class="upload-tile-icon">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
                   <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                   <circle cx="8.5" cy="8.5" r="1.5"></circle>
                   <polyline points="21 15 16 10 5 21"></polyline>
@@ -385,7 +490,8 @@
 
           <!-- File Display Status -->
           <div id="fileStatusBox" class="file-status-box" style="display: none;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
               <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
               <polyline points="22 4 12 14.01 9 11.01"></polyline>
             </svg>
@@ -394,7 +500,10 @@
           </div>
 
           <div class="error-msg">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+            </svg>
             <span>This question is required</span>
           </div>
         </section>
@@ -414,12 +523,13 @@
 
     <!-- Success Confirmation Receipt View -->
     <div id="successView" class="success-card">
-      <h1 class="success-title">Online Registration Form Spelling Bee Regional Competition 2026</h1>
+      <h1 class="success-title">Online Registration Form Spelling Bee Lombok Regional Competition 2026</h1>
       <div class="success-body">
         <h2 class="success-subtitle">PENDAFTARAN BERHASIL!</h2>
         <p class="success-text">Konfirmasi pendaftaran telah dikirimkan ke email Anda.</p>
-        <p class="success-text">Tim English 1 akan segera menghubungi Anda melalui WhatsApp untuk informasi selanjutnya. Mohon menunggu dalam waktu 3x24 jam.</p>
-        <p class="success-text">Jika mengalami kendala silahkan menghubungi WA English 1 Surabaya di 082220001000.</p>
+        <p class="success-text">Tim English 1 akan segera menghubungi Anda melalui WhatsApp untuk informasi selanjutnya.
+          Mohon menunggu dalam waktu 3x24 jam.</p>
+        <p class="success-text">Jika mengalami kendala silahkan menghubungi WA English 1 Lombok.</p>
         <p class="success-text success-thanks">Terima kasih!</p>
       </div>
       <a href="#" id="btnSubmitAnother" class="submit-another-link">Submit another response</a>
@@ -447,27 +557,31 @@
               <tr>
                 <th>Waktu</th>
                 <th>Nama Peserta</th>
+                <th>Email</th>
                 <th>Tempat & Tgl Lahir</th>
+                <th>WNI</th>
                 <th>Sekolah</th>
                 <th>Kelas</th>
                 <th>Group</th>
                 <th>No Telp Ortu</th>
-                <th>Siswa E1</th>
-                <th>Center</th>
                 <th>Sumber Info</th>
+                <th>Siswa E1</th>
+                <th>Pernah Siswa E1</th>
                 <th>Kategori / Branch</th>
+                <th>Bukti Bayar</th>
               </tr>
             </thead>
             <tbody id="responsesTableBody">
               <tr>
-                <td colspan="11" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
+                <td colspan="14" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" id="btnExportCSV" class="btn-small" style="background:#e00078; color:white; border:none;">Export CSV</button>
+        <button type="button" id="btnExportCSV" class="btn-small"
+          style="background:#e00078; color:white; border:none;">Export CSV</button>
         <button type="button" id="btnClearData" class="btn-small" style="color:#d93025;">Hapus Semua Data</button>
       </div>
     </div>
@@ -475,4 +589,5 @@
 
   <script src="app.js"></script>
 </body>
+
 </html>

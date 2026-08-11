@@ -14,7 +14,7 @@ if (!$data || !isset($data['email'])) {
 }
 
 $to = $data['email'];
-$subject = "Thanks for filling out: Online Registration Form Spelling Bee Regional Competition 2026";
+$subject = "Thanks for filling out: Online Registration Form Spelling Bee Lombok Regional Competition 2026";
 
 // Desain Template HTML Response Receipt (Google Forms Style)
 $htmlMessage = '
@@ -30,7 +30,7 @@ $htmlMessage = '
           <tr>
             <td style="padding:24px 32px 16px 32px; border-bottom:1px solid #dadce0;">
               <h1 style="font-size:20px; font-weight:500; color:#202124; margin:0 0 8px 0;">
-                Thanks for filling out: <span style="color:#e00078; font-weight:700;">Online Registration Form Spelling Bee Regional Competition 2026</span>
+                Thanks for filling out: <span style="color:#e00078; font-weight:700;">Online Registration Form Spelling Bee Lombok Regional Competition 2026</span>
               </h1>
               <p style="font-size:14px; color:#5f6368; margin:0;">Here\'s what was received.</p>
             </td>
@@ -53,6 +53,10 @@ $htmlMessage = '
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['birthDetails'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Kewarganegaraan Indonesia</div>
+                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['isIndonesianCitizen'] ?? 'Ya') . '</div>
+              </div>
+              <div style="margin-bottom:16px;">
                 <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Asal Sekolah / School Name</div>
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['schoolName'] ?? '-') . '</div>
               </div>
@@ -69,10 +73,6 @@ $htmlMessage = '
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['parentPhone'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">English 1 Center</div>
-                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['english1Center'] ?? '-') . '</div>
-              </div>
-              <div style="margin-bottom:16px;">
                 <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Bukti Transfer / Payment Receipt</div>
                 <div style="font-size:14px; color:#16a34a; background:#f0fdf4; padding:10px 14px; border-radius:6px; border:1px solid #bbf7d0;">📎 ' . htmlspecialchars($data['paymentReceipt'] ?? 'File Terupload') . '</div>
               </div>
@@ -80,8 +80,8 @@ $htmlMessage = '
           </tr>
           <tr>
             <td style="padding:20px 32px; background-color:#f8f9fa; border-top:1px solid #dadce0; text-align:center; font-size:12px; color:#70757a;">
-              Email ini dikirim secara otomatis oleh <strong>English 1 Surabaya</strong>.<br>
-              Pertanyaan? Hubungi WhatsApp English 1 Surabaya di <strong>082220001000</strong>.
+              Email ini dikirim secara otomatis oleh <strong>English 1 Lombok</strong>.<br>
+              Pertanyaan? Hubungi WhatsApp English 1 Lombok.
             </td>
           </tr>
         </table>
@@ -99,7 +99,7 @@ function sendGmailSMTP($to, $subject, $htmlContent) {
     $username = 'info.ef@edukagroup.com';
     $password = 'cncuqdjtgnctwcuo'; // Gmail App Password 16 Digit
     $fromEmail = 'info.ef@edukagroup.com';
-    $fromName = 'English 1 Surabaya';
+    $fromName = 'English 1 Lombok';
 
     $socket = @fsockopen($smtpHost, $smtpPort, $errno, $errstr, 15);
     if (!$socket) {
