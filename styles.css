@@ -142,6 +142,10 @@ body {
   text-align: left;
 }
 
+.highlight-item.full-width {
+  grid-column: 1 / -1 !important;
+}
+
 .highlight-icon {
   font-size: 22px;
   flex-shrink: 0;

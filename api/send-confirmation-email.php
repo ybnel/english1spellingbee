@@ -35,7 +35,7 @@ $htmlMessage = '
           <!-- Header Banner Image / Key Visual -->
           <tr>
             <td style="padding: 32px 32px 16px 32px; text-align: center; background-color: #ffffff;">
-              <img src="https://english1spellingbee.com/Lombok/api/assets_email/SB19th_e-Mail-Banner-01.png" alt="TERIMA KASIH! Pendaftaran Anda sedang diproses - English 1 Spelling Bee Lombok 2026" style="max-width: 100%; width: 540px; height: auto; display: block; margin: 0 auto; border: 0; border-radius: 8px;">
+              <img src="https://english1spellingbee.com/Lombok/Individu/api/assets_email/SB19th_e-Mail-Banner-01.png" alt="TERIMA KASIH! Pendaftaran Anda sedang diproses - English 1 Spelling Bee Lombok 2026" style="max-width: 100%; width: 540px; height: auto; display: block; margin: 0 auto; border: 0; border-radius: 8px;">
             </td>
           </tr>
 
@@ -66,7 +66,7 @@ $htmlMessage = '
 
                     <!-- English 1 Logo Image -->
                     <div style="margin: 16px 0;">
-                      <img src="https://english1spellingbee.com/Lombok/api/assets_email/english1.png" alt="English 1 Logo" style="height: 38px; width: auto; display: block; border: 0;">
+                      <img src="https://english1spellingbee.com/Lombok/Individu/api/assets_email/english1.png" alt="English 1 Logo" style="height: 38px; width: auto; display: block; border: 0;">
                     </div>
 
                     <p style="margin:0;">
