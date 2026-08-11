@@ -23,7 +23,7 @@ $htmlMessage = '
 <head><meta charset="utf-8"></head>
 <body style="margin:0; padding:0; background-color:#e8f0fe; font-family:\'Roboto\',Arial,sans-serif; color:#202124;">
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#e8f0fe; padding:32px 16px;">
-    <tr>  
+    <tr>
       <td align="center">
         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:640px; background-color:#ffffff; border-radius:8px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.12);">
           <tr><td style="background-color:#e00078; height:10px;"></td></tr>
@@ -69,7 +69,7 @@ $htmlMessage = '
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['parentPhone'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Alamat Peserta / Participant\'s Address</div>
+			  <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Alamat Peserta / Participant\'s Address</div>
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['address'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
