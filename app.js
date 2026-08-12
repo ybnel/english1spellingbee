@@ -311,26 +311,20 @@ function initApp() {
             card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           }
         } else if (activeSection === section1) {
-          form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+          handleFormSubmit();
         }
       }
     }
   });
 
-  const btnSubmit = document.getElementById('btnSubmit');
-  if (btnSubmit) {
-    btnSubmit.addEventListener('click', (e) => {
+  function handleFormSubmit(e) {
+    if (e) {
       e.preventDefault();
-      form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
-    });
-  }
-
-  // Final Form Submission Validation & Handler
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
+      e.stopPropagation();
+    }
 
     // Validate Section 1 inputs
-    if (!validateCardSection(section1)) return;
+    if (!validateCardSection(section1)) return false;
 
     updateBranchCard();
 
@@ -365,6 +359,13 @@ function initApp() {
     saveSubmission(submission);
     sendDataToGoogleSheets(submission);
 
+    // Show Success View immediately
+    form.style.display = 'none';
+    if (welcomeScreen) welcomeScreen.style.display = 'none';
+    if (successView) successView.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    updateResponseCount();
+
     // Send Response Receipt Email & Confirmation Email sequentially with 1.5s delay (info.ef@edukagroup.com)
     sendResponseReceiptEmail(submission)
       .then((res1) => {
@@ -380,12 +381,19 @@ function initApp() {
       })
       .catch(err => console.error('Error pengiriman email:', err));
 
-    // Show Success View
-    form.style.display = 'none';
-    successView.style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    updateResponseCount();
-  });
+    return false;
+  }
+
+  const btnSubmit = document.getElementById('btnSubmit');
+  if (btnSubmit) {
+    btnSubmit.addEventListener('click', (e) => {
+      e.preventDefault();
+      handleFormSubmit(e);
+    });
+  }
+
+  // Final Form Submission Validation & Handler
+  form.addEventListener('submit', handleFormSubmit);
 
   // PHP Email Receipt Sender (info.ef@edukagroup.com)
   function sendResponseReceiptEmail(payload) {
@@ -397,10 +405,16 @@ function initApp() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload)
-    }).then(res => res.json())
-      .then(data => {
-        console.log('Response Receipt Email status:', data);
-        return data;
+    }).then(res => res.text())
+      .then(text => {
+        try {
+          const data = JSON.parse(text);
+          console.log('Response Receipt Email status:', data);
+          return data;
+        } catch(e) {
+          console.log('Response Receipt Email raw output:', text);
+          return { status: 'info', message: text };
+        }
       })
       .catch(err => {
         console.error('Gagal mengirim email response receipt:', err);
@@ -418,10 +432,16 @@ function initApp() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload)
-    }).then(res => res.json())
-      .then(data => {
-        console.log('Confirmation Email status:', data);
-        return data;
+    }).then(res => res.text())
+      .then(text => {
+        try {
+          const data = JSON.parse(text);
+          console.log('Confirmation Email status:', data);
+          return data;
+        } catch(e) {
+          console.log('Confirmation Email raw output:', text);
+          return { status: 'info', message: text };
+        }
       })
       .catch(err => {
         console.error('Gagal mengirim email konfirmasi:', err);
@@ -440,7 +460,7 @@ function initApp() {
       method: 'POST',
       mode: 'no-cors',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain;charset=utf-8',
       },
       body: JSON.stringify(payload)
     }).then(() => {
