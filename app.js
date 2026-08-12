@@ -339,13 +339,16 @@ function initApp() {
     const submission = {
       id: Date.now(),
       timestamp: new Date().toLocaleString('id-ID'),
+      targetSheet: 'Individu',
       fullName: formData.get('fullName'),
       email: formData.get('email'),
       birthDetails: formData.get('birthDetails'),
       schoolName: formData.get('schoolName'),
       grade: formData.get('grade'),
       groupCategory: formData.get('groupCategory'),
+      parentName: formData.get('parentName') || '-',
       parentPhone: formData.get('parentPhone'),
+      address: formData.get('address') || '-',
       infoSource: formData.get('infoSource'),
       isIndonesianCitizen: formData.get('isIndonesianCitizen') || 'Ya',
       isEnglish1Student: formData.get('isEnglish1Student'),
@@ -518,7 +521,7 @@ function initApp() {
     if (list.length === 0) {
       responsesTableBody.innerHTML = `
         <tr>
-          <td colspan="14" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
+          <td colspan="16" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
         </tr>
       `;
       return;
@@ -528,13 +531,15 @@ function initApp() {
       <tr>
         <td>${escapeHtml(item.timestamp)}</td>
         <td><strong>${escapeHtml(item.fullName)}</strong></td>
-        <td>${escapeHtml(item.email)}</td>
         <td>${escapeHtml(item.birthDetails)}</td>
         <td>${escapeHtml(item.isIndonesianCitizen || 'Ya')}</td>
         <td>${escapeHtml(item.schoolName)}</td>
         <td>${escapeHtml(item.grade)}</td>
         <td>${escapeHtml(item.groupCategory)}</td>
+        <td>${escapeHtml(item.parentName || '-')}</td>
         <td>${escapeHtml(item.parentPhone)}</td>
+        <td>${escapeHtml(item.address || '-')}</td>
+        <td>${escapeHtml(item.email)}</td>
         <td>${escapeHtml(item.infoSource)}</td>
         <td>${escapeHtml(item.isEnglish1Student)}</td>
         <td>${escapeHtml(item.wasEnglish1Student || '-')}</td>
@@ -565,13 +570,15 @@ function initApp() {
       const headers = [
         'Timestamp',
         'Nama Lengkap Peserta',
-        'Email',
         'Tempat & Tgl Lahir',
         'Kewarganegaraan WNI',
         'Asal Sekolah',
         'Kelas',
         'Kategori Group',
+        'Nama Orangtua',
         'No Telpon Ortu',
+        'Alamat Lengkap Peserta',
+        'Email',
         'Sumber Informasi',
         'Siswa English 1',
         'Pernah Siswa English 1',
@@ -582,13 +589,15 @@ function initApp() {
       const rows = list.map(item => [
         `"${item.timestamp}"`,
         `"${(item.fullName || '').replace(/"/g, '""')}"`,
-        `"${(item.email || '').replace(/"/g, '""')}"`,
         `"${(item.birthDetails || '').replace(/"/g, '""')}"`,
         `"${item.isIndonesianCitizen || 'Ya'}"`,
         `"${(item.schoolName || '').replace(/"/g, '""')}"`,
         `"${item.grade || ''}"`,
         `"${item.groupCategory || ''}"`,
+        `"${(item.parentName || '-').replace(/"/g, '""')}"`,
         `"${item.parentPhone || ''}"`,
+        `"${(item.address || '-').replace(/"/g, '""')}"`,
+        `"${(item.email || '').replace(/"/g, '""')}"`,
         `"${item.infoSource || ''}"`,
         `"${item.isEnglish1Student || ''}"`,
         `"${item.wasEnglish1Student || '-'}"`,

@@ -255,6 +255,24 @@
           </div>
         </section>
 
+        <!-- Question: Parent Name -->
+        <section class="form-card" data-card data-required="true">
+          <h2 class="question-title">
+            Nama Orangtua / <em>Parent's Name</em> <span class="required-star">*</span>
+          </h2>
+          <p class="question-subtext">Nama lengkap orang tua / wali. / <em>Full name of parent or guardian.</em></p>
+          <div class="text-input-wrap">
+            <input type="text" id="parentName" name="parentName" class="text-input" placeholder="Your answer" required>
+          </div>
+          <div class="error-msg">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+            </svg>
+            <span>This question is required</span>
+          </div>
+        </section>
+
         <!-- Question 6: Parents Phone Number -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
@@ -263,6 +281,24 @@
           <div class="text-input-wrap">
             <input type="tel" id="parentPhone" name="parentPhone" class="text-input"
               placeholder="Your answer (e.g. 08123456789)" inputmode="numeric" pattern="[0-9]*" required>
+          </div>
+          <div class="error-msg">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+            </svg>
+            <span>This question is required</span>
+          </div>
+        </section>
+
+        <!-- Question: Participant Full Address -->
+        <section class="form-card" data-card data-required="true">
+          <h2 class="question-title">
+            Alamat Lengkap Peserta / <em>Participant Full Address</em> <span class="required-star">*</span>
+          </h2>
+          <p class="question-subtext">Masukan alamat rumah tempat tinggal peserta. / <em>Please enter participant full home address.</em></p>
+          <div class="text-input-wrap">
+            <input type="text" id="address" name="address" class="text-input" placeholder="Your answer" required>
           </div>
           <div class="error-msg">
             <svg viewBox="0 0 24 24">
@@ -557,13 +593,15 @@
               <tr>
                 <th>Waktu</th>
                 <th>Nama Peserta</th>
-                <th>Email</th>
                 <th>Tempat & Tgl Lahir</th>
                 <th>WNI</th>
                 <th>Sekolah</th>
                 <th>Kelas</th>
                 <th>Group</th>
+                <th>Nama Ortu</th>
                 <th>No Telp Ortu</th>
+                <th>Alamat</th>
+                <th>Email</th>
                 <th>Sumber Info</th>
                 <th>Siswa E1</th>
                 <th>Pernah Siswa E1</th>
@@ -573,7 +611,7 @@
             </thead>
             <tbody id="responsesTableBody">
               <tr>
-                <td colspan="14" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
+                <td colspan="16" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
               </tr>
             </tbody>
           </table>
