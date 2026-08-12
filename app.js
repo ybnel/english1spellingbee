@@ -311,12 +311,19 @@ function initApp() {
             card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           }
         } else if (activeSection === section1) {
-          // If on the last field of Section 1, advance to Section 2
-          goToSection2();
+          form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
         }
       }
     }
   });
+
+  const btnSubmit = document.getElementById('btnSubmit');
+  if (btnSubmit) {
+    btnSubmit.addEventListener('click', (e) => {
+      e.preventDefault();
+      form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+    });
+  }
 
   // Final Form Submission Validation & Handler
   form.addEventListener('submit', (e) => {
