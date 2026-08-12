@@ -23,26 +23,27 @@
         <img src="./src/assets/bannerlombok.png" alt="English 1 Spelling Bee Lombok Banner" class="welcome-banner-img">
       </div>
       <div class="welcome-content">
-        <div class="welcome-badge">🏆 Lombok Regional Competition 2026</div>
+        <div class="welcome-badge">🏆 Regional Competition 2026</div>
         <h1 class="welcome-title">English 1 Spelling Bee Lombok Regional Competition 2026</h1>
-        <p class="welcome-desc">
-          Welcome to the official registration portal for the <strong>Spelling Bee Lombok Regional Competition
-            2026</strong>.
-          Please prepare your participant details and click the button below to start registration.
-        </p>
+        
+        <div class="welcome-desc" style="font-size: 15px; color: #5f6368; line-height: 1.7; margin-bottom: 24px; text-align: center;">
+          <p style="margin-bottom: 12px;">Selamat datang di <strong>Kompetisi Spelling Bee 2026 Regional Lombok</strong>.</p>
+          <p style="margin-bottom: 16px;">Kompetisi mengeja kosakata dalam bahasa Inggris yang diadakan setiap satu tahun sekali, dimana setiap tahunnya diikuti oleh siswa tingkat SD dan SMP berkewarganegaraan Indonesia dari berbagai kota di Lombok. Kompetisi ini merupakan kesempatan bagi para siswa untuk melatih kemandirian, keberanian berbicara bahasa Inggris serta mempraktekan pengetahuan bahasa Inggris secara langsung.</p>
+          <p style="margin: 0; font-weight: 500; color: #3c4043;">Kompetisi Spelling Bee akan dilaksanakan pada hari :</p>
+        </div>
 
         <div class="event-highlights">
           <div class="highlight-item">
             <span class="highlight-icon"><i class="fas fa-calendar-alt" style="font-size:24px; color:#e00078;"></i></span>
             <div>
-              <strong>Event Date</strong>
-              <p>25 Oktober 2026</p>
+              <strong>Hari & Tanggal</strong>
+              <p>Minggu, 25 Oktober 2026</p>
             </div>
           </div>
           <div class="highlight-item">
             <span class="highlight-icon"><i class="fas fa-map-marker-alt" style="font-size:24px; color:#e00078;"></i></span>
             <div>
-              <strong>Location</strong>
+              <strong>Lokasi</strong>
               <p>English 1 Lombok</p>
             </div>
           </div>
@@ -73,9 +74,8 @@
       <!-- SECTION 1: DATA PESERTA -->
       <div id="section1" class="form-section">
 
-        <!-- Title Card -->
+        <!-- Form Header Title Card -->
         <section class="form-card title-card active" data-card>
-          <div class="section-indicator">Section 1 of 2</div>
           <div class="title-header-wrap">
             <div class="title-icon-badge">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -88,9 +88,16 @@
               </svg>
             </div>
             <div>
-              <h1 class="form-title">Online Registration Form Spelling Bee Lombok Regional Competition 2026</h1>
-              <p class="form-description">To participate in the competition, please fill in the details below accurately
-                and completely.</p>
+              <h1 class="form-title">Online Registration Form Spelling Bee Regional Competition 2026</h1>
+              <div class="form-description">
+                <p style="margin-top: 8px; margin-bottom: 4px;">Biaya Pendaftaran Early Bird (s.d tgl 6 September 2026) :</p>
+                <p style="margin-top: 0; margin-bottom: 2px;">English 1 Students : <strong>Rp. 100.000</strong></p>
+                <p style="margin-top: 0; margin-bottom: 8px;">Non English 1 Students : <strong>Rp. 200.000</strong></p>
+                <p style="margin-top: 4px; margin-bottom: 4px;">Biaya Pendaftaran Normal :</p>
+                <p style="margin-top: 0; margin-bottom: 2px;">English 1 Students : <strong>Rp. 150.000</strong></p>
+                <p style="margin-top: 0; margin-bottom: 8px;">Non English 1 Students : <strong>Rp. 250.000</strong></p>
+                <p style="margin-top: 12px; margin-bottom: 4px;">Lengkapi data diri di bawah ini dengan <strong>BENAR</strong>.</p>
+              </div>
             </div>
           </div>
           <div class="required-notice">* Indicates required question</div>
@@ -115,34 +122,15 @@
           </div>
         </section>
 
-        <!-- Question 2: Email -->
+        <!-- Question 2: Place and Date of Birth -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
-            Email <span class="required-star">*</span>
+            Tempat & Tgl Lahir anak Anda / <em>Place and Date of Birth</em> <span class="required-star">*</span>
           </h2>
-          <div class="text-input-wrap">
-            <input type="email" id="email" name="email" class="text-input"
-              placeholder="Your answer (e.g. name@email.com)" required>
-          </div>
-          <div class="error-msg">
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
-            </svg>
-            <span>This question is required</span>
-          </div>
-        </section>
-
-        <!-- Question 3: Place and Date of Birth -->
-        <section class="form-card" data-card data-required="true">
-          <h2 class="question-title">
-            Tempat dan tanggal lahir anak Anda / <em>Place and Date of Birth</em> <span class="required-star">*</span>
-          </h2>
-          <p class="question-subtext">Contoh pengisian: Surabaya, 1 Januari 2018 / <em>Example: Surabaya, 1 January
-              2018</em></p>
+          <p class="question-subtext">Contoh pengisian: Mataram, 1 Januari 2018 / <em>Example: Mataram, 1 January 2018</em></p>
           <div class="text-input-wrap">
             <input type="text" id="birthDetails" name="birthDetails" class="text-input"
-              placeholder="Your answer (e.g. Surabaya, 1 Januari 2018)" required>
+              placeholder="Your answer (e.g. Mataram, 1 Januari 2018)" required>
           </div>
           <div class="error-msg">
             <svg viewBox="0 0 24 24">
@@ -153,7 +141,7 @@
           </div>
         </section>
 
-        <!-- Question 3B: Indonesian Citizenship -->
+        <!-- Question 3: Indonesian Citizenship (Lombok Custom) -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
             Apakah anak Anda berkewarganegaraan Indonesia? / <em>Is your child an Indonesian citizen?</em> <span
@@ -194,7 +182,7 @@
           </div>
         </section>
 
-        <!-- Question 4: Grade -->
+        <!-- Question 5: Grade -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
             Kelas / <em>Grade</em> <span class="required-star">*</span>
@@ -227,7 +215,7 @@
           </div>
         </section>
 
-        <!-- Question 5: Choose Group Category -->
+        <!-- Question 6: Choose Group Category -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
             Pilih kategori group kompetisi / <em>Choose your group category</em> <span class="required-star">*</span>
@@ -255,7 +243,7 @@
           </div>
         </section>
 
-        <!-- Question: Parent Name -->
+        <!-- Question 7: Parent Name -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
             Nama Orangtua / <em>Parent's Name</em> <span class="required-star">*</span>
@@ -273,11 +261,12 @@
           </div>
         </section>
 
-        <!-- Question 6: Parents Phone Number -->
+        <!-- Question 8: Parents Phone Number -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
-            Nomor telpon orang tua yang tersambung dengan WA / <em>Parent's phone number connected with WA</em> <span class="required-star">*</span>
+            No Telpon Orangtua yang tersambung dengan WA / <em>Parents WhatsApp Number</em> <span class="required-star">*</span>
           </h2>
+          <p class="question-subtext">Pastikan nomor aktif WhatsApp untuk penerimaan bukti & konfirmasi pembayaran / <em>Please ensure your WhatsApp number is active to receive payment confirmation and receipt.</em></p>
           <div class="text-input-wrap">
             <input type="tel" id="parentPhone" name="parentPhone" class="text-input"
               placeholder="Your answer (e.g. 08123456789)" inputmode="numeric" pattern="[0-9]*" required>
@@ -291,7 +280,7 @@
           </div>
         </section>
 
-        <!-- Question: Participant Full Address -->
+        <!-- Question 9: Participant Full Address -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
             Alamat Lengkap Peserta / <em>Participant Full Address</em> <span class="required-star">*</span>
@@ -309,28 +298,15 @@
           </div>
         </section>
 
-        <!-- Question 7: Info Source -->
+        <!-- Question 10: Email Orangtua -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
-            Dari mana Anda mendapatkan informasi kompetisi ini? / <em>Where did you hear about this competition?</em>
-            <span class="required-star">*</span>
+            Email Orangtua / <em>Parent's Email</em> <span class="required-star">*</span>
           </h2>
-          <div class="radio-group">
-            <label class="radio-option">
-              <input type="radio" name="infoSource" value="Staff English 1 Center" required>
-              <span class="custom-radio"></span>
-              <span>Staff English 1 Center</span>
-            </label>
-            <label class="radio-option">
-              <input type="radio" name="infoSource" value="Iklan" required>
-              <span class="custom-radio"></span>
-              <span>Iklan / Advertisement</span>
-            </label>
-            <label class="radio-option">
-              <input type="radio" name="infoSource" value="Instagram" required>
-              <span class="custom-radio"></span>
-              <span>Instagram</span>
-            </label>
+          <p class="question-subtext">Email aktif untuk konfirmasi pendaftaran. / <em>Active email for confirmation registration.</em></p>
+          <div class="text-input-wrap">
+            <input type="email" id="email" name="email" class="text-input"
+              placeholder="Your answer (e.g. name@email.com)" required>
           </div>
           <div class="error-msg">
             <svg viewBox="0 0 24 24">
@@ -341,7 +317,37 @@
           </div>
         </section>
 
-        <!-- Question 8: Is English 1 Student -->
+        <!-- Question 11: Info Source Dropdown (Matching Bali Dropdown) -->
+        <section class="form-card" data-card data-required="true">
+          <h2 class="question-title">
+            Dari mana Anda mendapatkan informasi kompetisi / <em>Where did you hear about this competition?</em>
+            <span class="required-star">*</span>
+          </h2>
+          <div class="dropdown-wrap">
+            <select id="infoSource" name="infoSource" class="select-input" required>
+              <option value="" disabled selected>Select</option>
+              <option value="Staff English 1 Center">Staff English 1 Center</option>
+              <option value="Iklan / Advertisement">Iklan / Advertisement</option>
+              <option value="Instagram">Instagram</option>
+              <option value="Sekolah / School">Sekolah / School</option>
+              <option value="Teman / Kerabat">Teman / Kerabat</option>
+            </select>
+            <div class="dropdown-icon">
+              <svg width="12" height="8" viewBox="0 0 12 8" fill="currentColor">
+                <path d="M1.41 0L6 4.58L10.59 0L12 1.41L6 7.41L0 1.41L1.41 0Z" />
+              </svg>
+            </div>
+          </div>
+          <div class="error-msg">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+            </svg>
+            <span>This question is required</span>
+          </div>
+        </section>
+
+        <!-- Question 12: Is English 1 Student -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
             Apakah anak Anda siswa English 1? / <em>Is your child currently an active English 1 student?</em> <span
@@ -368,7 +374,7 @@
           </div>
         </section>
 
-        <!-- Question 8B: Was English 1 Student (Conditional: shows when isEnglish1Student is 'Tidak') -->
+        <!-- Question 13: Was English 1 Student (Conditional: shows when isEnglish1Student is 'Tidak') -->
         <section class="form-card" id="wasStudentCard" data-card data-required="false" style="display: none;">
           <h2 class="question-title">
             Apakah anak Anda pernah jadi siswa English 1? / <em>Has your child ever been an English 1 student?</em>
@@ -395,7 +401,7 @@
           </div>
         </section>
 
-        <!-- Data Verification Statement -->
+        <!-- Question 14: Data Verification Statement (Lombok Custom) -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title" style="font-size: 15px; line-height: 1.5;">
             Pernyataan Kebenaran Data / <em>Data Verification Statement</em> <span class="required-star">*</span>
@@ -406,11 +412,10 @@
             dimasukkan akan digunakan untuk kepentingan Spelling Bee English 1 Lombok"
           </p>
           <div class="radio-group">
-            <label class="radio-option" style="align-items: flex-start;">
+            <label class="radio-option" style="display: flex; align-items: center; gap: 14px; padding: 14px 16px; cursor: pointer;">
               <input type="checkbox" id="dataAgreement" name="dataAgreement" value="Ya, saya setuju"
-                style="margin-top: 3px; width: 18px; height: 18px; cursor: pointer;" required>
-              <span style="font-size: 14px; font-weight: 500; color: #202124;">Saya setuju & data sudah benar / <em>I
-                  agree & data is correct</em></span>
+                style="width: 18px; height: 18px; margin: 0; cursor: pointer; flex-shrink: 0; accent-color: #e00078;" required>
+              <span style="font-size: 14px; font-weight: 500; color: #202124; line-height: 1.4;">Saya setuju & data sudah benar / <em>I agree & data is correct</em></span>
             </label>
           </div>
           <div class="error-msg">

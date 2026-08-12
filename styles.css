@@ -377,6 +377,7 @@ body {
 .radio-option {
   display: flex;
   align-items: center;
+  gap: 12px;
   cursor: pointer;
   font-size: 15px;
   color: var(--text-main);
@@ -384,7 +385,7 @@ body {
   background: var(--input-bg);
   border: 1px solid var(--input-border);
   border-radius: 8px;
-  padding: 10px 14px;
+  padding: 12px 16px;
   transition: all 0.2s ease;
 }
 
