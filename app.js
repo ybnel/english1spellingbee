@@ -545,14 +545,14 @@ function initApp() {
         <td>${escapeHtml(item.grade)}</td>
         <td>${escapeHtml(item.groupCategory)}</td>
         <td>${escapeHtml(item.parentName)}</td>
+        <td>${escapeHtml(item.email)}</td>
         <td>${escapeHtml(item.parentPhone)}</td>
         <td>${escapeHtml(item.address)}</td>
-        <td>${escapeHtml(item.email)}</td>
-        <td>${escapeHtml(item.teacherName)}</td>
-        <td>${escapeHtml(item.teacherPhone)}</td>
         <td>${escapeHtml(item.infoSource)}</td>
         <td>${escapeHtml(item.isEnglish1Student)}</td>
         <td>${escapeHtml(item.english1Center)}</td>
+        <td>${escapeHtml(item.teacherName)}</td>
+        <td>${escapeHtml(item.teacherPhone)}</td>
       </tr>
     `).join('');
   }
@@ -584,14 +584,14 @@ function initApp() {
         'Kelas',
         'Kategori Group',
         'Nama Orang Tua',
-        'No WA Ortu',
-        'Alamat Peserta',
-        'Email Ortu',
-        'Nama Guru Pendamping',
-        'No WA Guru',
+        'Email Orang Tua',
+        'No Telp Ortu (WA)',
+        'Alamat Lengkap Peserta',
         'Sumber Informasi',
         'Siswa English 1',
-        'English 1 Center'
+        'English 1 Center',
+        'Nama Guru Pendamping',
+        'No WA Guru'
       ];
 
       const rows = list.map(item => [
@@ -603,14 +603,14 @@ function initApp() {
         `"${item.grade || ''}"`,
         `"${item.groupCategory || ''}"`,
         `"${(item.parentName || '').replace(/"/g, '""')}"`,
+        `"${item.email || ''}"`,
         `"${item.parentPhone || ''}"`,
         `"${(item.address || '').replace(/"/g, '""')}"`,
-        `"${item.email || ''}"`,
-        `"${(item.teacherName || '').replace(/"/g, '""')}"`,
-        `"${item.teacherPhone || ''}"`,
         `"${item.infoSource || ''}"`,
         `"${item.isEnglish1Student || ''}"`,
-        `"${item.english1Center || ''}"`
+        `"${item.english1Center || ''}"`,
+        `"${(item.teacherName || '').replace(/"/g, '""')}"`,
+        `"${item.teacherPhone || ''}"`
       ]);
 
       const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' 
