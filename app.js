@@ -241,26 +241,6 @@ function initApp() {
     return isValid;
   }
 
-  // Section 1 Validation & Navigation ("Berikutnya" / Next)
-  function goToSection2() {
-    if (!validateCardSection(section1)) return;
-
-    // Switch to Section 2
-    section1.style.display = 'none';
-    section2.style.display = 'block';
-    updateBranchCard();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  btnNext.addEventListener('click', goToSection2);
-
-  // Section 2 "Kembali" Button
-  btnBack.addEventListener('click', () => {
-    section2.style.display = 'none';
-    section1.style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-
   // Handle Enter key: Move focus to the next input field in the active section
   form.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
@@ -471,12 +451,14 @@ function initApp() {
   }
 
   // Submit Another Response
-  btnSubmitAnother.addEventListener('click', (e) => {
-    e.preventDefault();
-    resetForm();
-    successView.style.display = 'none';
-    form.style.display = 'block';
-  });
+  if (btnSubmitAnother) {
+    btnSubmitAnother.addEventListener('click', (e) => {
+      e.preventDefault();
+      resetForm();
+      if (successView) successView.style.display = 'none';
+      if (form) form.style.display = 'block';
+    });
+  }
 
   // LocalStorage Helper
   function getSubmissions() {
