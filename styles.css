@@ -117,6 +117,14 @@ body {
   max-width: 560px;
 }
 
+.welcome-desc p {
+  margin-bottom: 12px;
+}
+
+.welcome-desc p:last-child {
+  margin-bottom: 0;
+}
+
 .event-highlights {
   width: 100%;
   display: grid;

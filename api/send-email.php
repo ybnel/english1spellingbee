@@ -16,7 +16,7 @@ if (!$data || !isset($data['email'])) {
 $to = $data['email'];
 $subject = "Thanks for filling out: Online Registration Form Spelling Bee Regional Competition 2026";
 
-// Desain Template HTML Response Receipt (Google Forms Style)
+// Desain Template HTML Response Receipt (Google Forms Style Disesuaikan untuk Malang)
 $htmlMessage = '
 <!DOCTYPE html>
 <html>
@@ -61,11 +61,11 @@ $htmlMessage = '
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['grade'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Kategori Group Kompetisi</div>
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Kategori Group Kompetisi / Group Category</div>
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['groupCategory'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Nomor Telpon Orang Tua / Parents Phone Number</div>
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">No Telpon Orangtua yang tersambung dengan WA / Parent\'s phone number connected with WA</div>
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['parentPhone'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
@@ -80,8 +80,8 @@ $htmlMessage = '
           </tr>
           <tr>
             <td style="padding:20px 32px; background-color:#f8f9fa; border-top:1px solid #dadce0; text-align:center; font-size:12px; color:#70757a;">
-              Email ini dikirim secara otomatis oleh <strong>English 1 Surabaya</strong>.<br>
-              Pertanyaan? Hubungi WhatsApp English 1 Surabaya di <strong>082220001000</strong>.
+              Email ini dikirim secara otomatis oleh <strong>English 1 Malang</strong>.<br>
+              Pertanyaan? Hubungi WhatsApp English 1 Malang.
             </td>
           </tr>
         </table>
@@ -99,7 +99,7 @@ function sendGmailSMTP($to, $subject, $htmlContent) {
     $username = 'info.ef@edukagroup.com';
     $password = 'cncuqdjtgnctwcuo'; // Gmail App Password 16 Digit
     $fromEmail = 'info.ef@edukagroup.com';
-    $fromName = 'English 1 Surabaya';
+    $fromName = 'English 1 Malang';
 
     $socket = @fsockopen($smtpHost, $smtpPort, $errno, $errstr, 15);
     if (!$socket) {

@@ -1,616 +1,366 @@
-function initApp() {
-  const form = document.getElementById('spellingBeeForm');
-  const cards = document.querySelectorAll('.form-card');
-  const section1 = document.getElementById('section1');
-  const section2 = document.getElementById('section2');
-  const successView = document.getElementById('successView');
-  
-  const btnNext = document.getElementById('btnNext');
-  const btnBack = document.getElementById('btnBack');
-  const btnSubmitAnother = document.getElementById('btnSubmitAnother');
-  const clearButtons = document.querySelectorAll('.btn-clear-all');
-  const english1CenterSelect = document.getElementById('english1Center');
+document.addEventListener("DOMContentLoaded", function () {
+  const welcomeScreen = document.getElementById("welcomeScreen");
+  const form = document.getElementById("spellingBeeForm");
+  const section1 = document.getElementById("section1");
+  const section2 = document.getElementById("section2");
+  const successView = document.getElementById("successView");
 
-  const welcomeScreen = document.getElementById('welcomeScreen');
-  const btnStartRegistration = document.getElementById('btnStartRegistration');
+  const btnStartRegistration = document.getElementById("btnStartRegistration");
+  const btnNext = document.getElementById("btnNext");
+  const btnBack = document.getElementById("btnBack");
+  const btnSubmit = document.getElementById("btnSubmit");
+  const btnSubmitAnother = document.getElementById("btnSubmitAnother");
+  const btnClearAll = document.querySelectorAll(".btn-clear-all");
 
-  if (btnStartRegistration && welcomeScreen && form) {
-    btnStartRegistration.addEventListener('click', () => {
-      welcomeScreen.style.display = 'none';
-      form.style.display = 'block';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  const fileInput = document.getElementById("paymentReceipt");
+  const btnGalleryUpload = document.getElementById("btnGalleryUpload");
+  const fileStatusBox = document.getElementById("fileStatusBox");
+  const fileNameDisplay = document.getElementById("fileNameDisplay");
+  const btnRemoveFile = document.getElementById("btnRemoveFile");
+
+  const responsesModal = document.getElementById("responsesModal");
+  const btnOpenResponses = document.getElementById("btnOpenResponses");
+  const btnCloseModal = document.getElementById("btnCloseModal");
+  const responsesTableBody = document.getElementById("responsesTableBody");
+  const responseCountText = document.getElementById("responseCountText");
+  const btnExportCSV = document.getElementById("btnExportCSV");
+  const btnClearData = document.getElementById("btnClearData");
+
+  // Dynamic Payment Branches
+  const isEnglish1StudentRadios = document.getElementsByName("isEnglish1Student");
+  const centerSelect = document.getElementById("english1Center");
+
+  const branchCards = {
+    studentGroup1: document.getElementById("branch-student-group1"),
+    studentGroup2: document.getElementById("branch-student-group2"),
+    nonstudentGroup1: document.getElementById("branch-nonstudent-group1"),
+    nonstudentGroup2: document.getElementById("branch-nonstudent-group2")
+  };
+
+  // Group 2 centers list (Bukit Mas, Pakuwon Mall)
+  const group2Centers = ["English 1 Bukit Mas", "English 1 Pakuwon Mall"];
+
+  function updatePaymentBranch() {
+    // Hide all payment cards first
+    Object.values(branchCards).forEach(card => {
+      if (card) card.style.display = "none";
     });
+
+    const selectedStudent = Array.from(isEnglish1StudentRadios).find(r => r.checked)?.value;
+    const selectedCenter = centerSelect ? centerSelect.value : "";
+
+    if (!selectedStudent || !selectedCenter) return;
+
+    const isStudent = selectedStudent === "Ya";
+    const isGroup2 = group2Centers.includes(selectedCenter);
+
+    if (isStudent && !isGroup2) {
+      if (branchCards.studentGroup1) branchCards.studentGroup1.style.display = "block";
+    } else if (isStudent && isGroup2) {
+      if (branchCards.studentGroup2) branchCards.studentGroup2.style.display = "block";
+    } else if (!isStudent && !isGroup2) {
+      if (branchCards.nonstudentGroup1) branchCards.nonstudentGroup1.style.display = "block";
+    } else if (!isStudent && isGroup2) {
+      if (branchCards.nonstudentGroup2) branchCards.nonstudentGroup2.style.display = "block";
+    }
   }
 
-  // Branch Info Cards
-  const branchStudentGroup1 = document.getElementById('branch-student-group1');
-  const branchStudentGroup2 = document.getElementById('branch-student-group2');
-  const branchNonstudentGroup1 = document.getElementById('branch-nonstudent-group1');
-  const branchNonstudentGroup2 = document.getElementById('branch-nonstudent-group2');
-  const allBranchCards = [branchStudentGroup1, branchStudentGroup2, branchNonstudentGroup1, branchNonstudentGroup2];
+  // Add change listeners for dynamic branch calculation
+  Array.from(isEnglish1StudentRadios).forEach(radio => radio.addEventListener("change", updatePaymentBranch));
+  if (centerSelect) centerSelect.addEventListener("change", updatePaymentBranch);
 
-  // Responses Modal Elements
-  const responseCountText = document.getElementById('responseCountText');
-  const btnOpenResponses = document.getElementById('btnOpenResponses');
-  const responsesModal = document.getElementById('responsesModal');
-  const btnCloseModal = document.getElementById('btnCloseModal');
-  const responsesTableBody = document.getElementById('responsesTableBody');
-  const btnExportCSV = document.getElementById('btnExportCSV');
-  const btnClearData = document.getElementById('btnClearData');
-
-  let currentCalculatedBranch = '';
-
-  // Active card highlight logic
-  cards.forEach(card => {
-    card.addEventListener('click', () => {
-      setActiveCard(card);
-    });
-
-    const inputs = card.querySelectorAll('input, select');
-    inputs.forEach(input => {
-      input.addEventListener('focus', () => {
-        setActiveCard(card);
-      });
-      input.addEventListener('input', () => {
-        card.classList.remove('error-state');
-      });
-      input.addEventListener('change', () => {
-        card.classList.remove('error-state');
-      });
-    });
-  });
-
-  function setActiveCard(targetCard) {
-    cards.forEach(c => c.classList.remove('active'));
-    targetCard.classList.add('active');
+  // File Upload Handlers
+  if (btnGalleryUpload && fileInput) {
+    btnGalleryUpload.addEventListener("click", () => fileInput.click());
   }
 
-  // Restrict parentPhone to numbers only
-  const parentPhoneInput = document.getElementById('parentPhone');
-  if (parentPhoneInput) {
-    parentPhoneInput.addEventListener('input', (e) => {
-      e.target.value = e.target.value.replace(/[^0-9]/g, '');
-    });
-  }
-
-  const paymentReceiptInput = document.getElementById('paymentReceipt');
-  const btnGalleryUpload = document.getElementById('btnGalleryUpload');
-  const fileStatusBox = document.getElementById('fileStatusBox');
-  const fileNameDisplay = document.getElementById('fileNameDisplay');
-  const btnRemoveFile = document.getElementById('btnRemoveFile');
-
-  if (btnGalleryUpload && paymentReceiptInput) {
-    btnGalleryUpload.addEventListener('click', () => {
-      paymentReceiptInput.click();
-    });
-  }
-
-  if (paymentReceiptInput) {
-    paymentReceiptInput.addEventListener('change', () => {
-      if (paymentReceiptInput.files && paymentReceiptInput.files.length > 0) {
-        const file = paymentReceiptInput.files[0];
+  if (fileInput) {
+    fileInput.addEventListener("change", function () {
+      if (this.files && this.files[0]) {
+        const file = this.files[0];
         if (fileNameDisplay) fileNameDisplay.textContent = file.name;
-        if (fileStatusBox) fileStatusBox.style.display = 'flex';
-        
-        const uploadCard = paymentReceiptInput.closest('.form-card');
-        if (uploadCard) uploadCard.classList.remove('error-state');
+        if (fileStatusBox) fileStatusBox.style.display = "flex";
+        // Clear error if file selected
+        const card = fileInput.closest("[data-card]");
+        if (card) card.classList.remove("invalid");
       }
     });
   }
 
-  if (btnRemoveFile) {
-    btnRemoveFile.addEventListener('click', () => {
-      if (paymentReceiptInput) paymentReceiptInput.value = '';
-      if (fileNameDisplay) fileNameDisplay.textContent = '';
-      if (fileStatusBox) fileStatusBox.style.display = 'none';
+  if (btnRemoveFile && fileInput) {
+    btnRemoveFile.addEventListener("click", function () {
+      fileInput.value = "";
+      if (fileNameDisplay) fileNameDisplay.textContent = "";
+      if (fileStatusBox) fileStatusBox.style.display = "none";
     });
   }
 
-  // Clear Form handler
-  clearButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (confirm('Are you sure you want to clear all fields in this form?')) {
-        resetForm();
-      }
-    });
-  });
-
-  function resetForm() {
-    form.reset();
-    if (fileNameDisplay) fileNameDisplay.textContent = '';
-    if (fileStatusBox) fileStatusBox.style.display = 'none';
-    cards.forEach(c => {
-      c.classList.remove('error-state');
-      c.classList.remove('active');
-    });
-    allBranchCards.forEach(card => card.style.display = 'none');
-    section2.style.display = 'none';
-    section1.style.display = 'block';
-    const titleCard = section1.querySelector('.title-card');
-    if (titleCard) titleCard.classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  // Calculate & Show Branch Info Card based on Student status + Center choice
-  function updateBranchCard(shouldScroll = false) {
-    const formData = new FormData(form);
-    const isStudent = formData.get('isEnglish1Student'); // "Ya" or "Tidak"
-    const center = formData.get('english1Center'); // Center choice
-
-    allBranchCards.forEach(card => card.style.display = 'none');
-    currentCalculatedBranch = '';
-
-    if (!center) return;
-
-    // Group Centers:
-    // Group 1: Plaza Surabaya, Jemursari, Galaxy Mall, Purimas
-    // Group 2: Bukit Mas, Pakuwon Mall
-    const group1Centers = [
-      'English 1 Plaza Surabaya',
-      'English 1 Jemursari',
-      'English 1 Galaxy Mall',
-      'English 1 Purimas'
-    ];
-
-    const isGroup1 = group1Centers.includes(center);
-    let activeCard = null;
-
-    if (isStudent === 'Ya' && isGroup1) {
-      activeCard = branchStudentGroup1;
-      currentCalculatedBranch = 'Student - Plaza/JS/GM/Purimas';
-    } else if (isStudent === 'Ya' && !isGroup1) {
-      activeCard = branchStudentGroup2;
-      currentCalculatedBranch = 'Student - BM/Pakuwon';
-    } else if (isStudent === 'Tidak' && isGroup1) {
-      activeCard = branchNonstudentGroup1;
-      currentCalculatedBranch = 'Non-Student - Plaza/JS/GM/Purimas';
-    } else {
-      activeCard = branchNonstudentGroup2;
-      currentCalculatedBranch = 'Non-Student - BM/Pakuwon';
-    }
-
-    if (activeCard) {
-      activeCard.style.display = 'block';
-      if (shouldScroll) {
-        activeCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }
-  }
-
-  if (english1CenterSelect) {
-    english1CenterSelect.addEventListener('change', () => updateBranchCard(true));
-  }
-
-  // Robust validation helper for any section's cards
-  function validateCardSection(section) {
-    const cards = section.querySelectorAll('.form-card');
+  // Card validation helper
+  function validateSection(sectionEl) {
     let isValid = true;
-    let firstErrorCard = null;
+    let firstInvalidCard = null;
 
+    const cards = sectionEl.querySelectorAll("[data-card][data-required='true']");
     cards.forEach(card => {
-      if (card.dataset.required === 'true') {
-        let fieldValid = true;
+      let cardValid = true;
+      const inputs = card.querySelectorAll("input, select, textarea");
 
-        // 1. Text, Tel, Email, File inputs
-        const inputs = card.querySelectorAll('input:not([type="radio"]):not([type="checkbox"])');
-        inputs.forEach(input => {
-          if (input.type === 'file') {
-            if (!input.files || input.files.length === 0) fieldValid = false;
-          } else {
-            if (!input.value.trim()) {
-              fieldValid = false;
-            } else if (input.type === 'email') {
-              const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-              if (!emailRegex.test(input.value.trim())) fieldValid = false;
-            }
-          }
-        });
-
-        // 2. Select dropdowns
-        const selects = card.querySelectorAll('select');
-        selects.forEach(s => {
-          if (!s.value) fieldValid = false;
-        });
-
-        // 3. Radio groups
-        const radios = card.querySelectorAll('input[type="radio"]');
-        if (radios.length > 0) {
-          const checked = Array.from(radios).some(r => r.checked);
-          if (!checked) fieldValid = false;
-        }
-
-        if (!fieldValid) {
-          isValid = false;
-          card.classList.add('error-state');
-          if (!firstErrorCard) {
-            firstErrorCard = card;
-          }
+      inputs.forEach(input => {
+        if (input.type === "radio") {
+          const groupName = input.name;
+          const radioGroup = card.querySelectorAll(`input[name="${groupName}"]`);
+          const isChecked = Array.from(radioGroup).some(r => r.checked);
+          if (!isChecked) cardValid = false;
+        } else if (input.type === "file") {
+          if (!input.files || input.files.length === 0) cardValid = false;
         } else {
-          card.classList.remove('error-state');
+          if (!input.value.trim()) cardValid = false;
         }
+      });
+
+      if (!cardValid) {
+        card.classList.add("invalid");
+        isValid = false;
+        if (!firstInvalidCard) firstInvalidCard = card;
+      } else {
+        card.classList.remove("invalid");
       }
     });
 
-    if (!isValid && firstErrorCard) {
-      setActiveCard(firstErrorCard);
-      firstErrorCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (firstInvalidCard) {
+      firstInvalidCard.scrollIntoView({ behavior: "smooth", block: "center" });
     }
 
     return isValid;
   }
 
-  // Section 1 Validation & Navigation ("Berikutnya" / Next)
-  function goToSection2() {
-    if (!validateCardSection(section1)) return;
-
-    // Switch to Section 2
-    section1.style.display = 'none';
-    section2.style.display = 'block';
-    updateBranchCard();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  btnNext.addEventListener('click', goToSection2);
-
-  // Section 2 "Kembali" Button
-  btnBack.addEventListener('click', () => {
-    section2.style.display = 'none';
-    section1.style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Remove invalid state on user interaction
+  form.querySelectorAll("input, select, textarea").forEach(input => {
+    input.addEventListener("input", function () {
+      const card = this.closest("[data-card]");
+      if (card) card.classList.remove("invalid");
+    });
+    input.addEventListener("change", function () {
+      const card = this.closest("[data-card]");
+      if (card) card.classList.remove("invalid");
+    });
   });
 
-  // Handle Enter key: Move focus to the next input field in the active section
-  form.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      const activeElement = document.activeElement;
-      if (!activeElement) return;
-
-      const tagName = activeElement.tagName.toLowerCase();
-      // Only intercept Enter key on input fields or select dropdowns (not submit buttons or textareas)
-      if ((tagName === 'input' && activeElement.type !== 'submit' && activeElement.type !== 'button') || tagName === 'select') {
-        e.preventDefault();
-
-        // Determine current active section
-        const activeSection = section1.style.display !== 'none' ? section1 : section2;
-
-        // Find all visible, focusable input controls in the active section
-        const focusableSelectors = 'input[type="text"], input[type="email"], input[type="tel"], select, input[type="radio"]';
-        const allInputs = Array.from(activeSection.querySelectorAll(focusableSelectors));
-
-        // Group radios so pressing Enter on a radio group skips to the next question
-        const filteredInputs = [];
-        const seenRadioNames = new Set();
-
-        allInputs.forEach(input => {
-          if (input.type === 'radio') {
-            if (!seenRadioNames.has(input.name)) {
-              seenRadioNames.add(input.name);
-              filteredInputs.push(input);
-            }
-          } else {
-            filteredInputs.push(input);
-          }
-        });
-
-        // Find current index
-        const currentIndex = filteredInputs.findIndex(el => {
-          if (el.type === 'radio') {
-            return el.name === activeElement.name;
-          }
-          return el === activeElement;
-        });
-
-        if (currentIndex !== -1 && currentIndex < filteredInputs.length - 1) {
-          const nextInput = filteredInputs[currentIndex + 1];
-          nextInput.focus();
-          const card = nextInput.closest('.form-card');
-          if (card) {
-            setActiveCard(card);
-            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }
-        } else if (activeSection === section1) {
-          // If on the last field of Section 1, advance to Section 2
-          goToSection2();
-        }
+  // Next Button Click
+  if (btnNext) {
+    btnNext.addEventListener("click", function () {
+      if (validateSection(section1)) {
+        section1.style.display = "none";
+        section2.style.display = "block";
+        updatePaymentBranch();
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
-    }
-  });
-
-  // Final Form Submission Validation & Handler
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    // If section 1 is currently active (e.g. user pressed Enter key in Section 1 text input)
-    if (section1.style.display !== 'none') {
-      goToSection2();
-      return;
-    }
-
-    // Validate Section 2 inputs (file upload receipt)
-    if (!validateCardSection(section2)) return;
-
-    const formData = new FormData(form);
-    const receiptFile = document.getElementById('paymentReceipt');
-    let receiptFileName = receiptFile && receiptFile.files.length > 0 ? receiptFile.files[0].name : 'Tidak ada file';
-
-    const submission = {
-      id: Date.now(),
-      timestamp: new Date().toLocaleString('id-ID'),
-      fullName: formData.get('fullName'),
-      email: formData.get('email'),
-      birthDetails: formData.get('birthDetails'),
-      schoolName: formData.get('schoolName'),
-      grade: formData.get('grade'),
-      groupCategory: formData.get('groupCategory'),
-      parentPhone: formData.get('parentPhone'),
-      infoSource: formData.get('infoSource'),
-      isEnglish1Student: formData.get('isEnglish1Student'),
-      english1Center: formData.get('english1Center'),
-      branchCategory: currentCalculatedBranch,
-      paymentReceipt: receiptFileName
-    };
-
-    saveSubmission(submission);
-
-    // Send data & uploaded file to Google Sheets (Surabaya Region)
-    const receiptInput = document.getElementById('paymentReceipt');
-    if (receiptInput && receiptInput.files.length > 0) {
-      const file = receiptInput.files[0];
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        const fileBase64 = evt.target.result.split(',')[1];
-        sendDataToGoogleSheets({
-          ...submission,
-          fileName: file.name,
-          fileType: file.type,
-          fileData: fileBase64
-        });
-      };
-      reader.readAsDataURL(file);
-    } else {
-      sendDataToGoogleSheets(submission);
-    }
-
-    // Send Response Receipt Email & Confirmation Email sequentially with 1.5s delay (info.ef@edukagroup.com)
-    sendResponseReceiptEmail(submission)
-      .then((res1) => {
-        console.log('Email 1 (Copy Receipt) result:', res1);
-        return new Promise(resolve => setTimeout(resolve, 1500));
-      })
-      .then(() => {
-        console.log('Mengirim Email 2 (Terima Kasih + Banner)...');
-        return sendConfirmationEmail(submission);
-      })
-      .then((res2) => {
-        console.log('Email 2 (Konfirmasi) result:', res2);
-      })
-      .catch(err => console.error('Error pengiriman email:', err));
-
-    // Show Success View
-    form.style.display = 'none';
-    successView.style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    updateResponseCount();
-  });
-
-  // PHP Email Receipt Sender (info.ef@edukagroup.com)
-  function sendResponseReceiptEmail(payload) {
-    if (!payload.email) return Promise.resolve(null);
-
-    return fetch('./api/send-email.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload)
-    }).then(res => res.json())
-      .then(data => {
-        console.log('Response Receipt Email status:', data);
-        return data;
-      })
-      .catch(err => {
-        console.error('Gagal mengirim email response receipt:', err);
-        return null;
-      });
-  }
-
-  // PHP Email Confirmation Sender with Banner (info.ef@edukagroup.com)
-  function sendConfirmationEmail(payload) {
-    if (!payload.email) return Promise.resolve(null);
-
-    return fetch('./api/send-confirmation-email.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload)
-    }).then(res => res.json())
-      .then(data => {
-        console.log('Confirmation Email status:', data);
-        return data;
-      })
-      .catch(err => {
-        console.error('Gagal mengirim email konfirmasi:', err);
-        return null;
-      });
-  }
-
-  // Google Sheets Webhook Sender
-  // Web App URL Google Apps Script Surabaya
-  const GOOGLE_SCRIPT_URL_SURABAYA = 'https://script.google.com/macros/s/AKfycbyQym6DmlPm2hxeT3ELSu9BqHff-qL_BIHEA6fJmc4UTCMZKcJHA1VZxlisC6jq_30ScA/exec';
-
-  function sendDataToGoogleSheets(payload) {
-    if (!GOOGLE_SCRIPT_URL_SURABAYA) return;
-
-    fetch(GOOGLE_SCRIPT_URL_SURABAYA, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload)
-    }).then(() => {
-      console.log('Data pendaftaran berhasil dikirim ke Google Sheets.');
-    }).catch(err => {
-      console.error('Gagal mengirim data ke Google Sheets:', err);
     });
   }
 
-  // Submit Another Response
-  btnSubmitAnother.addEventListener('click', (e) => {
-    e.preventDefault();
-    resetForm();
-    successView.style.display = 'none';
-    form.style.display = 'block';
-  });
-
-  // LocalStorage Helper
-  function getSubmissions() {
-    const data = localStorage.getItem('spelling_bee_submissions');
-    return data ? JSON.parse(data) : [];
+  // Back Button Click
+  if (btnBack) {
+    btnBack.addEventListener("click", function () {
+      section2.style.display = "none";
+      section1.style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
   }
 
-  function saveSubmission(sub) {
-    const list = getSubmissions();
-    list.push(sub);
-    localStorage.setItem('spelling_bee_submissions', JSON.stringify(list));
+  // Clear Form Buttons
+  btnClearAll.forEach(btn => {
+    btn.addEventListener("click", function () {
+      form.reset();
+      if (fileInput) fileInput.value = "";
+      if (fileStatusBox) fileStatusBox.style.display = "none";
+      form.querySelectorAll(".invalid").forEach(el => el.classList.remove("invalid"));
+      Object.values(branchCards).forEach(card => {
+        if (card) card.style.display = "none";
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
+
+  // Form Submit Handler
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    if (!validateSection(section2)) return;
+
+    const formData = new FormData(form);
+    const responseObj = {
+      timestamp: new Date().toLocaleString("id-ID"),
+      fullName: formData.get("fullName") || "-",
+      email: formData.get("email") || "-",
+      birthDetails: formData.get("birthDetails") || "-",
+      schoolName: formData.get("schoolName") || "-",
+      grade: formData.get("grade") || "-",
+      groupCategory: formData.get("groupCategory") || "-",
+      parentPhone: formData.get("parentPhone") || "-",
+      infoSource: formData.get("infoSource") || "-",
+      isEnglish1Student: formData.get("isEnglish1Student") || "-",
+      english1Center: formData.get("english1Center") || "-",
+      fileName: fileInput && fileInput.files[0] ? fileInput.files[0].name : "-"
+    };
+
+    // Store in localStorage
+    saveResponseLocally(responseObj);
+
+    // Send copy response receipt email via API backend
+    try {
+      const payload = {
+        email: formData.get("email") || "",
+        fullName: formData.get("fullName") || "",
+        birthDetails: formData.get("birthDetails") || "",
+        schoolName: formData.get("schoolName") || "",
+        grade: formData.get("grade") || "",
+        groupCategory: formData.get("groupCategory") || "",
+        parentPhone: formData.get("parentPhone") || "",
+        isEnglish1Student: formData.get("isEnglish1Student") || "",
+        english1Center: formData.get("english1Center") || "",
+        paymentReceipt: fileInput && fileInput.files[0] ? fileInput.files[0].name : "Terlampir"
+      };
+
+      fetch("./api/send-email.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).catch(err => console.warn("Email API notice:", err));
+    } catch (err) {
+      console.warn("Email API notice:", err);
+    }
+
+    // Show Success Screen
+    section2.style.display = "none";
+    form.style.display = "none";
+    if (welcomeScreen) welcomeScreen.style.display = "none";
+    if (successView) successView.style.display = "block";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  // Submit Another Response
+  if (btnSubmitAnother) {
+    btnSubmitAnother.addEventListener("click", function (e) {
+      e.preventDefault();
+      form.reset();
+      if (fileInput) fileInput.value = "";
+      if (fileStatusBox) fileStatusBox.style.display = "none";
+      if (successView) successView.style.display = "none";
+      if (welcomeScreen) welcomeScreen.style.display = "block";
+      section1.style.display = "block";
+      section2.style.display = "none";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+
+  // Local Storage Data Handling
+  function getStoredResponses() {
+    try {
+      return JSON.parse(localStorage.getItem("spellingBeeResponses") || "[]");
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveResponseLocally(data) {
+    const current = getStoredResponses();
+    current.push(data);
+    localStorage.setItem("spellingBeeResponses", JSON.stringify(current));
+    updateResponseCount();
   }
 
   function updateResponseCount() {
-    const list = getSubmissions();
+    const list = getStoredResponses();
     if (responseCountText) {
       responseCountText.textContent = `${list.length} Jawaban tersimpan secara lokal`;
     }
   }
 
-  // Modal handlers
-  if (btnOpenResponses) {
-    btnOpenResponses.addEventListener('click', () => {
-      renderResponsesTable();
-      responsesModal.style.display = 'flex';
-    });
-  }
-
-  if (btnCloseModal) {
-    btnCloseModal.addEventListener('click', () => {
-      responsesModal.style.display = 'none';
-    });
-  }
-
-  if (responsesModal) {
-    responsesModal.addEventListener('click', (e) => {
-      if (e.target === responsesModal) {
-        responsesModal.style.display = 'none';
-      }
-    });
-  }
-
   function renderResponsesTable() {
-    const list = getSubmissions();
+    const list = getStoredResponses();
     if (!responsesTableBody) return;
 
     if (list.length === 0) {
-      responsesTableBody.innerHTML = `
-        <tr>
-          <td colspan="11" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
-        </tr>
-      `;
+      responsesTableBody.innerHTML = `<tr><td colspan="11" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td></tr>`;
       return;
     }
 
     responsesTableBody.innerHTML = list.map(item => `
       <tr>
-        <td>${escapeHtml(item.timestamp)}</td>
-        <td><strong>${escapeHtml(item.fullName)}</strong></td>
-        <td>${escapeHtml(item.birthDetails)}</td>
-        <td>${escapeHtml(item.schoolName)}</td>
-        <td>${escapeHtml(item.grade)}</td>
-        <td>${escapeHtml(item.groupCategory)}</td>
-        <td>${escapeHtml(item.parentPhone)}</td>
-        <td>${escapeHtml(item.isEnglish1Student)}</td>
-        <td>${escapeHtml(item.english1Center)}</td>
-        <td>${escapeHtml(item.infoSource)}</td>
-        <td><span style="background:#fceef4; color:#e00078; padding:2px 6px; border-radius:4px; font-weight:500;">${escapeHtml(item.branchCategory || '-')}</span></td>
+        <td>${item.timestamp}</td>
+        <td><strong>${item.fullName}</strong></td>
+        <td>${item.birthDetails}</td>
+        <td>${item.schoolName}</td>
+        <td>${item.grade}</td>
+        <td>${item.groupCategory}</td>
+        <td>${item.parentPhone}</td>
+        <td>${item.isEnglish1Student}</td>
+        <td>${item.english1Center}</td>
+        <td>${item.infoSource}</td>
+        <td>${item.fileName}</td>
       </tr>
-    `).join('');
+    `).join("");
   }
 
-  function escapeHtml(str) {
-    if (!str) return '';
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  }
-
-  // Export CSV
-  if (btnExportCSV) {
-    btnExportCSV.addEventListener('click', () => {
-      const list = getSubmissions();
-      if (list.length === 0) {
-        alert('Tidak ada data untuk diexport.');
-        return;
-      }
-
-      const headers = [
-        'Timestamp',
-        'Nama Lengkap Peserta',
-        'Tempat & Tgl Lahir',
-        'Asal Sekolah',
-        'Kelas',
-        'Kategori Group',
-        'No Telpon Ortu',
-        'Sumber Informasi',
-        'Siswa English 1',
-        'English 1 Center',
-        'Kategori Branch'
-      ];
-
-      const rows = list.map(item => [
-        `"${item.timestamp}"`,
-        `"${item.fullName.replace(/"/g, '""')}"`,
-        `"${item.birthDetails.replace(/"/g, '""')}"`,
-        `"${item.schoolName.replace(/"/g, '""')}"`,
-        `"${item.grade}"`,
-        `"${item.groupCategory}"`,
-        `"${item.parentPhone}"`,
-        `"${item.infoSource}"`,
-        `"${item.isEnglish1Student}"`,
-        `"${item.english1Center}"`,
-        `"${item.branchCategory || ''}"`
-      ]);
-
-      const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' 
-        + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement('a');
-      link.setAttribute('href', encodedUri);
-      link.setAttribute('download', `Spelling_Bee_2026_Registration_${Date.now()}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+  // Modal Dialog Handlers
+  if (btnOpenResponses) {
+    btnOpenResponses.addEventListener("click", function () {
+      renderResponsesTable();
+      if (responsesModal) responsesModal.style.display = "flex";
     });
   }
 
-  // Clear All Data
+  if (btnCloseModal) {
+    btnCloseModal.addEventListener("click", function () {
+      if (responsesModal) responsesModal.style.display = "none";
+    });
+  }
+
   if (btnClearData) {
-    btnClearData.addEventListener('click', () => {
-      if (confirm('Apakah Anda yakin ingin menghapus SELURUH data pendaftaran yang tersimpan di browser ini?')) {
-        localStorage.removeItem('spelling_bee_submissions');
+    btnClearData.addEventListener("click", function () {
+      if (confirm("Apakah Anda yakin ingin menghapus seluruh data pendaftaran yang tersimpan secara lokal?")) {
+        localStorage.removeItem("spellingBeeResponses");
         renderResponsesTable();
         updateResponseCount();
       }
     });
   }
 
-  // Initial load
-  updateResponseCount();
-}
+  if (btnExportCSV) {
+    btnExportCSV.addEventListener("click", function () {
+      const list = getStoredResponses();
+      if (list.length === 0) {
+        alert("Belum ada data untuk diexport!");
+        return;
+      }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initApp);
-} else {
-  initApp();
-}
+      const headers = ["Waktu", "Nama Peserta", "Email", "Tempat Tgl Lahir", "Sekolah", "Kelas", "Group", "No Telp Ortu", "Siswa E1", "Center", "Info Source", "File"];
+      const rows = list.map(item => [
+        `"${item.timestamp}"`,
+        `"${item.fullName}"`,
+        `"${item.email}"`,
+        `"${item.birthDetails}"`,
+        `"${item.schoolName}"`,
+        `"${item.grade}"`,
+        `"${item.groupCategory}"`,
+        `"${item.parentPhone}"`,
+        `"${item.isEnglish1Student}"`,
+        `"${item.english1Center}"`,
+        `"${item.infoSource}"`,
+        `"${item.fileName}"`
+      ]);
+
+      const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `spelling_bee_responses_malang_${Date.now()}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  }
+
+  // Initialize response count display on load
+  updateResponseCount();
+});

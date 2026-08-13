@@ -17,7 +17,7 @@ $to = $data['email'];
 $participantName = htmlspecialchars($data['fullName'] ?? 'Peserta');
 $subject = "Konfirmasi Pendaftaran - The 19th Spelling Bee Regional Competition 2026";
 
-// Template HTML Email Konfirmasi Pendaftaran (Sesuai Wording & KV MarCom Farid)
+// Template HTML Email Konfirmasi Pendaftaran (Disesuaikan untuk English 1 Malang)
 $htmlMessage = '
 <!DOCTYPE html>
 <html>
@@ -35,7 +35,7 @@ $htmlMessage = '
           <!-- Header Banner Image / Key Visual (Google Style Centered Top Banner) -->
           <tr>
             <td style="padding: 32px 32px 16px 32px; text-align: center; background-color: #ffffff;">
-              <img src="https://english1spellingbee.com/Surabaya/api/assets_email/SB19th_e-Mail-Banner-01.png" alt="TERIMA KASIH! Pendaftaran Anda sedang diproses - English 1 Spelling Bee 2026" style="max-width: 100%; width: 540px; height: auto; display: block; margin: 0 auto; border: 0; border-radius: 8px;">
+              <img src="https://english1spellingbee.com/Malang/api/assets_email/SB19th_e-Mail-Banner-01.png" alt="TERIMA KASIH! Pendaftaran Anda sedang diproses - English 1 Spelling Bee 2026" style="max-width: 100%; width: 540px; height: auto; display: block; margin: 0 auto; border: 0; border-radius: 8px;">
             </td>
           </tr>
 
@@ -48,7 +48,7 @@ $htmlMessage = '
               </p>
 
               <p style="font-size:15px; color:#0f172a; margin:16px 0; line-height:1.6;">
-                Jika ada pertanyaan atau kendala, silahkan menghubungi official hotline number English 1 Surabaya di <strong>0822-2000-1000</strong>.
+                Jika ada pertanyaan atau kendala, silahkan menghubungi official hotline number English 1 Malang di <strong>0822-2000-1000</strong>.
               </p>
 
               <p style="font-size:16px; font-weight:600; color:#e00078; margin:24px 0 0 0;">
@@ -62,17 +62,13 @@ $htmlMessage = '
                 <tr>
                   <td style="font-size:14px; color:#475569; line-height:1.5;">
                     <p style="margin:0 0 12px 0;">Regards,</p>
-                    <p style="margin:0 0 2px 0; font-weight:700; color:#0f172a; font-size:15px;">English1 Surabaya</p>
-                    <p style="margin:0 0 16px 0; color:#64748b; font-size:13px;">Marketing Communication English 1 Eduka Group</p>
-                    
+                    <p style="margin:0 0 2px 0; font-weight:700; color:#0f172a; font-size:15px;">English1 Malang</p>
+
                     <!-- English 1 Logo Image -->
                     <div style="margin: 16px 0;">
-                      <img src="https://english1spellingbee.com/Surabaya/api/assets_email/english1.png" alt="English 1 Logo" style="height: 38px; width: auto; display: block; border: 0;">
+                      <img src="https://english1spellingbee.com/Malang/api/assets_email/english1.png" alt="English 1 Logo" style="height: 38px; width: auto; display: block; border: 0;">
                     </div>
 
-                    <p style="margin:0 0 4px 0; font-weight:600; color:#1e293b;">English 1 Eduka Group</p>
-                    <p style="margin:0 0 4px 0; color:#64748b; font-size:13px;">Jl. Pemuda 33-37 Surabaya</p>
-                    <p style="margin:0 0 4px 0; color:#64748b; font-size:13px;">P: (031) 5484000 | M: +6282257922728</p>
                     <p style="margin:0;">
                       <a href="https://www.english1.co.id" target="_blank" style="color:#e00078; text-decoration:none; font-weight:500; font-size:13px;">www.english1.co.id</a>
                     </p>
@@ -82,14 +78,6 @@ $htmlMessage = '
 
             </td>
           </tr>
-
-          <!-- Footer -->
-          <tr>
-            <td style="padding:16px 32px; background-color:#f8fafc; border-top:1px solid #e2e8f0; text-align:center; font-size:12px; color:#94a3b8;">
-              © 2026 English 1 Eduka Group. All rights reserved.
-            </td>
-          </tr>
-
         </table>
       </td>
     </tr>
@@ -105,7 +93,7 @@ function sendGmailSMTP($to, $subject, $htmlContent) {
     $username = 'info.ef@edukagroup.com';
     $password = 'cncuqdjtgnctwcuo'; // Gmail App Password 16 Digit
     $fromEmail = 'info.ef@edukagroup.com';
-    $fromName = 'English 1 Surabaya';
+    $fromName = 'English 1 Malang';
 
     $socket = @fsockopen($smtpHost, $smtpPort, $errno, $errstr, 15);
     if (!$socket) {
