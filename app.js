@@ -136,6 +136,7 @@ function initApp() {
   function updateBranchCard(shouldScroll = false) {
     const formData = new FormData(form);
     const isStudent = formData.get('isEnglish1Student'); // "Ya" or "Tidak"
+    const isEarlyBird = new Date() <= new Date('2026-09-06T23:59:59');
 
     allBranchCards.forEach(card => card.style.display = 'none');
     currentCalculatedBranch = '';
@@ -146,7 +147,9 @@ function initApp() {
 
     if (isStudent === 'Ya') {
       activeCard = branchStudentGroup1;
-      currentCalculatedBranch = 'Siswa English 1 - Rp 100.000';
+      currentCalculatedBranch = isEarlyBird
+        ? 'Siswa English 1 (Early Bird) - Rp 100.000'
+        : 'Siswa English 1 (Normal) - Rp 150.000';
       if (wasStudentCard) {
         wasStudentCard.style.display = 'none';
         wasStudentCard.dataset.required = 'false';
@@ -156,7 +159,9 @@ function initApp() {
       }
     } else {
       activeCard = branchNonstudentGroup1;
-      currentCalculatedBranch = 'Non-Siswa English 1 (Umum) - Rp 200.000';
+      currentCalculatedBranch = isEarlyBird
+        ? 'Non-Siswa English 1 (Early Bird) - Rp 200.000'
+        : 'Non-Siswa English 1 (Normal) - Rp 250.000';
       if (wasStudentCard) {
         wasStudentCard.style.display = 'block';
         wasStudentCard.dataset.required = 'true';
