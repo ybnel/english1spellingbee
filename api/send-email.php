@@ -104,6 +104,14 @@ $htmlMessage = '
                 <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Pernyataan Kebenaran Data / Data Verification Statement</div>
                 <div style="font-size:14px; color:#16a34a; background:#f0fdf4; padding:10px 14px; border-radius:6px; border:1px solid #bbf7d0;">✓ ' . htmlspecialchars($data['dataAgreement'] ?? 'Saya setuju & data sudah benar') . '</div>
               </div>
+              <div style="margin-bottom:16px;">
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Kategori & Biaya Pendaftaran / Registration Category & Fee</div>
+                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['branchCategory'] ?? '-') . '</div>
+              </div>
+              <div style="margin-bottom:16px;">
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Bukti Pembayaran / Uploaded Payment Receipt</div>
+                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['paymentReceipt'] ?? '-') . '</div>
+              </div>
             </td>
           </tr>
           <tr>

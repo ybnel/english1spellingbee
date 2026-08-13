@@ -4,7 +4,7 @@ function initApp() {
   const section1 = document.getElementById('section1');
   const section2 = document.getElementById('section2');
   const successView = document.getElementById('successView');
-  
+
   const btnNext = document.getElementById('btnNext');
   const btnBack = document.getElementById('btnBack');
   const btnSubmitAnother = document.getElementById('btnSubmitAnother');
@@ -98,7 +98,7 @@ function initApp() {
         const file = paymentReceiptInput.files[0];
         if (fileNameDisplay) fileNameDisplay.textContent = file.name;
         if (fileStatusBox) fileStatusBox.style.display = 'flex';
-        
+
         const uploadCard = paymentReceiptInput.closest('.form-card');
         if (uploadCard) uploadCard.classList.remove('error-state');
       }
@@ -140,8 +140,45 @@ function initApp() {
 
   // Calculate pricing info for Lombok Kolektif
   function updateBranchCard() {
-    const isEarlyBird = new Date() <= new Date('2026-09-10T23:59:59');
+    const isEarlyBird = new Date() <= new Date('2026-09-06T23:59:59');
     currentCalculatedBranch = isEarlyBird ? 'Early Bird - Rp 125.000' : 'Normal - Rp 150.000';
+
+    const paymentDetailsEl = document.querySelector('#branch-student-group1 .payment-details');
+    if (paymentDetailsEl) {
+      if (isEarlyBird) {
+        paymentDetailsEl.innerHTML = 'Early Bird Period (s.d tgl 6 September 2026): <strong>Rp 125.000</strong> | Transfer to bank account <strong>BCA 3845205200 PT. Aplus Lorem Indo</strong>';
+      } else {
+        paymentDetailsEl.innerHTML = 'Normal Period (mulai tgl 7 September 2026): <strong>Rp 150.000</strong> | Transfer to bank account <strong>BCA 3845205200 PT. Aplus Lorem Indo</strong>';
+      }
+    }
+
+    if (branchStudentGroup1) {
+      branchStudentGroup1.style.display = 'block';
+    }
+  }
+
+  // Navigation handlers
+  if (btnNext) {
+    btnNext.addEventListener('click', () => {
+      if (validateCardSection(section1)) {
+        updateBranchCard();
+        section1.style.display = 'none';
+        section2.style.display = 'block';
+        const section2TitleCard = section2.querySelector('.title-card');
+        if (section2TitleCard) setActiveCard(section2TitleCard);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  }
+
+  if (btnBack) {
+    btnBack.addEventListener('click', () => {
+      section2.style.display = 'none';
+      section1.style.display = 'block';
+      const titleCard = section1.querySelector('.title-card');
+      if (titleCard) setActiveCard(titleCard);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   }
 
   const wasStudentCard = document.getElementById('wasStudentCard');
@@ -291,24 +328,57 @@ function initApp() {
             card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           }
         } else if (activeSection === section1) {
+          if (btnNext) btnNext.click();
+        } else if (activeSection === section2) {
           handleFormSubmit();
         }
       }
     }
   });
 
-  function handleFormSubmit(e) {
+  function getFileData(file) {
+    return new Promise((resolve) => {
+      if (!file) {
+        resolve({ fileData: null, fileName: null, fileType: null });
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target.result || '';
+        const base64 = result.includes(',') ? result.split(',')[1] : result;
+        resolve({
+          fileData: base64,
+          fileName: file.name,
+          fileType: file.type || 'image/jpeg'
+        });
+      };
+      reader.onerror = () => {
+        resolve({ fileData: null, fileName: file.name, fileType: null });
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function handleFormSubmit(e) {
     if (e) {
       e.preventDefault();
       e.stopPropagation();
     }
 
-    // Validate Section 1 inputs
-    if (!validateCardSection(section1)) return false;
+    // Validate Section 2 inputs
+    if (!validateCardSection(section2)) return false;
 
     updateBranchCard();
 
     const formData = new FormData(form);
+    let receiptName = 'Pendaftaran Kolektif';
+    let fileInfo = { fileData: null, fileName: null, fileType: null };
+
+    if (paymentReceiptInput && paymentReceiptInput.files && paymentReceiptInput.files.length > 0) {
+      const file = paymentReceiptInput.files[0];
+      receiptName = file.name;
+      fileInfo = await getFileData(file);
+    }
 
     const submission = {
       id: Date.now(),
@@ -333,7 +403,10 @@ function initApp() {
       dataAgreement: formData.get('dataAgreement') || 'Ya, saya setuju',
       english1Center: 'English 1 Lombok',
       branchCategory: currentCalculatedBranch,
-      paymentReceipt: 'Pendaftaran Kolektif (Tanpa Upload Pembayaran)'
+      paymentReceipt: receiptName,
+      fileData: fileInfo.fileData,
+      fileName: fileInfo.fileName,
+      fileType: fileInfo.fileType
     };
 
     saveSubmission(submission);
@@ -391,7 +464,7 @@ function initApp() {
           const data = JSON.parse(text);
           console.log('Response Receipt Email status:', data);
           return data;
-        } catch(e) {
+        } catch (e) {
           console.log('Response Receipt Email raw output:', text);
           return { status: 'info', message: text };
         }
@@ -418,7 +491,7 @@ function initApp() {
           const data = JSON.parse(text);
           console.log('Confirmation Email status:', data);
           return data;
-        } catch(e) {
+        } catch (e) {
           console.log('Confirmation Email raw output:', text);
           return { status: 'info', message: text };
         }
@@ -508,7 +581,7 @@ function initApp() {
     if (list.length === 0) {
       responsesTableBody.innerHTML = `
         <tr>
-          <td colspan="16" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
+          <td colspan="17" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
         </tr>
       `;
       return;
@@ -530,6 +603,7 @@ function initApp() {
         <td>${escapeHtml(item.infoSource)}</td>
         <td>${escapeHtml(item.isEnglish1Student)}</td>
         <td>${escapeHtml(item.wasEnglish1Student || '-')}</td>
+        <td>${escapeHtml(item.paymentReceipt || '-')}</td>
         <td>${escapeHtml(item.teacherName)}</td>
         <td>${escapeHtml(item.teacherPhone)}</td>
       </tr>
@@ -569,8 +643,9 @@ function initApp() {
         'Sumber Informasi',
         'Siswa English 1',
         'Pernah Siswa English 1',
+        'Bukti Pembayaran',
         'Nama Guru Pendamping',
-        'No WA Guru'
+        'No Telp Guru Pendamping (WA)'
       ];
 
       const rows = list.map(item => [
@@ -588,11 +663,12 @@ function initApp() {
         `"${item.infoSource || ''}"`,
         `"${item.isEnglish1Student || ''}"`,
         `"${item.wasEnglish1Student || '-'}"`,
+        `"${(item.paymentReceipt || '-').replace(/"/g, '""')}"`,
         `"${(item.teacherName || '').replace(/"/g, '""')}"`,
         `"${item.teacherPhone || ''}"`
       ]);
 
-      const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' 
+      const csvContent = 'data:text/csv;charset=utf-8,\uFEFF'
         + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
 
       const encodedUri = encodeURI(csvContent);
@@ -617,6 +693,7 @@ function initApp() {
   }
 
   // Initial load
+  updateBranchCard();
   updateResponseCount();
 }
 
