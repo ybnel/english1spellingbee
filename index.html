@@ -246,31 +246,25 @@
         <!-- Question 7: Info Source -->
         <section class="form-card" data-card data-required="true">
           <h2 class="question-title">
-            Dari mana Anda mendapatkan informasi kompetisi ini? / <em>Where did you hear about this competition?</em>
-            <span class="required-star">*</span>
+            Dari mana Anda mendapatkan informasi kompetisi / <em>Where did you hear about this competition?</em> <span class="required-star">*</span>
           </h2>
-          <div class="radio-group">
-            <label class="radio-option">
-              <input type="radio" name="infoSource" value="Staff English 1 Center" required>
-              <span class="custom-radio"></span>
-              <span>Staff English 1 Center</span>
-            </label>
-            <label class="radio-option">
-              <input type="radio" name="infoSource" value="Iklan" required>
-              <span class="custom-radio"></span>
-              <span>Iklan / Advertisement</span>
-            </label>
-            <label class="radio-option">
-              <input type="radio" name="infoSource" value="Instagram" required>
-              <span class="custom-radio"></span>
-              <span>Instagram</span>
-            </label>
+          <div class="dropdown-wrap">
+            <select id="infoSource" name="infoSource" class="select-input" required>
+              <option value="" disabled selected>Select</option>
+              <option value="Staff English 1 Center">Staff English 1 Center</option>
+              <option value="Iklan / Advertisement">Iklan / Advertisement</option>
+              <option value="Instagram">Instagram</option>
+              <option value="Sekolah / School">Sekolah / School</option>
+              <option value="Teman / Kerabat">Teman / Kerabat</option>
+            </select>
+            <div class="dropdown-icon">
+              <svg width="12" height="8" viewBox="0 0 12 8" fill="currentColor">
+                <path d="M1.41 0L6 4.58L10.59 0L12 1.41L6 7.41L0 1.41L1.41 0Z"/>
+              </svg>
+            </div>
           </div>
           <div class="error-msg">
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
-            </svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
             <span>This question is required</span>
           </div>
         </section>
