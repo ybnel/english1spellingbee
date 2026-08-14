@@ -16,7 +16,7 @@ if (!$data || !isset($data['email'])) {
 $to = $data['email'];
 $subject = "Thanks for filling out: Online Registration Form Spelling Bee Regional Competition 2026";
 
-// Desain Template HTML Response Receipt (Google Forms Style Disesuaikan untuk Malang)
+// Desain Template HTML Response Receipt (Google Forms Style)
 $htmlMessage = '
 <!DOCTYPE html>
 <html>
@@ -45,11 +45,7 @@ $htmlMessage = '
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['fullName'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Email</div>
-                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['email'] ?? '-') . '</div>
-              </div>
-              <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Tempat dan Tanggal Lahir / Place and Date of Birth</div>
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Tempat & Tanggal Lahir / Place and Date of Birth</div>
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['birthDetails'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
@@ -61,27 +57,46 @@ $htmlMessage = '
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['grade'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Kategori Group Kompetisi / Group Category</div>
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Kategori Group</div>
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['groupCategory'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">No Telpon Orangtua yang tersambung dengan WA / Parent\'s phone number connected with WA</div>
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Nama Orang Tua / Parent\'s Name</div>
+                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['parentName'] ?? '-') . '</div>
+              </div>
+              <div style="margin-bottom:16px;">
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">No Telp Ortu (WA) / Parent\'s Phone Number</div>
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['parentPhone'] ?? '-') . '</div>
+              </div>
+              <div style="margin-bottom:16px;">
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Alamat Lengkap Peserta / Participant Full Address</div>
+                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['address'] ?? '-') . '</div>
+              </div>
+              <div style="margin-bottom:16px;">
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Email Orang Tua / Parent\'s Email</div>
+                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['email'] ?? '-') . '</div>
+              </div>
+              <div style="margin-bottom:16px;">
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Sumber Informasi / Info Source</div>
+                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['infoSource'] ?? '-') . '</div>
+              </div>
+              <div style="margin-bottom:16px;">
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Siswa English 1 / Is English 1 Student</div>
+                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['isEnglish1Student'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
                 <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">English 1 Center</div>
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['english1Center'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Bukti Transfer / Payment Receipt</div>
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Bukti Pembayaran / Payment Receipt</div>
                 <div style="font-size:14px; color:#16a34a; background:#f0fdf4; padding:10px 14px; border-radius:6px; border:1px solid #bbf7d0;">📎 ' . htmlspecialchars($data['paymentReceipt'] ?? 'File Terupload') . '</div>
               </div>
             </td>
           </tr>
           <tr>
             <td style="padding:20px 32px; background-color:#f8f9fa; border-top:1px solid #dadce0; text-align:center; font-size:12px; color:#70757a;">
-              Email ini dikirim secara otomatis oleh <strong>English 1 Malang</strong>.<br>
-              Pertanyaan? Hubungi WhatsApp English 1 Malang.
+              Email ini dikirim secara otomatis oleh <strong>English 1 Malang</strong>.
             </td>
           </tr>
         </table>

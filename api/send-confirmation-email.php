@@ -48,7 +48,7 @@ $htmlMessage = '
               </p>
 
               <p style="font-size:15px; color:#0f172a; margin:16px 0; line-height:1.6;">
-                Jika ada pertanyaan atau kendala, silahkan menghubungi official hotline number English 1 Malang di <strong>0822-2000-1000</strong>.
+                Jika ada pertanyaan atau kendala, silahkan menghubungi official hotline number English 1 Malang di <strong>0813-1000-8245</strong>.
               </p>
 
               <p style="font-size:16px; font-weight:600; color:#e00078; margin:24px 0 0 0;">
