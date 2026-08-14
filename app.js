@@ -141,37 +141,32 @@ function initApp() {
   // Calculate & Show Branch Info Card based on Student status + Center choice
   function updateBranchCard(shouldScroll = false) {
     const formData = new FormData(form);
-    const isStudent = formData.get('isEnglish1Student'); // "Ya" or "Tidak"
     const center = formData.get('english1Center'); // Center choice
 
     allBranchCards.forEach(card => card.style.display = 'none');
-    currentCalculatedBranch = '';
+    currentCalculatedBranch = 'Kolektif Sekolah';
 
     if (!center) return;
 
-    const isGroup1 = center.includes('Hayam Wuruk') || center.includes('HW') || center.includes('Kuta');
-    let activeCard = null;
-
-    if (isGroup1) {
-      activeCard = (isStudent === 'Tidak') ? branchNonstudentGroup1 : branchStudentGroup1;
-      currentCalculatedBranch = 'Hayam Wuruk / Kuta';
-    } else {
-      activeCard = (isStudent === 'Tidak') ? branchNonstudentGroup2 : branchStudentGroup2;
-      currentCalculatedBranch = 'Gianyar / Gatsu Barat';
-    }
+    let activeCard = branchStudentGroup1;
 
     if (activeCard) {
-      const cutoffDate = new Date('2026-09-10T23:59:59');
+      const cutoffDate = new Date('2026-09-25T23:59:59');
       const isEarlyBird = new Date() <= cutoffDate;
+      const subtitleEl = activeCard.querySelector('.payment-subtitle');
       const detailsEl = activeCard.querySelector('.payment-details');
-      const bankAccount = isGroup1 ? 'BCA 7730234443 PT. EDUKA BALI UTAMA' : 'BCA 3845205200 PT. Aplus Lorem Indo';
+      const bankAccount = 'BCA 0113100777 a.n. PT Eduka Bahasa Utama';
+
+      if (subtitleEl) {
+        subtitleEl.textContent = 'Registration fee for Kolektif Sekolah';
+      }
 
       if (detailsEl) {
         if (isEarlyBird) {
-          const fee = 'Rp. 200.000';
-          detailsEl.innerHTML = `Early Bird Period (s.d 10 September 2026): <strong>${fee}</strong> | Transfer to bank account <strong>${bankAccount}</strong>`;
+          const fee = 'Rp. 125.000';
+          detailsEl.innerHTML = `Early Bird Period (s.d 25 September 2026): <strong>${fee}</strong> | Transfer to bank account <strong>${bankAccount}</strong>`;
         } else {
-          const fee = 'Rp. 250.000';
+          const fee = 'Rp. 150.000';
           detailsEl.innerHTML = `Normal Registration Period: <strong>${fee}</strong> | Transfer to bank account <strong>${bankAccount}</strong>`;
         }
       }
@@ -355,21 +350,21 @@ function initApp() {
       grade: formData.get('grade'),
       groupCategory: formData.get('groupCategory'),
       parentName: formData.get('parentName'),
+      email: formData.get('email'),
       parentPhone: formData.get('parentPhone'),
       address: formData.get('address'),
-      email: formData.get('email'),
-      teacherName: formData.get('teacherName'),
-      teacherPhone: formData.get('teacherPhone'),
       infoSource: formData.get('infoSource'),
       isEnglish1Student: formData.get('isEnglish1Student'),
       english1Center: formData.get('english1Center'),
       branchCategory: currentCalculatedBranch,
-      paymentReceipt: receiptFileName
+      paymentReceipt: receiptFileName,
+      teacherName: formData.get('teacherName'),
+      teacherPhone: formData.get('teacherPhone')
     };
 
     saveSubmission(submission);
 
-    // Send data & uploaded file to Google Sheets (Bali Region)
+    // Send data & uploaded file to Google Sheets (Malang Region)
     const receiptInput = document.getElementById('paymentReceipt');
     if (receiptInput && receiptInput.files.length > 0) {
       const file = receiptInput.files[0];
@@ -452,24 +447,33 @@ function initApp() {
       });
   }
 
-  // Google Sheets Webhook Sender
-  // Web App URL Google Apps Script Regional Bali
-  const GOOGLE_SCRIPT_URL_BALI = 'https://script.google.com/macros/s/AKfycbz2k2PP8Dp7_6gtvh_AqjvqeJrdU7ddUWxW9DeUIrlNWn9sAzMVJe70AzkYKgEFMCWOww/exec';
+  // Google Sheets Webhook Sender & Drive Folder URL
+  // Web App URL Google Apps Script Regional Malang
+  const GOOGLE_SCRIPT_URL_MALANG = 'https://script.google.com/macros/s/AKfycbzK9L8seGojo5rYZQ8EjDarFGf4f1_gW2Ct8OIEe1nke_XelmrBE_zWeQ2-HCQwqnM/exec';
+  const GOOGLE_DRIVE_FOLDER_ID_MALANG = '1kWX4ZJk5Pjb-_AhMMeKuS7Fq955TnB-a';
+  const GOOGLE_DRIVE_FOLDER_URL_MALANG = 'https://drive.google.com/drive/folders/1kWX4ZJk5Pjb-_AhMMeKuS7Fq955TnB-a?usp=sharing';
 
   function sendDataToGoogleSheets(payload) {
-    if (!GOOGLE_SCRIPT_URL_BALI) return;
+    if (!GOOGLE_SCRIPT_URL_MALANG) return;
 
-    fetch(GOOGLE_SCRIPT_URL_BALI, {
+    const fullPayload = {
+      ...payload,
+      folderId: GOOGLE_DRIVE_FOLDER_ID_MALANG,
+      driveFolderId: GOOGLE_DRIVE_FOLDER_ID_MALANG,
+      driveFolderUrl: GOOGLE_DRIVE_FOLDER_URL_MALANG
+    };
+
+    fetch(GOOGLE_SCRIPT_URL_MALANG, {
       method: 'POST',
       mode: 'no-cors',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(fullPayload)
     }).then(() => {
-      console.log('Data pendaftaran berhasil dikirim ke Google Sheets.');
+      console.log('Data pendaftaran berhasil dikirim ke Google Sheets Malang.');
     }).catch(err => {
-      console.error('Gagal mengirim data ke Google Sheets:', err);
+      console.error('Gagal mengirim data ke Google Sheets Malang:', err);
     });
   }
 
@@ -529,8 +533,8 @@ function initApp() {
     if (list.length === 0) {
       responsesTableBody.innerHTML = `
         <tr>
-          <td colspan="16" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
-        </tr>
+        <td colspan="16" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
+      </tr>
       `;
       return;
     }
@@ -540,7 +544,6 @@ function initApp() {
         <td>${escapeHtml(item.timestamp)}</td>
         <td><strong>${escapeHtml(item.fullName)}</strong></td>
         <td>${escapeHtml(item.birthDetails)}</td>
-        <td>${escapeHtml(item.citizenshipStatus)}</td>
         <td>${escapeHtml(item.schoolName)}</td>
         <td>${escapeHtml(item.grade)}</td>
         <td>${escapeHtml(item.groupCategory)}</td>
@@ -551,6 +554,7 @@ function initApp() {
         <td>${escapeHtml(item.infoSource)}</td>
         <td>${escapeHtml(item.isEnglish1Student)}</td>
         <td>${escapeHtml(item.english1Center)}</td>
+        <td>${escapeHtml(item.paymentReceipt)}</td>
         <td>${escapeHtml(item.teacherName)}</td>
         <td>${escapeHtml(item.teacherPhone)}</td>
       </tr>
@@ -579,7 +583,6 @@ function initApp() {
         'Timestamp',
         'Nama Lengkap Peserta',
         'Tempat & Tgl Lahir',
-        'Status WNI/WNA',
         'Asal Sekolah',
         'Kelas',
         'Kategori Group',
@@ -590,15 +593,15 @@ function initApp() {
         'Sumber Informasi',
         'Siswa English 1',
         'English 1 Center',
+        'Bukti Pembayaran',
         'Nama Guru Pendamping',
-        'No WA Guru'
+        'No Telp Guru Pendamping (WA)'
       ];
 
       const rows = list.map(item => [
         `"${item.timestamp}"`,
         `"${(item.fullName || '').replace(/"/g, '""')}"`,
         `"${(item.birthDetails || '').replace(/"/g, '""')}"`,
-        `"${(item.citizenshipStatus || '').replace(/"/g, '""')}"`,
         `"${(item.schoolName || '').replace(/"/g, '""')}"`,
         `"${item.grade || ''}"`,
         `"${item.groupCategory || ''}"`,
@@ -609,6 +612,7 @@ function initApp() {
         `"${item.infoSource || ''}"`,
         `"${item.isEnglish1Student || ''}"`,
         `"${item.english1Center || ''}"`,
+        `"${(item.paymentReceipt || '').replace(/"/g, '""')}"`,
         `"${(item.teacherName || '').replace(/"/g, '""')}"`,
         `"${item.teacherPhone || ''}"`
       ]);
