@@ -14,6 +14,7 @@ if (!$data || !isset($data['email'])) {
 }
 
 $to = $data['email'];
+$bcc = 'jeanny.hoedijono@edukagroup.com';
 $subject = "Thanks for filling out: Online Registration Form Kolektif Sekolah Spelling Bee Regional Competition 2026";
 
 // Desain Template HTML Response Receipt (Google Forms Style)
@@ -65,16 +66,16 @@ $htmlMessage = '
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['parentName'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Email Orang Tua / Parent\'s Email</div>
-                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['email'] ?? '-') . '</div>
-              </div>
-              <div style="margin-bottom:16px;">
                 <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Nomor telpon orang tua yang tersambung dengan WA / Parent\'s phone number connected with WA</div>
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['parentPhone'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
                 <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Alamat Lengkap Peserta / Participant\'s Full Address</div>
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['address'] ?? '-') . '</div>
+              </div>
+              <div style="margin-bottom:16px;">
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Email Orang Tua / Parent\'s Email</div>
+                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['email'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
                 <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Sumber Informasi / Info Source</div>
@@ -116,7 +117,7 @@ $htmlMessage = '
 ';
 
 // Fungsi Pengiriman SMTP Otomatis dengan Sertifikat TLS (smtp.gmail.com:587)
-function sendGmailSMTP($to, $subject, $htmlContent) {
+function sendGmailSMTP($to, $bcc, $subject, $htmlContent) {
     $smtpHost = 'smtp.gmail.com';
     $smtpPort = 587;
     $username = 'info.ef@edukagroup.com';
@@ -177,6 +178,11 @@ function sendGmailSMTP($to, $subject, $htmlContent) {
         return ["status" => false, "message" => "Alamat Email Penerima Ditolak: " . trim($rcptResponse)];
     }
 
+    // Kirim RCPT TO untuk BCC jika ada (tanpa menambahkan Bcc di header DATA agar tersembunyi dari user)
+    if (!empty($bcc)) {
+        $send("RCPT TO: <$bcc>"); $read();
+    }
+
     $send("DATA"); $read();
 
     $headers  = "MIME-Version: 1.0\r\n";
@@ -199,8 +205,8 @@ function sendGmailSMTP($to, $subject, $htmlContent) {
     }
 }
 
-// Jalankan Pengiriman SMTP
-$result = sendGmailSMTP($to, $subject, $htmlMessage);
+// Jalankan Pengiriman SMTP (dengan BCC ke jeanny.hoedijono@edukagroup.com)
+$result = sendGmailSMTP($to, $bcc, $subject, $htmlMessage);
 
 if ($result['status']) {
     echo json_encode(["status" => "success", "message" => "Email response receipt berhasil terkirim ke " . $to]);

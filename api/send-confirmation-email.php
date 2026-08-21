@@ -85,7 +85,7 @@ $htmlMessage = '
 </html>
 ';
 
-// Fungsi Pengiriman SMTP Gmail TLS (smtp.gmail.com:587)
+// Fungsi Pengiriman SMTP Otomatis dengan Sertifikat TLS (smtp.gmail.com:587)
 function sendGmailSMTP($to, $subject, $htmlContent) {
     $smtpHost = 'smtp.gmail.com';
     $smtpPort = 587;

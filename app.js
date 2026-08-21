@@ -205,15 +205,36 @@ function initApp() {
         // 1. Text, Tel, Email, File inputs
         const inputs = card.querySelectorAll('input:not([type="radio"]):not([type="checkbox"])');
         inputs.forEach(input => {
+          const val = input.value.trim();
+          const errorSpan = card.querySelector('.error-msg span');
+
           if (input.type === 'file') {
             if (!input.files || input.files.length === 0) fieldValid = false;
-          } else {
-            if (!input.value.trim()) {
+          } else if (!val) {
+            fieldValid = false;
+            if (errorSpan) errorSpan.textContent = 'This question is required';
+          } else if (input.id === 'parentPhone' || input.id === 'teacherPhone' || input.type === 'tel') {
+            const phoneClean = val.replace(/[\s-]/g, '');
+            const phoneRegex = /^(08|62|\+62)[0-9]{8,13}$/;
+            if (!phoneRegex.test(phoneClean)) {
               fieldValid = false;
-            } else if (input.type === 'email') {
-              const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-              if (!emailRegex.test(input.value.trim())) fieldValid = false;
+              if (errorSpan) errorSpan.textContent = 'Nomor WhatsApp tidak valid (contoh: 08123456789)';
             }
+          } else if (input.type === 'email' || input.id === 'email') {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(val)) {
+              fieldValid = false;
+              if (errorSpan) errorSpan.textContent = 'Format email tidak valid (contoh: name@gmail.com)';
+            }
+          } else if (input.id === 'birthDetails') {
+            const hasDigit = /\d/.test(val);
+            if (val.length < 5 || !hasDigit) {
+              fieldValid = false;
+              if (errorSpan) errorSpan.textContent = 'Harap sertakan Tempat & Tanggal Lahir (contoh: Denpasar, 15 Januari 2015)';
+            }
+          } else if (val.length < 2) {
+            fieldValid = false;
+            if (errorSpan) errorSpan.textContent = 'Jawaban terlalu pendek';
           }
         });
 
@@ -545,9 +566,9 @@ function initApp() {
         <td>${escapeHtml(item.grade)}</td>
         <td>${escapeHtml(item.groupCategory)}</td>
         <td>${escapeHtml(item.parentName)}</td>
-        <td>${escapeHtml(item.email)}</td>
         <td>${escapeHtml(item.parentPhone)}</td>
         <td>${escapeHtml(item.address)}</td>
+        <td>${escapeHtml(item.email)}</td>
         <td>${escapeHtml(item.infoSource)}</td>
         <td>${escapeHtml(item.isEnglish1Student)}</td>
         <td>${escapeHtml(item.english1Center)}</td>
@@ -584,9 +605,9 @@ function initApp() {
         'Kelas',
         'Kategori Group',
         'Nama Orang Tua',
-        'Email Orang Tua',
         'No Telp Ortu (WA)',
         'Alamat Lengkap Peserta',
+        'Email Orang Tua',
         'Sumber Informasi',
         'Siswa English 1',
         'English 1 Center',
@@ -603,9 +624,9 @@ function initApp() {
         `"${item.grade || ''}"`,
         `"${item.groupCategory || ''}"`,
         `"${(item.parentName || '').replace(/"/g, '""')}"`,
-        `"${item.email || ''}"`,
         `"${item.parentPhone || ''}"`,
         `"${(item.address || '').replace(/"/g, '""')}"`,
+        `"${item.email || ''}"`,
         `"${item.infoSource || ''}"`,
         `"${item.isEnglish1Student || ''}"`,
         `"${item.english1Center || ''}"`,
