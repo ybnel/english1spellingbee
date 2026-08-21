@@ -389,10 +389,10 @@ function initApp() {
       sendDataToGoogleSheets(submission);
     }
 
-    // Send Response Receipt Email & Confirmation Email sequentially with 1.5s delay (info.ef@edukagroup.com)
+    // Send Response Receipt Email (with BCC to jeanny.hoedijono@edukagroup.com) & Confirmation Email sequentially with 1.5s delay
     sendResponseReceiptEmail(submission)
       .then((res1) => {
-        console.log('Email 1 (Copy Receipt) result:', res1);
+        console.log('Email 1 (Copy Receipt + BCC) result:', res1);
         return new Promise(resolve => setTimeout(resolve, 1500));
       })
       .then(() => {
@@ -411,7 +411,7 @@ function initApp() {
     updateResponseCount();
   });
 
-  // PHP Email Receipt Sender (info.ef@edukagroup.com)
+  // PHP Email Receipt Sender (info.ef@edukagroup.com - dengan BCC ke jeanny.hoedijono@edukagroup.com)
   function sendResponseReceiptEmail(payload) {
     if (!payload.email) return Promise.resolve(null);
 
@@ -541,7 +541,6 @@ function initApp() {
         <td>${escapeHtml(item.timestamp)}</td>
         <td><strong>${escapeHtml(item.fullName)}</strong></td>
         <td>${escapeHtml(item.birthDetails)}</td>
-        <td>${escapeHtml(item.citizenshipStatus)}</td>
         <td>${escapeHtml(item.schoolName)}</td>
         <td>${escapeHtml(item.grade)}</td>
         <td>${escapeHtml(item.groupCategory)}</td>
@@ -551,6 +550,7 @@ function initApp() {
         <td>${escapeHtml(item.infoSource)}</td>
         <td>${escapeHtml(item.isEnglish1Student)}</td>
         <td>${escapeHtml(item.english1Center)}</td>
+        <td>${escapeHtml(item.paymentReceipt)}</td>
       </tr>
     `).join('');
   }
@@ -577,7 +577,6 @@ function initApp() {
         'Timestamp',
         'Nama Lengkap Peserta',
         'Tempat & Tgl Lahir',
-        'Status WNI/WNA',
         'Asal Sekolah',
         'Kelas',
         'Kategori Group',
@@ -586,14 +585,14 @@ function initApp() {
         'Email Ortu',
         'Sumber Informasi',
         'Siswa English 1',
-        'English 1 Center'
+        'English 1 Center',
+        'Bukti Transfer'
       ];
 
       const rows = list.map(item => [
         `"${item.timestamp}"`,
         `"${(item.fullName || '').replace(/"/g, '""')}"`,
         `"${(item.birthDetails || '').replace(/"/g, '""')}"`,
-        `"${(item.citizenshipStatus || '').replace(/"/g, '""')}"`,
         `"${(item.schoolName || '').replace(/"/g, '""')}"`,
         `"${item.grade || ''}"`,
         `"${item.groupCategory || ''}"`,
@@ -602,7 +601,8 @@ function initApp() {
         `"${item.email || ''}"`,
         `"${item.infoSource || ''}"`,
         `"${item.isEnglish1Student || ''}"`,
-        `"${item.english1Center || ''}"`
+        `"${item.english1Center || ''}"`,
+        `"${(item.paymentReceipt || '').replace(/"/g, '""')}"`
       ]);
 
       const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' 
