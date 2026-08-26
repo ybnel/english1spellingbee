@@ -9,8 +9,8 @@ $json = file_get_contents('php://input');
 $data = json_decode($json, true);
 
 if (!$data || !isset($data['email'])) {
-    echo json_encode(["status" => "error", "message" => "Invalid data or missing email"]);
-    exit;
+  echo json_encode(["status" => "error", "message" => "Invalid data or missing email"]);
+  exit;
 }
 
 $to = $data['email'];
@@ -86,120 +86,131 @@ $htmlMessage = '
 ';
 
 // Fungsi Pengiriman SMTP Gmail TLS (smtp.gmail.com:587)
-function sendGmailSMTP($to, $subject, $htmlContent) {
-    $smtpHost = 'smtp.gmail.com';
-    $smtpPort = 587;
-    $username = 'info.ef@edukagroup.com';
-    $password = 'cncuqdjtgnctwcuo'; // Gmail App Password 16 Digit
-    $fromEmail = 'info.ef@edukagroup.com';
-    $fromName = 'English 1 Bali';
+function sendGmailSMTP($to, $subject, $htmlContent)
+{
+  $smtpHost = 'smtp.gmail.com';
+  $smtpPort = 587;
+  $username = 'info.ef@edukagroup.com';
+  $password = 'cncuqdjtgnctwcuo'; // Gmail App Password 16 Digit
+  $fromEmail = 'info.ef@edukagroup.com';
+  $fromName = 'English 1 Bali';
 
-    $socket = @fsockopen($smtpHost, $smtpPort, $errno, $errstr, 15);
-    if (!$socket) {
-        return ["status" => false, "message" => "Gagal terhubung ke SMTP host: $errstr"];
+  $socket = @fsockopen($smtpHost, $smtpPort, $errno, $errstr, 15);
+  if (!$socket) {
+    return ["status" => false, "message" => "Gagal terhubung ke SMTP host: $errstr"];
+  }
+
+  $read = function () use ($socket) {
+    $response = "";
+    while ($str = fgets($socket, 515)) {
+      $response .= $str;
+      if (substr($str, 3, 1) == " ")
+        break;
     }
+    return $response;
+  };
 
-    $read = function() use ($socket) {
-        $response = "";
-        while ($str = fgets($socket, 515)) {
-            $response .= $str;
-            if (substr($str, 3, 1) == " ") break;
-        }
-        return $response;
-    };
+  $send = function ($cmd) use ($socket) {
+    fputs($socket, $cmd . "\r\n");
+  };
 
-    $send = function($cmd) use ($socket) {
-        fputs($socket, $cmd . "\r\n");
-    };
+  $read(); // 220
+  $send("EHLO localhost");
+  $read();
+  $send("STARTTLS");
+  $read(); // 220
 
-    $read(); // 220
-    $send("EHLO localhost"); $read();
-    $send("STARTTLS"); $read(); // 220
+  $cryptoMethod = STREAM_CRYPTO_METHOD_TLS_CLIENT;
+  if (defined('STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT')) {
+    $cryptoMethod |= STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
+  }
+  if (defined('STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT')) {
+    $cryptoMethod |= STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT;
+  }
 
-    $cryptoMethod = STREAM_CRYPTO_METHOD_TLS_CLIENT;
-    if (defined('STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT')) {
-        $cryptoMethod |= STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
-    }
-    if (defined('STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT')) {
-        $cryptoMethod |= STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT;
-    }
-
-    if (!stream_socket_enable_crypto($socket, true, $cryptoMethod)) {
-        fclose($socket);
-        return ["status" => false, "message" => "Enkripsi TLS Gagal"];
-    }
-
-    $send("EHLO localhost"); $read();
-    $send("AUTH LOGIN"); $read();
-    $send(base64_encode($username)); $read();
-    $send(base64_encode($password)); $authResponse = $read();
-
-    if (strpos($authResponse, '235') === false) {
-        fclose($socket);
-        return ["status" => false, "message" => "Autentikasi SMTP Gagal: " . trim($authResponse)];
-    }
-
-    $send("MAIL FROM: <$fromEmail>"); $read();
-    $send("RCPT TO: <$to>"); $rcptResponse = $read();
-
-    if (strpos($rcptResponse, '250') === false) {
-        fclose($socket);
-        return ["status" => false, "message" => "Alamat Email Penerima Ditolak: " . trim($rcptResponse)];
-    }
-
-    $send("DATA"); $read();
-
-    $headers  = "MIME-Version: 1.0\r\n";
-    $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-    $headers .= "From: $fromName <$fromEmail>\r\n";
-    $headers .= "To: <$to>\r\n";
-    $headers .= "Subject: $subject\r\n";
-    $headers .= "Date: " . date("r") . "\r\n";
-
-    $send($headers . "\r\n" . $htmlContent . "\r\n.");
-    $dataResponse = $read();
-
-    $send("QUIT");
+  if (!stream_socket_enable_crypto($socket, true, $cryptoMethod)) {
     fclose($socket);
+    return ["status" => false, "message" => "Enkripsi TLS Gagal"];
+  }
 
-    if (strpos($dataResponse, '250') !== false) {
-        return ["status" => true, "message" => "Email konfirmasi terkirim"];
-    } else {
-        return ["status" => false, "message" => "Gagal mengirim data email: " . trim($dataResponse)];
-    }
+  $send("EHLO localhost");
+  $read();
+  $send("AUTH LOGIN");
+  $read();
+  $send(base64_encode($username));
+  $read();
+  $send(base64_encode($password));
+  $authResponse = $read();
+
+  if (strpos($authResponse, '235') === false) {
+    fclose($socket);
+    return ["status" => false, "message" => "Autentikasi SMTP Gagal: " . trim($authResponse)];
+  }
+
+  $send("MAIL FROM: <$fromEmail>");
+  $read();
+  $send("RCPT TO: <$to>");
+  $rcptResponse = $read();
+
+  if (strpos($rcptResponse, '250') === false) {
+    fclose($socket);
+    return ["status" => false, "message" => "Alamat Email Penerima Ditolak: " . trim($rcptResponse)];
+  }
+
+  $send("DATA");
+  $read();
+
+  $headers = "MIME-Version: 1.0\r\n";
+  $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+  $headers .= "From: $fromName <$fromEmail>\r\n";
+  $headers .= "To: <$to>\r\n";
+  $headers .= "Subject: $subject\r\n";
+  $headers .= "Date: " . date("r") . "\r\n";
+
+  $send($headers . "\r\n" . $htmlContent . "\r\n.");
+  $dataResponse = $read();
+
+  $send("QUIT");
+  fclose($socket);
+
+  if (strpos($dataResponse, '250') !== false) {
+    return ["status" => true, "message" => "Email konfirmasi terkirim"];
+  } else {
+    return ["status" => false, "message" => "Gagal mengirim data email: " . trim($dataResponse)];
+  }
 }
 
 // Eksekusi Pengiriman SMTP
 $result = sendGmailSMTP($to, $subject, $htmlMessage);
 
 if ($result['status']) {
-    // Opsional: Jika dikirimkan appsScriptUrl & rowIndex, update otomatis Kolom Status Email di Google Sheets ke TRUE
-    if (!empty($data['appsScriptUrl']) && !empty($data['rowIndex'])) {
-        $updatePayload = json_encode([
-            "action" => "updateStatus",
-            "rowIndex" => $data['rowIndex'],
-            "statusValue" => true
-        ]);
-        
-        $ch = curl_init($data['appsScriptUrl']);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $updatePayload);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-        curl_exec($ch);
-        curl_close($ch);
-    }
+  // Opsional: Jika dikirimkan appsScriptUrl & rowIndex, update otomatis Kolom Status Email di Google Sheets ke TRUE
+  if (!empty($data['appsScriptUrl']) && !empty($data['rowIndex'])) {
+    $updatePayload = json_encode([
+      "action" => "updateStatus",
+      "rowIndex" => $data['rowIndex'],
+      "statusValue" => true
+    ]);
 
-    echo json_encode([
-        "status" => "success", 
-        "emailSent" => true,
-        "statusValue" => true,
-        "message" => "Email konfirmasi berhasil terkirim ke " . $to
-    ]);
+    $ch = curl_init($data['appsScriptUrl']);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $updatePayload);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+    curl_exec($ch);
+    curl_close($ch);
+  }
+
+  echo json_encode([
+    "status" => "success",
+    "emailSent" => true,
+    "statusValue" => true,
+    "message" => "Email konfirmasi berhasil terkirim ke " . $to
+  ]);
 } else {
-    echo json_encode([
-        "status" => "error", 
-        "emailSent" => false,
-        "statusValue" => false,
-        "message" => $result['message']
-    ]);
+  echo json_encode([
+    "status" => "error",
+    "emailSent" => false,
+    "statusValue" => false,
+    "message" => $result['message']
+  ]);
 }

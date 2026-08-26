@@ -14,7 +14,13 @@ if (!$data || !isset($data['email'])) {
 }
 
 $to = $data['email'];
-$bcc = 'jeanny.hoedijono@edukagroup.com';
+$bcc = [
+    'jeanny.hoedijono@edukagroup.com',
+    'evania.althea@edukagroup.com',
+    'juwita.langi@edukagroup.com',
+    'Widiyanti.wang@edukagroup.com',
+    'sieny.aprillisia@edukagroup.com'
+];
 $subject = "Thanks for filling out: Online Registration Form Spelling Bee Regional Competition 2026";
 
 // Desain Template HTML Response Receipt (Google Forms Style)
@@ -32,7 +38,7 @@ $htmlMessage = '
             <td style="padding:24px 32px 16px 32px; border-bottom:1px solid #dadce0;">
               <h1 style="font-size:20px; font-weight:500; color:#202124; margin:0 0 8px 0;">
                 Thanks for filling out: <span style="color:#e00078; font-weight:700;">Online Registration Form Spelling Bee Regional Competition 2026</span>
-              </h1>
+              </h1> 
               <p style="font-size:14px; color:#5f6368; margin:0;">Here\'s what was received.</p>
             </td>
           </tr>
@@ -172,7 +178,12 @@ function sendGmailSMTP($to, $bcc, $subject, $htmlContent) {
 
     // Kirim RCPT TO untuk BCC jika ada (tanpa menambahkan Bcc di header DATA agar tersembunyi dari user)
     if (!empty($bcc)) {
-        $send("RCPT TO: <$bcc>"); $read();
+        $bccList = is_array($bcc) ? $bcc : array_map('trim', explode(',', $bcc));
+        foreach ($bccList as $b) {
+            if (!empty($b)) {
+                $send("RCPT TO: <" . trim($b) . ">"); $read();
+            }
+        }
     }
 
     $send("DATA"); $read();
