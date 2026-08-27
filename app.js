@@ -352,21 +352,22 @@ function initApp() {
 
     saveSubmission(submission);
 
-    // Send data & uploaded file to Google Sheets (Surabaya Region)
+    // Send data & uploaded file to Google Sheets (Surabaya Region with Auto Compression)
     const receiptInput = document.getElementById('paymentReceipt');
     if (receiptInput && receiptInput.files.length > 0) {
       const file = receiptInput.files[0];
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        const fileBase64 = evt.target.result.split(',')[1];
-        sendDataToGoogleSheets({
-          ...submission,
-          fileName: file.name,
-          fileType: file.type,
-          fileData: fileBase64
+      compressImage(file)
+        .then((fileBase64) => {
+          sendDataToGoogleSheets({
+            ...submission,
+            fileName: file.name.replace(/\.[^/.]+$/, "") + ".jpg",
+            fileType: "image/jpeg",
+            fileData: fileBase64
+          });
+        })
+        .catch(() => {
+          sendDataToGoogleSheets(submission);
         });
-      };
-      reader.readAsDataURL(file);
     } else {
       sendDataToGoogleSheets(submission);
     }
@@ -613,4 +614,39 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initApp);
 } else {
   initApp();
+}
+
+// Helper Kompresi Gambar Bukti Transfer (Kamera HP 10MB -> ~200KB)
+function compressImage(file, maxWidth = 1000, quality = 0.7) {
+  return new Promise((resolve, reject) => {
+    if (!file || !file.type.startsWith('image/')) {
+      return reject(new Error('Not an image file'));
+    }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (e) => {
+      const img = new Image();
+      img.src = e.target.result;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+        resolve(dataUrl.split(',')[1]);
+      };
+      img.onerror = (err) => reject(err);
+    };
+    reader.onerror = (err) => reject(err);
+  });
 }
