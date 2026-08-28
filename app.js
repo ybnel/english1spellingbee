@@ -352,7 +352,7 @@ function initApp() {
 
     saveSubmission(submission);
 
-    // Send data & uploaded file to Google Sheets (Surabaya Region with Auto Compression)
+    // Send data & uploaded file to Google Sheets (Surabaya Region with Auto Compression + Fallback for HEIC/PDF)
     const receiptInput = document.getElementById('paymentReceipt');
     if (receiptInput && receiptInput.files.length > 0) {
       const file = receiptInput.files[0];
@@ -366,7 +366,18 @@ function initApp() {
           });
         })
         .catch(() => {
-          sendDataToGoogleSheets(submission);
+          // Fallback jika file berupa HEIC (iPhone), PDF, DOCX, atau kompresi canvas gagal
+          const reader = new FileReader();
+          reader.onload = function(evt) {
+            const rawBase64 = evt.target.result.split(',')[1];
+            sendDataToGoogleSheets({
+              ...submission,
+              fileName: file.name,
+              fileType: file.type || "application/octet-stream",
+              fileData: rawBase64
+            });
+          };
+          reader.readAsDataURL(file);
         });
     } else {
       sendDataToGoogleSheets(submission);

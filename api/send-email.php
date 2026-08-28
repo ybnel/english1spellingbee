@@ -92,8 +92,26 @@ $htmlMessage = '
 </html>
 ';
 
+// Pemetaan BCC Email berdasarkan English 1 Center
+$selectedCenter = $data['english1Center'] ?? '';
+$bccEmail = '';
+
+if (stripos($selectedCenter, 'Purimas') !== false) {
+    $bccEmail = 'dias.pratiwi@edukagroup.com';
+} elseif (stripos($selectedCenter, 'Plaza') !== false) {
+    $bccEmail = 'agustina.wahyu@edukagroup.com';
+} elseif (stripos($selectedCenter, 'Bukit Mas') !== false) {
+    $bccEmail = 'Della.orellya@edukagroup.com';
+} elseif (stripos($selectedCenter, 'Jemursari') !== false) {
+    $bccEmail = 'holi.andayani@edukagroup.com';
+} elseif (stripos($selectedCenter, 'Pakuwon') !== false) {
+    $bccEmail = 'ulfyana.rhosyida@edukagroup.com';
+} elseif (stripos($selectedCenter, 'Galaxy') !== false) {
+    $bccEmail = 'laili.rusdiana@edukagroup.com';
+}
+
 // Fungsi Pengiriman SMTP Otomatis dengan Sertifikat TLS (smtp.gmail.com:587)
-function sendGmailSMTP($to, $subject, $htmlContent) {
+function sendGmailSMTP($to, $subject, $htmlContent, $bcc = '') {
     $smtpHost = 'smtp.gmail.com';
     $smtpPort = 587;
     $username = 'info.ef@edukagroup.com';
@@ -154,12 +172,20 @@ function sendGmailSMTP($to, $subject, $htmlContent) {
         return ["status" => false, "message" => "Alamat Email Penerima Ditolak: " . trim($rcptResponse)];
     }
 
+    // Jika ada email BCC, kirimkan perintah RCPT TO untuk BCC
+    if (!empty($bcc)) {
+        $send("RCPT TO: <$bcc>"); $read();
+    }
+
     $send("DATA"); $read();
 
     $headers  = "MIME-Version: 1.0\r\n";
     $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
     $headers .= "From: $fromName <$fromEmail>\r\n";
     $headers .= "To: <$to>\r\n";
+    if (!empty($bcc)) {
+        $headers .= "Bcc: $bcc\r\n";
+    }
     $headers .= "Subject: $subject\r\n";
     $headers .= "Date: " . date("r") . "\r\n";
 
@@ -176,11 +202,11 @@ function sendGmailSMTP($to, $subject, $htmlContent) {
     }
 }
 
-// Jalankan Pengiriman SMTP
-$result = sendGmailSMTP($to, $subject, $htmlMessage);
+// Jalankan Pengiriman SMTP (dengan opsi BCC ke PIC Center)
+$result = sendGmailSMTP($to, $subject, $htmlMessage, $bccEmail);
 
 if ($result['status']) {
-    echo json_encode(["status" => "success", "message" => "Email response receipt berhasil terkirim ke " . $to]);
+    echo json_encode(["status" => "success", "message" => "Email response receipt berhasil terkirim ke " . $to . ($bccEmail ? " (BCC: $bccEmail)" : "")]);
 } else {
     echo json_encode(["status" => "error", "message" => $result['message']]);
 }
