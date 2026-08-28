@@ -10,6 +10,7 @@ function initApp() {
   const btnSubmitAnother = document.getElementById('btnSubmitAnother');
   const clearButtons = document.querySelectorAll('.btn-clear-all');
   const english1CenterSelect = document.getElementById('english1Center');
+  const isStudentRadios = document.querySelectorAll('input[name="isEnglish1Student"]');
 
   const welcomeScreen = document.getElementById('welcomeScreen');
   const btnStartRegistration = document.getElementById('btnStartRegistration');
@@ -131,46 +132,43 @@ function initApp() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Calculate & Show Branch Info Card based on Student status + Center choice
+  // Calculate & Show Branch Info Card based on Student status (Malang)
   function updateBranchCard(shouldScroll = false) {
     const formData = new FormData(form);
     const isStudent = formData.get('isEnglish1Student'); // "Ya" or "Tidak"
-    const center = formData.get('english1Center'); // Center choice
+    const cutoffDate = new Date('2026-09-25T23:59:59');
+    const isEarlyBird = new Date() <= cutoffDate;
 
     allBranchCards.forEach(card => card.style.display = 'none');
     currentCalculatedBranch = '';
 
-    if (!center) return;
-
-    // Group Centers for Malang
-    const group1Centers = [
-      'Malang 1 Ijen',
-      'Malang 2 Sawojajar'
-    ];
+    if (!isStudent) return;
 
     let activeCard = null;
+    const isStudentBool = isStudent === 'Ya';
 
-    if (isStudent === 'Ya') {
+    if (isStudentBool) {
       activeCard = branchStudentGroup1;
-      currentCalculatedBranch = 'Siswa English 1';
+      currentCalculatedBranch = isEarlyBird
+        ? 'Siswa English 1 (Early Bird) - Rp 100.000'
+        : 'Siswa English 1 (Normal) - Rp 125.000';
     } else {
       activeCard = branchNonstudentGroup1;
-      currentCalculatedBranch = 'Non-Siswa English 1';
+      currentCalculatedBranch = isEarlyBird
+        ? 'Non-Siswa English 1 (Early Bird) - Rp 200.000'
+        : 'Non-Siswa English 1 (Normal) - Rp 250.000';
     }
 
     if (activeCard) {
-      const cutoffDate = new Date('2026-09-25T23:59:59');
-      const isEarlyBird = new Date() <= cutoffDate;
       const detailsEl = activeCard.querySelector('.payment-details');
       const bankAccount = 'BCA 0113100777 PT. Eduka Bahasa Utama';
-      const isStudentBool = isStudent === 'Ya';
 
       if (detailsEl) {
         if (isEarlyBird) {
-          const fee = isStudentBool ? 'Rp. 100.000' : 'Rp. 200.000';
-          detailsEl.innerHTML = `Early Bird Period (s.d 25 September 2026): <strong>${fee}</strong> | Transfer to bank account <strong>${bankAccount}</strong>`;
+          const fee = isStudentBool ? 'Rp 100.000' : 'Rp 200.000';
+          detailsEl.innerHTML = `Early Bird Period (s.d tgl 25 September 2026): <strong>${fee}</strong> | Transfer to bank account <strong>${bankAccount}</strong>`;
         } else {
-          const fee = isStudentBool ? 'Rp. 125.000' : 'Rp. 250.000';
+          const fee = isStudentBool ? 'Rp 125.000' : 'Rp 250.000';
           detailsEl.innerHTML = `Normal Registration Period: <strong>${fee}</strong> | Transfer to bank account <strong>${bankAccount}</strong>`;
         }
       }
@@ -182,8 +180,12 @@ function initApp() {
     }
   }
 
+  isStudentRadios.forEach(radio => {
+    radio.addEventListener('change', () => updateBranchCard(true));
+  });
+
   if (english1CenterSelect) {
-    english1CenterSelect.addEventListener('change', () => updateBranchCard(true));
+    english1CenterSelect.addEventListener('change', () => updateBranchCard(false));
   }
 
   // Robust validation helper for any section's cards
@@ -221,6 +223,13 @@ function initApp() {
         const radios = card.querySelectorAll('input[type="radio"]');
         if (radios.length > 0) {
           const checked = Array.from(radios).some(r => r.checked);
+          if (!checked) fieldValid = false;
+        }
+
+        // 4. Checkbox groups
+        const checkboxes = card.querySelectorAll('input[type="checkbox"]');
+        if (checkboxes.length > 0) {
+          const checked = Array.from(checkboxes).some(cb => cb.checked);
           if (!checked) fieldValid = false;
         }
 
@@ -321,7 +330,57 @@ function initApp() {
     }
   });
 
-  // Final Form Submission Validation & Handler
+  // Helper to compress image files before Base64 encoding (prevents payload limit timeouts)
+  function compressAndBase64(file) {
+    return new Promise((resolve) => {
+      if (!file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result.split(',')[1]);
+        reader.onerror = () => resolve('');
+        reader.readAsDataURL(file);
+        return;
+      }
+
+      const img = new Image();
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        img.onload = () => {
+          const maxDim = 1200;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.75);
+          resolve(dataUrl.split(',')[1]);
+        };
+        img.onerror = () => resolve(e.target.result.split(',')[1]);
+        img.src = e.target.result;
+      };
+
+      reader.onerror = () => resolve('');
+      reader.readAsDataURL(file);
+    });
+  }
+
+  let isSubmitting = false;
+
+  // Final Form Submission Validation & Handler (Identical to Lombok structure)
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -331,8 +390,19 @@ function initApp() {
       return;
     }
 
+    // Prevent double submission
+    if (isSubmitting) return;
+
     // Validate Section 2 inputs (file upload receipt)
     if (!validateCardSection(section2)) return;
+
+    isSubmitting = true;
+
+    const btnSubmit = document.getElementById('btnSubmit');
+    if (btnSubmit) {
+      btnSubmit.disabled = true;
+      btnSubmit.textContent = 'Memproses Pendaftaran...';
+    }
 
     const formData = new FormData(form);
     const receiptFile = document.getElementById('paymentReceipt');
@@ -347,58 +417,75 @@ function initApp() {
       schoolName: formData.get('schoolName'),
       grade: formData.get('grade'),
       groupCategory: formData.get('groupCategory'),
-      parentName: formData.get('parentName'),
+      parentName: formData.get('parentName') || '-',
       parentPhone: formData.get('parentPhone'),
-      address: formData.get('address'),
+      address: formData.get('address') || '-',
       email: formData.get('email'),
       infoSource: formData.get('infoSource'),
       isEnglish1Student: formData.get('isEnglish1Student'),
-      english1Center: formData.get('english1Center'),
+      english1Center: formData.get('english1Center') || 'Malang 1 Ijen',
       branchCategory: currentCalculatedBranch,
       paymentReceipt: receiptFileName
     };
 
-    saveSubmission(submission);
+    // Function to execute sending to Google Sheets and then emails (Lombok Architecture)
+    function processSubmission(finalPayload) {
+      sendDataToGoogleSheets(finalPayload)
+        .then(gasResult => {
+          if (gasResult && gasResult.fileUrl) {
+            submission.paymentReceipt = gasResult.fileUrl;
+          }
+          saveSubmission(submission);
+          updateResponseCount();
 
-    // Send data & uploaded file to Google Sheets (Malang Region)
+          // Send Response Receipt Email & Confirmation Email sequentially
+          return sendResponseReceiptEmail(submission);
+        })
+        .then((res1) => {
+          console.log('Email 1 (Copy Receipt) result:', res1);
+          return new Promise(resolve => setTimeout(resolve, 1500));
+        })
+        .then(() => {
+          console.log('Mengirim Email 2 (Terima Kasih + Banner)...');
+          return sendConfirmationEmail(submission);
+        })
+        .then((res2) => {
+          console.log('Email 2 (Konfirmasi) result:', res2);
+        })
+        .catch(err => {
+          console.error('Error pengiriman data/email:', err);
+          saveSubmission(submission);
+          updateResponseCount();
+        })
+        .finally(() => {
+          isSubmitting = false;
+          if (btnSubmit) {
+            btnSubmit.disabled = false;
+            btnSubmit.textContent = 'Submit';
+          }
+        });
+
+      // Show Success View immediately
+      form.style.display = 'none';
+      successView.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Convert file with compression if uploaded, then process submission
     const receiptInput = document.getElementById('paymentReceipt');
     if (receiptInput && receiptInput.files.length > 0) {
       const file = receiptInput.files[0];
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        const fileBase64 = evt.target.result.split(',')[1];
-        sendDataToGoogleSheets({
+      compressAndBase64(file).then(fileBase64 => {
+        processSubmission({
           ...submission,
           fileName: file.name,
-          fileType: file.type,
+          fileType: file.type.startsWith('image/') ? 'image/jpeg' : file.type,
           fileData: fileBase64
         });
-      };
-      reader.readAsDataURL(file);
+      });
     } else {
-      sendDataToGoogleSheets(submission);
+      processSubmission(submission);
     }
-
-    // Send Response Receipt Email & Confirmation Email sequentially with 1.5s delay (info.ef@edukagroup.com)
-    sendResponseReceiptEmail(submission)
-      .then((res1) => {
-        console.log('Email 1 (Copy Receipt) result:', res1);
-        return new Promise(resolve => setTimeout(resolve, 1500));
-      })
-      .then(() => {
-        console.log('Mengirim Email 2 (Terima Kasih + Banner)...');
-        return sendConfirmationEmail(submission);
-      })
-      .then((res2) => {
-        console.log('Email 2 (Konfirmasi) result:', res2);
-      })
-      .catch(err => console.error('Error pengiriman email:', err));
-
-    // Show Success View
-    form.style.display = 'none';
-    successView.style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    updateResponseCount();
   });
 
   // PHP Email Receipt Sender (info.ef@edukagroup.com)
@@ -448,20 +535,29 @@ function initApp() {
   const GOOGLE_SCRIPT_URL_MALANG = 'https://script.google.com/macros/s/AKfycbzK9L8seGojo5rYZQ8EjDarFGf4f1_gW2Ct8OIEe1nke_XelmrBE_zWeQ2-HCQwqnM/exec';
 
   function sendDataToGoogleSheets(payload) {
-    if (!GOOGLE_SCRIPT_URL_MALANG) return;
+    if (!GOOGLE_SCRIPT_URL_MALANG) return Promise.resolve(null);
 
-    fetch(GOOGLE_SCRIPT_URL_MALANG, {
+    return fetch(GOOGLE_SCRIPT_URL_MALANG, {
       method: 'POST',
-      mode: 'no-cors',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain;charset=utf-8',
       },
       body: JSON.stringify(payload)
-    }).then(() => {
-      console.log('Data pendaftaran berhasil dikirim ke Google Sheets Malang.');
-    }).catch(err => {
-      console.error('Gagal mengirim data ke Google Sheets Malang:', err);
-    });
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log('Data pendaftaran berhasil dikirim ke Google Sheets Malang:', data);
+        return data;
+      })
+      .catch(err => {
+        console.warn('Gagal membaca response JSON dari Google Sheets Malang, mencoba fallback Text/No-CORS:', err);
+        return fetch(GOOGLE_SCRIPT_URL_MALANG, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).then(() => null).catch(() => null);
+      });
   }
 
   // Submit Another Response
@@ -520,7 +616,7 @@ function initApp() {
     if (list.length === 0) {
       responsesTableBody.innerHTML = `
         <tr>
-          <td colspan="14" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
+          <td colspan="15" style="text-align:center; padding: 20px; color: #70757a;">Belum ada pendaftaran.</td>
         </tr>
       `;
       return;
@@ -531,17 +627,18 @@ function initApp() {
         <td>${escapeHtml(item.timestamp)}</td>
         <td><strong>${escapeHtml(item.fullName)}</strong></td>
         <td>${escapeHtml(item.birthDetails)}</td>
-        <td>${escapeHtml(item.citizenshipStatus)}</td>
         <td>${escapeHtml(item.schoolName)}</td>
         <td>${escapeHtml(item.grade)}</td>
         <td>${escapeHtml(item.groupCategory)}</td>
-        <td>${escapeHtml(item.parentName)}</td>
-        <td>${escapeHtml(item.parentPhone)}</td>
-        <td>${escapeHtml(item.address)}</td>
+        <td>${escapeHtml(item.parentName || '-')}</td>
         <td>${escapeHtml(item.email)}</td>
+        <td>${escapeHtml(item.parentPhone)}</td>
+        <td>${escapeHtml(item.address || '-')}</td>
         <td>${escapeHtml(item.infoSource)}</td>
         <td>${escapeHtml(item.isEnglish1Student)}</td>
-        <td>${escapeHtml(item.english1Center)}</td>
+        <td>${escapeHtml(item.english1Center || '-')}</td>
+        <td><span style="background:#fceef4; color:#e00078; padding:2px 6px; border-radius:4px; font-weight:500;">${escapeHtml(item.branchCategory || '-')}</span></td>
+        <td>${item.paymentReceipt && item.paymentReceipt.startsWith('http') ? `<a href="${escapeHtml(item.paymentReceipt)}" target="_blank" rel="noopener noreferrer" style="color:#e00078; font-weight:600; text-decoration:underline;">Lihat Bukti (Drive) 🔗</a>` : escapeHtml(item.paymentReceipt || '-')}</td>
       </tr>
     `).join('');
   }
@@ -558,57 +655,62 @@ function initApp() {
   // Export CSV
   if (btnExportCSV) {
     btnExportCSV.addEventListener('click', () => {
-      const list = getSubmissions();
-      if (list.length === 0) {
-        alert('Tidak ada data untuk diexport.');
-        return;
-      }
-
-      const headers = [
-        'Timestamp',
-        'Nama Lengkap Peserta',
-        'Tempat & Tgl Lahir',
-        'Status WNI/WNA',
-        'Asal Sekolah',
-        'Kelas',
-        'Kategori Group',
-        'Nama Orang Tua',
-        'No WA Ortu',
-        'Alamat Peserta',
-        'Email Ortu',
-        'Sumber Informasi',
-        'Siswa English 1',
-        'English 1 Center'
-      ];
-
-      const rows = list.map(item => [
-        `"${item.timestamp}"`,
-        `"${(item.fullName || '').replace(/"/g, '""')}"`,
-        `"${(item.birthDetails || '').replace(/"/g, '""')}"`,
-        `"${(item.citizenshipStatus || '').replace(/"/g, '""')}"`,
-        `"${(item.schoolName || '').replace(/"/g, '""')}"`,
-        `"${item.grade || ''}"`,
-        `"${item.groupCategory || ''}"`,
-        `"${(item.parentName || '').replace(/"/g, '""')}"`,
-        `"${item.parentPhone || ''}"`,
-        `"${(item.address || '').replace(/"/g, '""')}"`,
-        `"${item.email || ''}"`,
-        `"${item.infoSource || ''}"`,
-        `"${item.isEnglish1Student || ''}"`,
-        `"${item.english1Center || ''}"`
-      ]);
-
-      const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' 
-        + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement('a');
-      link.setAttribute('href', encodedUri);
-      link.setAttribute('download', `Spelling_Bee_2026_Registration_${Date.now()}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      doExportCSV(getSubmissions());
     });
+  }
+
+  function doExportCSV(list) {
+    if (list.length === 0) {
+      alert('Tidak ada data untuk diexport.');
+      return;
+    }
+
+    const headers = [
+      'Timestamp',
+      'Nama Lengkap Peserta',
+      'Tempat & Tgl Lahir',
+      'Asal Sekolah',
+      'Kelas',
+      'Kategori Group',
+      'Nama Orang Tua',
+      'Email Orang Tua',
+      'No Telpon Ortu',
+      'Alamat Lengkap Peserta',
+      'Sumber Informasi',
+      'Siswa English 1',
+      'English 1 Center',
+      'Kategori Branch',
+      'Bukti Transfer'
+    ];
+
+    const rows = list.map(item => [
+      `"${item.timestamp}"`,
+      `"${(item.fullName || '').replace(/"/g, '""')}"`,
+      `"${(item.birthDetails || '').replace(/"/g, '""')}"`,
+      `"${(item.schoolName || '').replace(/"/g, '""')}"`,
+      `"${item.grade || ''}"`,
+      `"${item.groupCategory || ''}"`,
+      `"${(item.parentName || '-').replace(/"/g, '""')}"`,
+      `"${(item.email || '').replace(/"/g, '""')}"`,
+      `"${item.parentPhone || ''}"`,
+      `"${(item.address || '-').replace(/"/g, '""')}"`,
+      `"${item.infoSource || ''}"`,
+      `"${item.isEnglish1Student || ''}"`,
+      `"${item.english1Center || ''}"`,
+      `"${item.branchCategory || ''}"`,
+      `"${(item.paymentReceipt || '').replace(/"/g, '""')}"`
+    ]);
+
+    const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' 
+      + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `Spelling_Bee_2026_Malang_Registration_${Date.now()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
   // Clear All Data

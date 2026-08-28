@@ -13,7 +13,25 @@ if (!$data || !isset($data['email'])) {
     exit;
 }
 
+// 🛡️ SERVER-SIDE BACKUP: Simpan data pendaftaran ke file JSON server agar data tidak pernah hilang
+try {
+    $backupFile = __DIR__ . '/backup_responses.json';
+    $existingBackups = file_exists($backupFile) ? json_decode(file_get_contents($backupFile), true) : [];
+    if (!is_array($existingBackups)) {
+        $existingBackups = [];
+    }
+    $existingBackups[] = array_merge(['server_received_at' => date('Y-m-d H:i:s')], $data);
+    @file_put_contents($backupFile, json_encode($existingBackups, JSON_PRETTY_PRINT));
+} catch (Exception $bErr) {
+    // Fail silently so email process continues
+}
+
 $to = $data['email'];
+$bcc = [
+    'jeanny.hoedijono@edukagroup.com',
+    'nita.marthasari@edukagroup.com',
+    'shella.yuri@edukagroup.com'
+];
 $subject = "Thanks for filling out: Online Registration Form Spelling Bee Regional Competition 2026";
 
 // Desain Template HTML Response Receipt (Google Forms Style)
@@ -90,7 +108,7 @@ $htmlMessage = '
               </div>
               <div style="margin-bottom:16px;">
                 <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Bukti Pembayaran / Payment Receipt</div>
-                <div style="font-size:14px; color:#16a34a; background:#f0fdf4; padding:10px 14px; border-radius:6px; border:1px solid #bbf7d0;">📎 ' . htmlspecialchars($data['paymentReceipt'] ?? 'File Terupload') . '</div>
+                <div style="font-size:14px; color:#16a34a; background:#f0fdf4; padding:10px 14px; border-radius:6px; border:1px solid #bbf7d0;">' . (strpos($data['paymentReceipt'] ?? '', 'http') === 0 ? '<a href="' . htmlspecialchars($data['paymentReceipt']) . '" target="_blank" style="color:#16a34a; font-weight:700; text-decoration:underline;">📎 Lihat Bukti Pembayaran (Google Drive)</a>' : '📎 ' . htmlspecialchars($data['paymentReceipt'] ?? 'File Terupload')) . '</div>
               </div>
             </td>
           </tr>
@@ -108,7 +126,7 @@ $htmlMessage = '
 ';
 
 // Fungsi Pengiriman SMTP Otomatis dengan Sertifikat TLS (smtp.gmail.com:587)
-function sendGmailSMTP($to, $subject, $htmlContent) {
+function sendGmailSMTP($to, $bcc, $subject, $htmlContent) {
     $smtpHost = 'smtp.gmail.com';
     $smtpPort = 587;
     $username = 'info.ef@edukagroup.com';
@@ -169,6 +187,16 @@ function sendGmailSMTP($to, $subject, $htmlContent) {
         return ["status" => false, "message" => "Alamat Email Penerima Ditolak: " . trim($rcptResponse)];
     }
 
+    // Kirim RCPT TO untuk BCC jika ada (tanpa menambahkan Bcc di header DATA agar tersembunyi dari user)
+    if (!empty($bcc)) {
+        $bccList = is_array($bcc) ? $bcc : array_map('trim', explode(',', $bcc));
+        foreach ($bccList as $b) {
+            if (!empty($b)) {
+                $send("RCPT TO: <" . trim($b) . ">"); $read();
+            }
+        }
+    }
+
     $send("DATA"); $read();
 
     $headers  = "MIME-Version: 1.0\r\n";
@@ -191,8 +219,8 @@ function sendGmailSMTP($to, $subject, $htmlContent) {
     }
 }
 
-// Jalankan Pengiriman SMTP
-$result = sendGmailSMTP($to, $subject, $htmlMessage);
+// Jalankan Pengiriman SMTP (dengan BCC ke Malang Admin)
+$result = sendGmailSMTP($to, $bcc, $subject, $htmlMessage);
 
 if ($result['status']) {
     echo json_encode(["status" => "success", "message" => "Email response receipt berhasil terkirim ke " . $to]);
