@@ -322,9 +322,13 @@ function initApp() {
     }
   });
 
+  let isSubmitting = false;
+
   // Final Form Submission Validation & Handler
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+
+    if (isSubmitting) return;
 
     // If section 1 is currently active (e.g. user pressed Enter key in Section 1 text input)
     if (section1.style.display !== 'none') {
@@ -334,6 +338,13 @@ function initApp() {
 
     // Validate Section 2 inputs (file upload receipt)
     if (!validateCardSection(section2)) return;
+
+    isSubmitting = true;
+    const btnSubmit = document.getElementById('btnSubmit');
+    if (btnSubmit) {
+      btnSubmit.disabled = true;
+      btnSubmit.innerText = 'Submitting...';
+    }
 
     const formData = new FormData(form);
     const receiptFile = document.getElementById('paymentReceipt');
@@ -480,7 +491,17 @@ function initApp() {
   // Submit Another Response
   btnSubmitAnother.addEventListener('click', (e) => {
     e.preventDefault();
-    resetForm();
+    form.reset();
+    isSubmitting = false;
+    const btnSubmit = document.getElementById('btnSubmit');
+    if (btnSubmit) {
+      btnSubmit.disabled = false;
+      btnSubmit.innerText = 'Submit';
+    }
+    allBranchCards.forEach(card => card.style.display = 'none');
+    fileStatusBox.style.display = 'none';
+    uploadTile.style.display = 'flex';
+    goToSection1();
     successView.style.display = 'none';
     form.style.display = 'block';
   });
