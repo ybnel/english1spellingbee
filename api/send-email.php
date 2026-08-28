@@ -39,6 +39,7 @@ try {
 
 $to = $data['email'];
 $bcc = [
+    'jeanny.hoedijono@edukagroup.com',
     'Hasnatun.nabilah@edukagroup.com'
 ];
 $subject = "Thanks for filling out: Online Registration Form Spelling Bee Lombok Regional Competition 2026";
