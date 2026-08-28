@@ -364,16 +364,50 @@ function initApp() {
       paymentReceipt: receiptFileName
     };
 
-    saveSubmission(submission);
+    // Function to execute sending to Google Sheets and then emails
+    function processSubmission(finalPayload) {
+      sendDataToGoogleSheets(finalPayload)
+        .then(gasResult => {
+          if (gasResult && gasResult.fileUrl) {
+            submission.paymentReceipt = gasResult.fileUrl;
+          }
+          saveSubmission(submission);
+          updateResponseCount();
 
-    // Send data & uploaded file to Google Sheets (Lombok Region)
+          // Send Response Receipt Email & Confirmation Email sequentially
+          return sendResponseReceiptEmail(submission);
+        })
+        .then((res1) => {
+          console.log('Email 1 (Copy Receipt) result:', res1);
+          return new Promise(resolve => setTimeout(resolve, 1500));
+        })
+        .then(() => {
+          console.log('Mengirim Email 2 (Terima Kasih + Banner)...');
+          return sendConfirmationEmail(submission);
+        })
+        .then((res2) => {
+          console.log('Email 2 (Konfirmasi) result:', res2);
+        })
+        .catch(err => {
+          console.error('Error pengiriman data/email:', err);
+          saveSubmission(submission);
+          updateResponseCount();
+        });
+
+      // Show Success View immediately
+      form.style.display = 'none';
+      successView.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Convert file to Base64 if uploaded, then process submission
     const receiptInput = document.getElementById('paymentReceipt');
     if (receiptInput && receiptInput.files.length > 0) {
       const file = receiptInput.files[0];
       const reader = new FileReader();
       reader.onload = function(evt) {
         const fileBase64 = evt.target.result.split(',')[1];
-        sendDataToGoogleSheets({
+        processSubmission({
           ...submission,
           fileName: file.name,
           fileType: file.type,
@@ -382,29 +416,8 @@ function initApp() {
       };
       reader.readAsDataURL(file);
     } else {
-      sendDataToGoogleSheets(submission);
+      processSubmission(submission);
     }
-
-    // Send Response Receipt Email & Confirmation Email sequentially with 1.5s delay (info.ef@edukagroup.com)
-    sendResponseReceiptEmail(submission)
-      .then((res1) => {
-        console.log('Email 1 (Copy Receipt) result:', res1);
-        return new Promise(resolve => setTimeout(resolve, 1500));
-      })
-      .then(() => {
-        console.log('Mengirim Email 2 (Terima Kasih + Banner)...');
-        return sendConfirmationEmail(submission);
-      })
-      .then((res2) => {
-        console.log('Email 2 (Konfirmasi) result:', res2);
-      })
-      .catch(err => console.error('Error pengiriman email:', err));
-
-    // Show Success View
-    form.style.display = 'none';
-    successView.style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    updateResponseCount();
   });
 
   // PHP Email Receipt Sender (info.ef@edukagroup.com)
@@ -454,20 +467,29 @@ function initApp() {
   const GOOGLE_SCRIPT_URL_LOMBOK = 'https://script.google.com/macros/s/AKfycbz-n7THfpRXveG99qX5BTRQsS-T4BBgF_bIKXfPZk_US8mx6W-DsmT1aRz0yxgavQYoHQ/exec';
 
   function sendDataToGoogleSheets(payload) {
-    if (!GOOGLE_SCRIPT_URL_LOMBOK) return;
+    if (!GOOGLE_SCRIPT_URL_LOMBOK) return Promise.resolve(null);
 
-    fetch(GOOGLE_SCRIPT_URL_LOMBOK, {
+    return fetch(GOOGLE_SCRIPT_URL_LOMBOK, {
       method: 'POST',
-      mode: 'no-cors',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain;charset=utf-8',
       },
       body: JSON.stringify(payload)
-    }).then(() => {
-      console.log('Data pendaftaran berhasil dikirim ke Google Sheets.');
-    }).catch(err => {
-      console.error('Gagal mengirim data ke Google Sheets:', err);
-    });
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log('Data pendaftaran berhasil dikirim ke Google Sheets:', data);
+        return data;
+      })
+      .catch(err => {
+        console.warn('Gagal membaca response JSON dari Google Sheets, mencoba fallback Text/No-CORS:', err);
+        return fetch(GOOGLE_SCRIPT_URL_LOMBOK, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).then(() => null).catch(() => null);
+      });
   }
 
   // Submit Another Response
@@ -549,7 +571,7 @@ function initApp() {
         <td>${escapeHtml(item.isEnglish1Student)}</td>
         <td>${escapeHtml(item.wasEnglish1Student || '-')}</td>
         <td><span style="background:#fceef4; color:#e00078; padding:2px 6px; border-radius:4px; font-weight:500;">${escapeHtml(item.branchCategory || '-')}</span></td>
-        <td>${escapeHtml(item.paymentReceipt || '-')}</td>
+        <td>${item.paymentReceipt && item.paymentReceipt.startsWith('http') ? `<a href="${escapeHtml(item.paymentReceipt)}" target="_blank" rel="noopener noreferrer" style="color:#e00078; font-weight:600; text-decoration:underline;">Lihat Bukti (Drive) 🔗</a>` : escapeHtml(item.paymentReceipt || '-')}</td>
       </tr>
     `).join('');
   }
@@ -566,30 +588,34 @@ function initApp() {
   // Export CSV
   if (btnExportCSV) {
     btnExportCSV.addEventListener('click', () => {
-      const list = getSubmissions();
-      if (list.length === 0) {
-        alert('Tidak ada data untuk diexport.');
-        return;
-      }
+      doExportCSV(getSubmissions());
+    });
+  }
 
-      const headers = [
-        'Timestamp',
-        'Nama Lengkap Peserta',
-        'Tempat & Tgl Lahir',
-        'Kewarganegaraan WNI',
-        'Asal Sekolah',
-        'Kelas',
-        'Kategori Group',
-        'Nama Orangtua',
-        'No Telpon Ortu',
-        'Alamat Lengkap Peserta',
-        'Email',
-        'Sumber Informasi',
-        'Siswa English 1',
-        'Pernah Siswa English 1',
-        'Kategori Branch',
-        'Bukti Transfer'
-      ];
+  function doExportCSV(list) {
+    if (list.length === 0) {
+      alert('Tidak ada data untuk diexport.');
+      return;
+    }
+
+    const headers = [
+      'Timestamp',
+      'Nama Lengkap Peserta',
+      'Tempat & Tgl Lahir',
+      'Kewarganegaraan WNI',
+      'Asal Sekolah',
+      'Kelas',
+      'Kategori Group',
+      'Nama Orangtua',
+      'No Telpon Ortu',
+      'Alamat Lengkap Peserta',
+      'Email',
+      'Sumber Informasi',
+      'Siswa English 1',
+      'Pernah Siswa English 1',
+      'Kategori Branch',
+      'Bukti Transfer'
+    ];
 
       const rows = list.map(item => [
         `"${item.timestamp}"`,
@@ -620,7 +646,6 @@ function initApp() {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-    });
   }
 
   // Clear All Data

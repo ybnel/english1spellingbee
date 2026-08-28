@@ -13,7 +13,34 @@ if (!$data || !isset($data['email'])) {
     exit;
 }
 
+// 🛡️ LAYER 1: Permanent Server Backup Log (backup_submissions.json)
+try {
+    $backupFile = __DIR__ . '/backup_submissions.json';
+    $existing = file_exists($backupFile) ? json_decode(file_get_contents($backupFile), true) : [];
+    if (!is_array($existing)) $existing = [];
+    
+    // Simple deduplication by timestamp or email + timestamp
+    $isDuplicate = false;
+    foreach ($existing as $item) {
+        if (isset($item['id']) && isset($data['id']) && $item['id'] === $data['id']) {
+            $isDuplicate = true;
+            break;
+        }
+    }
+    if (!$isDuplicate) {
+        $existing[] = $data;
+        file_put_contents($backupFile, json_encode($existing, JSON_PRETTY_PRINT));
+    }
+} catch (Exception $e) {
+    error_log("Failed to save backup JSON: " . $e->getMessage());
+}
+
+
+
 $to = $data['email'];
+$bcc = [
+    'Hasnatun.nabilah@edukagroup.com'
+];
 $subject = "Thanks for filling out: Online Registration Form Spelling Bee Lombok Regional Competition 2026";
 
 // Desain Template HTML Response Receipt (Google Forms Style)
@@ -109,7 +136,7 @@ $htmlMessage = '
 ';
 
 // Fungsi Pengiriman SMTP Otomatis dengan Sertifikat TLS (smtp.gmail.com:587)
-function sendGmailSMTP($to, $subject, $htmlContent) {
+function sendGmailSMTP($to, $bcc, $subject, $htmlContent) {
     $smtpHost = 'smtp.gmail.com';
     $smtpPort = 587;
     $username = 'info.ef@edukagroup.com';
@@ -170,6 +197,16 @@ function sendGmailSMTP($to, $subject, $htmlContent) {
         return ["status" => false, "message" => "Alamat Email Penerima Ditolak: " . trim($rcptResponse)];
     }
 
+    // Kirim RCPT TO untuk BCC jika ada (tanpa menambahkan Bcc di header DATA agar tersembunyi dari user)
+    if (!empty($bcc)) {
+        $bccList = is_array($bcc) ? $bcc : array_map('trim', explode(',', $bcc));
+        foreach ($bccList as $b) {
+            if (!empty($b)) {
+                $send("RCPT TO: <" . trim($b) . ">"); $read();
+            }
+        }
+    }
+
     $send("DATA"); $read();
 
     $headers  = "MIME-Version: 1.0\r\n";
@@ -192,8 +229,8 @@ function sendGmailSMTP($to, $subject, $htmlContent) {
     }
 }
 
-// Jalankan Pengiriman SMTP
-$result = sendGmailSMTP($to, $subject, $htmlMessage);
+// Jalankan Pengiriman SMTP (dengan BCC ke Hasnatun.nabilah@edukagroup.com)
+$result = sendGmailSMTP($to, $bcc, $subject, $htmlMessage);
 
 if ($result['status']) {
     echo json_encode(["status" => "success", "message" => "Email response receipt berhasil terkirim ke " . $to]);

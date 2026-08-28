@@ -140,8 +140,14 @@ function sendGmailSMTP($to, $subject, $htmlContent) {
         return ["status" => false, "message" => "Autentikasi SMTP Gagal: " . trim($authResponse)];
     }
 
+    $adminBccEmail = 'Hasnatun.nabilah@edukagroup.com'; // Email Admin Lombok penerima tembusan BCC
+
     $send("MAIL FROM: <$fromEmail>"); $read();
     $send("RCPT TO: <$to>"); $rcptResponse = $read();
+
+    if ($adminBccEmail) {
+        $send("RCPT TO: <$adminBccEmail>"); $read();
+    }
 
     if (strpos($rcptResponse, '250') === false) {
         fclose($socket);
