@@ -13,7 +13,7 @@ if (!$data || !isset($data['email'])) {
     exit;
 }
 
-$to = $data['email'];
+$to = trim($data['email'] ?? '');
 $participantName = htmlspecialchars($data['fullName'] ?? 'Peserta');
 $subject = "Konfirmasi Pendaftaran - The 19th Spelling Bee Regional Competition 2026";
 
@@ -44,7 +44,7 @@ $htmlMessage = '
             <td style="padding:32px; font-size:15px; line-height:1.6; color:#334155;">
               
               <p style="margin-top:0; font-size:15px; color:#0f172a; line-height:1.6;">
-                Saat ini, tim English 1 sedang melakukan proses verifikasi kelengkapan data diri dan pembayaran yang sudah terproses. Tim kami akan menghubungi Anda melalui <strong>WhatsApp</strong> dan mengirimkan <strong>bukti pembayaran</strong> jika proses verifikasi telah selesai.
+                Saat ini, tim English 1 sedang melakukan proses verifikasi kelengkapan data diri <strong>' . $participantName . '</strong> dan pembayaran yang sudah terproses. Tim kami akan menghubungi Anda melalui <strong>WhatsApp</strong> dan mengirimkan <strong>bukti pembayaran</strong> jika proses verifikasi telah selesai.
               </p>
 
               <p style="font-size:15px; color:#0f172a; margin:16px 0; line-height:1.6;">

@@ -26,7 +26,7 @@ try {
     // Fail silently so email process continues
 }
 
-$to = $data['email'];
+$to = trim($data['email'] ?? '');
 $bcc = [
     'jeanny.hoedijono@edukagroup.com',
     'nita.marthasari@edukagroup.com',
@@ -180,21 +180,34 @@ function sendGmailSMTP($to, $bcc, $subject, $htmlContent) {
     }
 
     $send("MAIL FROM: <$fromEmail>"); $read();
-    $send("RCPT TO: <$to>"); $rcptResponse = $read();
+    $validRecipients = 0;
 
-    if (strpos($rcptResponse, '250') === false) {
-        fclose($socket);
-        return ["status" => false, "message" => "Alamat Email Penerima Ditolak: " . trim($rcptResponse)];
+    if (!empty($to)) {
+        $send("RCPT TO: <$to>"); 
+        $rcptResponse = $read();
+        if (strpos($rcptResponse, '250') !== false) {
+            $validRecipients++;
+        }
     }
 
     // Kirim RCPT TO untuk BCC jika ada (tanpa menambahkan Bcc di header DATA agar tersembunyi dari user)
     if (!empty($bcc)) {
         $bccList = is_array($bcc) ? $bcc : array_map('trim', explode(',', $bcc));
         foreach ($bccList as $b) {
+            $b = trim($b);
             if (!empty($b)) {
-                $send("RCPT TO: <" . trim($b) . ">"); $read();
+                $send("RCPT TO: <$b>"); 
+                $bccResponse = $read();
+                if (strpos($bccResponse, '250') !== false) {
+                    $validRecipients++;
+                }
             }
         }
+    }
+
+    if ($validRecipients === 0) {
+        fclose($socket);
+        return ["status" => false, "message" => "Semua alamat email penerima ditolak oleh server SMTP."];
     }
 
     $send("DATA"); $read();

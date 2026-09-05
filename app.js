@@ -120,6 +120,10 @@ function initApp() {
     form.reset();
     if (fileNameDisplay) fileNameDisplay.textContent = '';
     if (fileStatusBox) fileStatusBox.style.display = 'none';
+    const successSubtitle = document.getElementById('successSubtitle');
+    const successUserEmail = document.getElementById('successUserEmail');
+    if (successSubtitle) successSubtitle.textContent = 'PENDAFTARAN BERHASIL!';
+    if (successUserEmail) successUserEmail.textContent = 'Anda';
     cards.forEach(c => {
       c.classList.remove('error-state');
       c.classList.remove('active');
@@ -464,6 +468,16 @@ function initApp() {
             btnSubmit.textContent = 'Submit';
           }
         });
+
+      // Update personalized success screen with participant name & email (anti fake-screenshot)
+      const successSubtitle = document.getElementById('successSubtitle');
+      const successUserEmail = document.getElementById('successUserEmail');
+      if (successSubtitle) {
+        successSubtitle.innerHTML = `PENDAFTARAN BERHASIL (<span style="color: #e00078;">${escapeHtml(submission.fullName || 'PESERTA')}</span>)`;
+      }
+      if (successUserEmail) {
+        successUserEmail.textContent = submission.email || 'email Anda';
+      }
 
       // Show Success View immediately
       form.style.display = 'none';
