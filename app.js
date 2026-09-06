@@ -140,15 +140,15 @@ function initApp() {
 
   // Calculate pricing info for Lombok Kolektif
   function updateBranchCard() {
-    const isEarlyBird = new Date() <= new Date('2026-09-06T23:59:59');
+    const isEarlyBird = new Date() <= new Date('2026-09-12T23:59:59');
     currentCalculatedBranch = isEarlyBird ? 'Early Bird - Rp 125.000' : 'Normal - Rp 150.000';
 
     const paymentDetailsEl = document.querySelector('#branch-student-group1 .payment-details');
     if (paymentDetailsEl) {
       if (isEarlyBird) {
-        paymentDetailsEl.innerHTML = 'Early Bird Period (s.d tgl 6 September 2026): <strong>Rp 125.000</strong> | Transfer to bank account <strong>BCA 3845205200 PT. Aplus Lorem Indo</strong>';
+        paymentDetailsEl.innerHTML = 'Early Bird Period (s.d tgl 12 September 2026): <strong>Rp 125.000</strong> | Transfer to bank account <strong>BCA 3845205200 PT. Aplus Lorem Indo</strong>';
       } else {
-        paymentDetailsEl.innerHTML = 'Normal Period (mulai tgl 7 September 2026): <strong>Rp 150.000</strong> | Transfer to bank account <strong>BCA 3845205200 PT. Aplus Lorem Indo</strong>';
+        paymentDetailsEl.innerHTML = 'Normal Period (mulai tgl 13 September 2026): <strong>Rp 150.000</strong> | Transfer to bank account <strong>BCA 3845205200 PT. Aplus Lorem Indo</strong>';
       }
     }
 
@@ -411,6 +411,20 @@ function initApp() {
 
     saveSubmission(submission);
     sendDataToGoogleSheets(submission);
+
+    // Update dynamic success elements with participant name and email to prevent fake screenshots
+    const successSubtitle = document.getElementById('successSubtitle');
+    const successEmailText = document.getElementById('successEmailText');
+
+    if (successSubtitle) {
+      const fullName = submission.fullName ? submission.fullName.trim() : '';
+      successSubtitle.textContent = fullName ? `PENDAFTARAN BERHASIL UNTUK ${fullName.toUpperCase()}!` : 'PENDAFTARAN BERHASIL!';
+    }
+
+    if (successEmailText) {
+      const email = submission.email ? submission.email.trim() : '';
+      successEmailText.innerHTML = email ? `Konfirmasi pendaftaran telah dikirimkan ke email <strong style="color: #e00078;">${escapeHtml(email)}</strong>.` : 'Konfirmasi pendaftaran telah dikirimkan ke email Anda.';
+    }
 
     // Show Success View immediately
     form.style.display = 'none';

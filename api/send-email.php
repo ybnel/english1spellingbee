@@ -9,12 +9,38 @@ $json = file_get_contents('php://input');
 $data = json_decode($json, true);
 
 if (!$data || !isset($data['email'])) {
-  echo json_encode(["status" => "error", "message" => "Invalid data or missing email"]);
-  exit;
+    echo json_encode(["status" => "error", "message" => "Invalid data or missing email"]);
+    exit;
+}
+
+// 🛡️ LAYER 1: Permanent Server Backup Log (backup_submissions.json)
+try {
+    $backupFile = __DIR__ . '/backup_submissions.json';
+    $existing = file_exists($backupFile) ? json_decode(file_get_contents($backupFile), true) : [];
+    if (!is_array($existing)) $existing = [];
+    
+    // Simple deduplication by timestamp or email + timestamp
+    $isDuplicate = false;
+    foreach ($existing as $item) {
+        if (isset($item['id']) && isset($data['id']) && $item['id'] === $data['id']) {
+            $isDuplicate = true;
+            break;
+        }
+    }
+    if (!$isDuplicate) {
+        $existing[] = $data;
+        file_put_contents($backupFile, json_encode($existing, JSON_PRETTY_PRINT));
+    }
+} catch (Exception $e) {
+    error_log("Failed to save backup JSON: " . $e->getMessage());
 }
 
 $to = $data['email'];
-$subject = "Thanks for filling out: Online Registration Form Kolektif Sekolah Spelling Bee Regional Competition 2026";
+$bcc = [
+    'jeanny.hoedijono@edukagroup.com',
+    'Hasnatun.nabilah@edukagroup.com'
+];
+$subject = "Thanks for filling out: Online Registration Form Kolektif Sekolah Spelling Bee Lombok Regional Competition 2026";
 
 // Desain Template HTML Response Receipt (Google Forms Style)
 $htmlMessage = '
@@ -30,7 +56,7 @@ $htmlMessage = '
           <tr>
             <td style="padding:24px 32px 16px 32px; border-bottom:1px solid #dadce0;">
               <h1 style="font-size:20px; font-weight:500; color:#202124; margin:0 0 8px 0;">
-                Thanks for filling out: <span style="color:#e00078; font-weight:700;">Online Registration Form Kolektif Sekolah Spelling Bee Regional Competition 2026</span>
+                Thanks for filling out: <span style="color:#e00078; font-weight:700;">Online Registration Form Kolektif Sekolah Spelling Bee Lombok Regional Competition 2026</span>
               </h1>
               <p style="font-size:14px; color:#5f6368; margin:0;">Here\'s what was received.</p>
             </td>
@@ -45,7 +71,7 @@ $htmlMessage = '
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['fullName'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Tempat & Tanggal Lahir / Place and Date of Birth</div>
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Tempat dan Tanggal Lahir / Place and Date of Birth</div>
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['birthDetails'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
@@ -65,27 +91,27 @@ $htmlMessage = '
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['groupCategory'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Nama Orang Tua / Parent\'s Name</div>
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Nama Orangtua / Parent\'s Name</div>
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['parentName'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Nomor telpon orang tua yang tersambung dengan WA / Parent\'s phone number connected with WA</div>
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">No Telpon Orangtua yang tersambung dengan WA / Parents WhatsApp Number</div>
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['parentPhone'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Alamat Lengkap Peserta / Participant\'s Full Address</div>
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Alamat Lengkap Peserta / Participant\'s Address</div>
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['address'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Email Orang Tua / Parent\'s Email</div>
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Email Orangtua / Parent\'s Email</div>
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['email'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Sumber Informasi / Info Source</div>
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Dari mana Anda mendapatkan informasi / Where did you hear about this competition?</div>
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['infoSource'] ?? '-') . '</div>
               </div>
               <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Apakah Siswa English 1 / Is English 1 Student</div>
+                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Siswa English 1 / Is English 1 Student</div>
                 <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['isEnglish1Student'] ?? '-') . '</div>
               </div>' . (!empty($data['wasEnglish1Student']) && $data['wasEnglish1Student'] !== '-' ? '
               <div style="margin-bottom:16px;">
@@ -104,14 +130,6 @@ $htmlMessage = '
                 <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Pernyataan Kebenaran Data / Data Verification Statement</div>
                 <div style="font-size:14px; color:#16a34a; background:#f0fdf4; padding:10px 14px; border-radius:6px; border:1px solid #bbf7d0;">✓ ' . htmlspecialchars($data['dataAgreement'] ?? 'Saya setuju & data sudah benar') . '</div>
               </div>
-              <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Kategori & Biaya Pendaftaran / Registration Category & Fee</div>
-                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['branchCategory'] ?? '-') . '</div>
-              </div>
-              <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:700; color:#202124; margin-bottom:4px;">Bukti Pembayaran / Uploaded Payment Receipt</div>
-                <div style="font-size:14px; color:#3c4043; background:#f8f9fa; padding:10px 14px; border-radius:6px; border:1px solid #dadce0;">' . htmlspecialchars($data['paymentReceipt'] ?? '-') . '</div>
-              </div>
             </td>
           </tr>
           <tr>
@@ -129,105 +147,104 @@ $htmlMessage = '
 ';
 
 // Fungsi Pengiriman SMTP Otomatis dengan Sertifikat TLS (smtp.gmail.com:587)
-function sendGmailSMTP($to, $subject, $htmlContent)
-{
-  $smtpHost = 'smtp.gmail.com';
-  $smtpPort = 587;
-  $username = 'info.ef@edukagroup.com';
-  $password = 'cncuqdjtgnctwcuo'; // Gmail App Password 16 Digit
-  $fromEmail = 'info.ef@edukagroup.com';
-  $fromName = 'English 1 Lombok';
+function sendGmailSMTP($to, $bcc, $subject, $htmlContent) {
+    $smtpHost = 'smtp.gmail.com';
+    $smtpPort = 587;
+    $username = 'info.ef@edukagroup.com';
+    $password = 'cncuqdjtgnctwcuo'; // Gmail App Password 16 Digit
+    $fromEmail = 'info.ef@edukagroup.com';
+    $fromName = 'English 1 Lombok';
 
-  $socket = @fsockopen($smtpHost, $smtpPort, $errno, $errstr, 15);
-  if (!$socket) {
-    return ["status" => false, "message" => "Gagal terhubung ke SMTP host: $errstr"];
-  }
-
-  $read = function () use ($socket) {
-    $response = "";
-    while ($str = fgets($socket, 515)) {
-      $response .= $str;
-      if (substr($str, 3, 1) == " ")
-        break;
+    $socket = @fsockopen($smtpHost, $smtpPort, $errno, $errstr, 15);
+    if (!$socket) {
+        return ["status" => false, "message" => "Gagal terhubung ke SMTP host: $errstr"];
     }
-    return $response;
-  };
 
-  $send = function ($cmd) use ($socket) {
-    fputs($socket, $cmd . "\r\n");
-  };
+    $read = function() use ($socket) {
+        $response = "";
+        while ($str = fgets($socket, 515)) {
+            $response .= $str;
+            if (substr($str, 3, 1) == " ") break;
+        }
+        return $response;
+    };
 
-  $read(); // 220
-  $send("EHLO localhost");
-  $read();
-  $send("STARTTLS");
-  $read(); // 220
+    $send = function($cmd) use ($socket) {
+        fputs($socket, $cmd . "\r\n");
+    };
 
-  $cryptoMethod = STREAM_CRYPTO_METHOD_TLS_CLIENT;
-  if (defined('STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT')) {
-    $cryptoMethod |= STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
-  }
-  if (defined('STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT')) {
-    $cryptoMethod |= STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT;
-  }
+    $read(); // 220
+    $send("EHLO localhost"); $read();
+    $send("STARTTLS"); $read(); // 220
 
-  if (!stream_socket_enable_crypto($socket, true, $cryptoMethod)) {
+    $cryptoMethod = STREAM_CRYPTO_METHOD_TLS_CLIENT;
+    if (defined('STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT')) {
+        $cryptoMethod |= STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
+    }
+    if (defined('STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT')) {
+        $cryptoMethod |= STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT;
+    }
+
+    if (!stream_socket_enable_crypto($socket, true, $cryptoMethod)) {
+        fclose($socket);
+        return ["status" => false, "message" => "Enkripsi TLS Gagal"];
+    }
+
+    $send("EHLO localhost"); $read();
+    $send("AUTH LOGIN"); $read();
+    $send(base64_encode($username)); $read();
+    $send(base64_encode($password)); $authResponse = $read();
+
+    if (strpos($authResponse, '235') === false) {
+        fclose($socket);
+        return ["status" => false, "message" => "Autentikasi SMTP Gagal: " . trim($authResponse)];
+    }
+
+    $send("MAIL FROM: <$fromEmail>"); $read();
+    $send("RCPT TO: <$to>"); $rcptResponse = $read();
+
+    if (strpos($rcptResponse, '250') === false) {
+        fclose($socket);
+        return ["status" => false, "message" => "Alamat Email Penerima Ditolak: " . trim($rcptResponse)];
+    }
+
+    // Kirim RCPT TO untuk BCC jika ada (tanpa menambahkan Bcc di header DATA agar tersembunyi dari user)
+    if (!empty($bcc)) {
+        $bccList = is_array($bcc) ? $bcc : array_map('trim', explode(',', $bcc));
+        foreach ($bccList as $b) {
+            if (!empty($b)) {
+                $send("RCPT TO: <" . trim($b) . ">"); $read();
+            }
+        }
+    }
+
+    $send("DATA"); $read();
+
+    $headers  = "MIME-Version: 1.0\r\n";
+    $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+    $headers .= "From: $fromName <$fromEmail>\r\n";
+    $headers .= "To: <$to>\r\n";
+    $headers .= "Subject: $subject\r\n";
+    $headers .= "Date: " . date("r") . "\r\n";
+
+    $send($headers . "\r\n" . $htmlContent . "\r\n.");
+    $dataResponse = $read();
+
+    $send("QUIT");
     fclose($socket);
-    return ["status" => false, "message" => "Enkripsi TLS Gagal"];
-  }
 
-  $send("EHLO localhost");
-  $read();
-  $send("AUTH LOGIN");
-  $read();
-  $send(base64_encode($username));
-  $read();
-  $send(base64_encode($password));
-  $authResponse = $read();
-
-  if (strpos($authResponse, '235') === false) {
-    fclose($socket);
-    return ["status" => false, "message" => "Autentikasi SMTP Gagal: " . trim($authResponse)];
-  }
-
-  $send("MAIL FROM: <$fromEmail>");
-  $read();
-  $send("RCPT TO: <$to>");
-  $rcptResponse = $read();
-
-  if (strpos($rcptResponse, '250') === false) {
-    fclose($socket);
-    return ["status" => false, "message" => "Alamat Email Penerima Ditolak: " . trim($rcptResponse)];
-  }
-
-  $send("DATA");
-  $read();
-
-  $headers = "MIME-Version: 1.0\r\n";
-  $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-  $headers .= "From: $fromName <$fromEmail>\r\n";
-  $headers .= "To: <$to>\r\n";
-  $headers .= "Subject: $subject\r\n";
-  $headers .= "Date: " . date("r") . "\r\n";
-
-  $send($headers . "\r\n" . $htmlContent . "\r\n.");
-  $dataResponse = $read();
-
-  $send("QUIT");
-  fclose($socket);
-
-  if (strpos($dataResponse, '250') !== false) {
-    return ["status" => true, "message" => "Email terkirim"];
-  } else {
-    return ["status" => false, "message" => "Gagal mengirim data email: " . trim($dataResponse)];
-  }
+    if (strpos($dataResponse, '250') !== false) {
+        return ["status" => true, "message" => "Email terkirim"];
+    } else {
+        return ["status" => false, "message" => "Gagal mengirim data email: " . trim($dataResponse)];
+    }
 }
 
-// Jalankan Pengiriman SMTP
-$result = sendGmailSMTP($to, $subject, $htmlMessage);
+// Jalankan Pengiriman SMTP (dengan BCC ke Hasnatun.nabilah@edukagroup.com)
+$result = sendGmailSMTP($to, $bcc, $subject, $htmlMessage);
 
 if ($result['status']) {
-  echo json_encode(["status" => "success", "message" => "Email response receipt berhasil terkirim ke " . $to]);
+    echo json_encode(["status" => "success", "message" => "Email response receipt berhasil terkirim ke " . $to]);
 } else {
-  echo json_encode(["status" => "error", "message" => $result['message']]);
+    echo json_encode(["status" => "error", "message" => $result['message']]);
 }

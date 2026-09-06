@@ -44,7 +44,7 @@ $htmlMessage = '
             <td style="padding:32px; font-size:15px; line-height:1.6; color:#334155;">
               
               <p style="margin-top:0; font-size:15px; color:#0f172a; line-height:1.6;">
-                Saat ini, tim English 1 Lombok sedang melakukan proses verifikasi kelengkapan data diri pendaftaran kolektif sekolah. Tim kami akan menghubungi guru pendamping / orang tua melalui <strong>WhatsApp</strong> jika proses verifikasi telah selesai.
+                Saat ini, tim English 1 Lombok sedang melakukan proses verifikasi kelengkapan data diri atas nama <strong>' . $participantName . '</strong> dan pendaftaran kolektif sekolah. Tim kami akan menghubungi guru pendamping / orang tua melalui <strong>WhatsApp</strong> jika proses verifikasi telah selesai.
               </p>
 
               <p style="font-size:15px; color:#0f172a; margin:16px 0; line-height:1.6;">
