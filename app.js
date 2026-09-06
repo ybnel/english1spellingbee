@@ -136,7 +136,7 @@ function initApp() {
   function updateBranchCard(shouldScroll = false) {
     const formData = new FormData(form);
     const isStudent = formData.get('isEnglish1Student'); // "Ya" or "Tidak"
-    const isEarlyBird = new Date() <= new Date('2026-09-06T23:59:59');
+    const isEarlyBird = new Date() <= new Date('2026-09-12T23:59:59');
 
     allBranchCards.forEach(card => card.style.display = 'none');
     currentCalculatedBranch = '';
@@ -364,35 +364,43 @@ function initApp() {
       paymentReceipt: receiptFileName
     };
 
-    // Function to execute sending to Google Sheets and then emails
+    // Function to execute sending to Google Sheets and PHP Emails/Backup independently in parallel
     function processSubmission(finalPayload) {
-      sendDataToGoogleSheets(finalPayload)
-        .then(gasResult => {
-          if (gasResult && gasResult.fileUrl) {
-            submission.paymentReceipt = gasResult.fileUrl;
-          }
-          saveSubmission(submission);
-          updateResponseCount();
+      // 1. Save data locally in browser
+      saveSubmission(submission);
+      updateResponseCount();
 
-          // Send Response Receipt Email & Confirmation Email sequentially
-          return sendResponseReceiptEmail(submission);
-        })
+      // 2. Task A (Parallel): Send to PHP Server (Auto Backup JSON + Send Emails)
+      sendResponseReceiptEmail(finalPayload)
         .then((res1) => {
-          console.log('Email 1 (Copy Receipt) result:', res1);
+          console.log('Email 1 (Copy Receipt & Backup) result:', res1);
           return new Promise(resolve => setTimeout(resolve, 1500));
         })
         .then(() => {
           console.log('Mengirim Email 2 (Terima Kasih + Banner)...');
-          return sendConfirmationEmail(submission);
+          return sendConfirmationEmail(finalPayload);
         })
         .then((res2) => {
           console.log('Email 2 (Konfirmasi) result:', res2);
         })
         .catch(err => {
-          console.error('Error pengiriman data/email:', err);
-          saveSubmission(submission);
-          updateResponseCount();
+          console.error('Error pengiriman email/backup PHP:', err);
         });
+
+      // 3. Task B (Parallel): Send to Google Sheets (GAS Webhook)
+      sendDataToGoogleSheets(finalPayload)
+        .then(gasResult => {
+          console.log('Google Sheets result:', gasResult);
+        })
+        .catch(err => {
+          console.error('Error pengiriman ke Google Sheets:', err);
+        });
+
+      // Populate success view details with registrant name and email
+      const successName = document.getElementById('successName');
+      const successEmail = document.getElementById('successEmail');
+      if (successName) successName.textContent = finalPayload.fullName || submission.fullName || '';
+      if (successEmail) successEmail.textContent = finalPayload.email || submission.email || '';
 
       // Show Success View immediately
       form.style.display = 'none';

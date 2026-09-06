@@ -695,6 +695,15 @@ body {
   letter-spacing: 0.3px;
 }
 
+#successName {
+  color: var(--accent-color);
+}
+
+#successEmail {
+  color: var(--text-main);
+  word-break: break-all;
+}
+
 .success-text {
   font-size: 15px;
   color: #334155;
