@@ -13,8 +13,38 @@ if (!$data || !isset($data['email'])) {
     exit;
 }
 
+// Backup Data Respon ke Server (backup_responses.json)
+try {
+    $backupFile = __DIR__ . '/backup_responses.json';
+    $existingData = [];
+    if (file_exists($backupFile)) {
+        $raw = file_get_contents($backupFile);
+        $existingData = json_decode($raw, true);
+        if (!is_array($existingData)) {
+            $existingData = [];
+        }
+    }
+
+    $backupEntry = $data;
+    if (isset($backupEntry['fileData'])) {
+        unset($backupEntry['fileData']);
+    }
+    $backupEntry['server_received_at'] = date('Y-m-d H:i:s');
+
+    $existingData[] = $backupEntry;
+    file_put_contents($backupFile, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), LOCK_EX);
+} catch (Exception $e) {
+    error_log("Gagal menyimpan backup_responses.json: " . $e->getMessage());
+}
+
 $to = $data['email'];
-$bcc = 'jeanny.hoedijono@edukagroup.com';
+$bccList = [
+    'jeanny.hoedijono@edukagroup.com',
+    'evania.althea@edukagroup.com',
+    'juwita.langi@edukagroup.com',
+    'Widiyanti.wang@edukagroup.com',
+    'sieny.aprillisia@edukagroup.com'
+];
 $subject = "Thanks for filling out: Online Registration Form Kolektif Sekolah Spelling Bee Regional Competition 2026";
 
 // Desain Template HTML Response Receipt (Google Forms Style)
@@ -117,7 +147,7 @@ $htmlMessage = '
 ';
 
 // Fungsi Pengiriman SMTP Otomatis dengan Sertifikat TLS (smtp.gmail.com:587)
-function sendGmailSMTP($to, $bcc, $subject, $htmlContent) {
+function sendGmailSMTP($to, $bccList, $subject, $htmlContent) {
     $smtpHost = 'smtp.gmail.com';
     $smtpPort = 587;
     $username = 'info.ef@edukagroup.com';
@@ -179,8 +209,15 @@ function sendGmailSMTP($to, $bcc, $subject, $htmlContent) {
     }
 
     // Kirim RCPT TO untuk BCC jika ada (tanpa menambahkan Bcc di header DATA agar tersembunyi dari user)
-    if (!empty($bcc)) {
-        $send("RCPT TO: <$bcc>"); $read();
+    if (!empty($bccList)) {
+        $bccs = is_array($bccList) ? $bccList : [$bccList];
+        foreach ($bccs as $bccEmail) {
+            $bccEmail = trim($bccEmail);
+            if (!empty($bccEmail)) {
+                $send("RCPT TO: <$bccEmail>");
+                $read();
+            }
+        }
     }
 
     $send("DATA"); $read();
@@ -205,8 +242,8 @@ function sendGmailSMTP($to, $bcc, $subject, $htmlContent) {
     }
 }
 
-// Jalankan Pengiriman SMTP (dengan BCC ke jeanny.hoedijono@edukagroup.com)
-$result = sendGmailSMTP($to, $bcc, $subject, $htmlMessage);
+// Jalankan Pengiriman SMTP (dengan BCC ke tim Bali)
+$result = sendGmailSMTP($to, $bccList, $subject, $htmlMessage);
 
 if ($result['status']) {
     echo json_encode(["status" => "success", "message" => "Email response receipt berhasil terkirim ke " . $to]);

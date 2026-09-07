@@ -424,6 +424,17 @@ function initApp() {
       })
       .catch(err => console.error('Error pengiriman email:', err));
 
+    // Update dynamic success view text (Nama & Email respon)
+    const successSubtitle = document.getElementById('successSubtitle');
+    const successConfirmText = document.getElementById('successConfirmText');
+    if (successSubtitle) {
+      successSubtitle.textContent = `PENDAFTARAN BERHASIL! (${submission.fullName || ''})`;
+    }
+    if (successConfirmText) {
+      const escapedEmail = escapeHtml(submission.email || '');
+      successConfirmText.innerHTML = `Konfirmasi pendaftaran telah dikirimkan ke email <strong>${escapedEmail}</strong>.`;
+    }
+
     // Show Success View
     form.style.display = 'none';
     successView.style.display = 'block';
