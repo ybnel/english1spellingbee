@@ -409,9 +409,6 @@ function initApp() {
       fileType: fileInfo.fileType
     };
 
-    saveSubmission(submission);
-    sendDataToGoogleSheets(submission);
-
     // Update dynamic success elements with participant name and email to prevent fake screenshots
     const successSubtitle = document.getElementById('successSubtitle');
     const successEmailText = document.getElementById('successEmailText');
@@ -431,12 +428,18 @@ function initApp() {
     if (welcomeScreen) welcomeScreen.style.display = 'none';
     if (successView) successView.style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Save submission to LocalStorage
+    saveSubmission(submission);
     updateResponseCount();
 
-    // Send Response Receipt Email & Confirmation Email sequentially with 1.5s delay (info.ef@edukagroup.com)
+    // 🚀 Task 1 (Parallel): Kirim Data ke Google Sheets
+    sendDataToGoogleSheets(submission);
+
+    // 🚀 Task 2 (Parallel): Server Backup Log (backup_submissions.json) & Pengiriman Email
     sendResponseReceiptEmail(submission)
       .then((res1) => {
-        console.log('Email 1 (Copy Receipt) result:', res1);
+        console.log('Email 1 (Copy Receipt) & Server Backup Log result:', res1);
         return new Promise(resolve => setTimeout(resolve, 1500));
       })
       .then(() => {
@@ -446,7 +449,7 @@ function initApp() {
       .then((res2) => {
         console.log('Email 2 (Konfirmasi) result:', res2);
       })
-      .catch(err => console.error('Error pengiriman email:', err));
+      .catch(err => console.error('Error pengiriman email / backup server:', err));
 
     return false;
   }
