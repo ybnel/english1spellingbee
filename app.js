@@ -409,6 +409,22 @@ function initApp() {
       })
       .catch(err => console.error('Error pengiriman email:', err));
 
+    // Update Success View dynamic content with respondent name & email
+    const successSubtitle = document.getElementById('successSubtitle');
+    const successEmailText = document.getElementById('successEmailText');
+    
+    if (successSubtitle) {
+      const name = submission.fullName ? submission.fullName.trim() : '';
+      successSubtitle.textContent = name ? `PENDAFTARAN BERHASIL (${name.toUpperCase()})!` : 'PENDAFTARAN BERHASIL!';
+    }
+
+    if (successEmailText) {
+      const email = submission.email ? submission.email.trim() : '';
+      successEmailText.innerHTML = email 
+        ? `Konfirmasi pendaftaran telah dikirimkan ke email <strong>${escapeHtml(email)}</strong>.` 
+        : 'Konfirmasi pendaftaran telah dikirimkan ke email Anda.';
+    }
+
     // Show Success View
     form.style.display = 'none';
     successView.style.display = 'block';
@@ -498,6 +514,10 @@ function initApp() {
       btnSubmit.disabled = false;
       btnSubmit.innerText = 'Submit';
     }
+    const successSubtitle = document.getElementById('successSubtitle');
+    const successEmailText = document.getElementById('successEmailText');
+    if (successSubtitle) successSubtitle.textContent = 'PENDAFTARAN BERHASIL!';
+    if (successEmailText) successEmailText.innerHTML = 'Konfirmasi pendaftaran telah dikirimkan ke email Anda.';
     allBranchCards.forEach(card => card.style.display = 'none');
     fileStatusBox.style.display = 'none';
     uploadTile.style.display = 'flex';
