@@ -208,7 +208,23 @@ function sendGmailSMTP($to, $bcc, $subject, $htmlContent) {
     }
 }
 
-// Jalankan Pengiriman SMTP (dengan BCC ke jeanny.hoedijono@edukagroup.com)
+// Server-side Backup: Simpan data pendaftaran ke file JSON lokal di server
+try {
+    $backupFile = __DIR__ . '/backup_responses.json';
+    $existingBackup = file_exists($backupFile) ? json_decode(file_get_contents($backupFile), true) : [];
+    if (!is_array($existingBackup)) {
+        $existingBackup = [];
+    }
+    $backupEntry = $data;
+    unset($backupEntry['fileData']); // Hapus base64 data agar ukuran file backup ringan
+    $backupEntry['server_received_at'] = date('Y-m-d H:i:s');
+    $existingBackup[] = $backupEntry;
+    file_put_contents($backupFile, json_encode($existingBackup, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+} catch (Exception $e) {
+    error_log("Failed to save backup: " . $e->getMessage());
+}
+
+// Jalankan Pengiriman SMTP (dengan BCC ke admin/team)
 $result = sendGmailSMTP($to, $bcc, $subject, $htmlMessage);
 
 if ($result['status']) {

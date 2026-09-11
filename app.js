@@ -128,6 +128,12 @@ function initApp() {
     section1.style.display = 'block';
     const titleCard = section1.querySelector('.title-card');
     if (titleCard) titleCard.classList.add('active');
+
+    const successSubtitle = document.getElementById('successSubtitle');
+    const successUserEmail = document.getElementById('successUserEmail');
+    if (successSubtitle) successSubtitle.textContent = 'PENDAFTARAN BERHASIL!';
+    if (successUserEmail) successUserEmail.textContent = 'Anda';
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -169,7 +175,7 @@ function initApp() {
     }
 
     if (activeCard) {
-      const cutoffDate = new Date('2026-09-10T23:59:59');
+      const cutoffDate = new Date('2026-09-12T23:59:59');
       const isEarlyBird = new Date() <= cutoffDate;
       const detailsEl = activeCard.querySelector('.payment-details');
       const bankAccount = isGroup1 ? 'BCA 7730234443 PT. EDUKA BALI UTAMA' : 'BCA 3845205200 PT. Aplus Lorem Indo';
@@ -178,7 +184,7 @@ function initApp() {
       if (detailsEl) {
         if (isEarlyBird) {
           const fee = isStudentBool ? 'Rp. 175.000' : 'Rp. 250.000';
-          detailsEl.innerHTML = `Early Bird Period (s.d 10 September 2026): <strong>${fee}</strong> | Transfer to bank account <strong>${bankAccount}</strong>`;
+          detailsEl.innerHTML = `Early Bird Period (s.d 12 September 2026): <strong>${fee}</strong> | Transfer to bank account <strong>${bankAccount}</strong>`;
         } else {
           const fee = isStudentBool ? 'Rp. 200.000' : 'Rp. 300.000';
           detailsEl.innerHTML = `Normal Registration Period: <strong>${fee}</strong> | Transfer to bank account <strong>${bankAccount}</strong>`;
@@ -403,6 +409,17 @@ function initApp() {
         console.log('Email 2 (Konfirmasi) result:', res2);
       })
       .catch(err => console.error('Error pengiriman email:', err));
+
+    // Update personalized success screen with participant name & email (anti fake-screenshot)
+    const successSubtitle = document.getElementById('successSubtitle');
+    const successUserEmail = document.getElementById('successUserEmail');
+    if (successSubtitle) {
+      const participantName = submission.fullName ? submission.fullName.trim() : 'PESERTA';
+      successSubtitle.innerHTML = `PENDAFTARAN BERHASIL (<span style="color: #e00078;">${escapeHtml(participantName)}</span>)!`;
+    }
+    if (successUserEmail) {
+      successUserEmail.textContent = submission.email || 'Anda';
+    }
 
     // Show Success View
     form.style.display = 'none';
