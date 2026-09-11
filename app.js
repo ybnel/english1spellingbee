@@ -161,7 +161,7 @@ function initApp() {
     }
 
     if (activeCard) {
-      const cutoffDate = new Date('2026-09-10T23:59:59');
+      const cutoffDate = new Date('2026-09-12T23:59:59');
       const isEarlyBird = new Date() <= cutoffDate;
       const detailsEl = activeCard.querySelector('.payment-details');
       const bankAccount = isGroup1 ? 'BCA 7730234443 PT. EDUKA BALI UTAMA' : 'BCA 3845205200 PT. Aplus Lorem Indo';
@@ -169,7 +169,7 @@ function initApp() {
       if (detailsEl) {
         if (isEarlyBird) {
           const fee = 'Rp. 200.000';
-          detailsEl.innerHTML = `Early Bird Period (s.d 10 September 2026): <strong>${fee}</strong> | Transfer to bank account <strong>${bankAccount}</strong>`;
+          detailsEl.innerHTML = `Early Bird Period (s.d 12 September 2026): <strong>${fee}</strong> | Transfer to bank account <strong>${bankAccount}</strong>`;
         } else {
           const fee = 'Rp. 250.000';
           detailsEl.innerHTML = `Normal Registration Period: <strong>${fee}</strong> | Transfer to bank account <strong>${bankAccount}</strong>`;
