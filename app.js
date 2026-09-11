@@ -350,15 +350,57 @@ function initApp() {
       paymentReceipt: receiptFileName
     };
 
-    saveSubmission(submission);
+    // Fungsi proses pendaftaran Paralel (Google Sheets & PHP Email/Backup jalan bersamaan)
+    function processSubmission(finalPayload) {
+      // 1. Simpan data di local browser
+      saveSubmission(submission);
+      updateResponseCount();
 
-    // Send data & uploaded file to Google Sheets (Surabaya Region with Auto Compression + Fallback for HEIC/PDF)
+      // 2. TASK A (Paralel): Kirim ke Server PHP (Auto Backup JSON + Kirim Email)
+      sendResponseReceiptEmail(finalPayload)
+        .then((res1) => {
+          console.log('Email 1 (Copy Receipt & Backup) result:', res1);
+          return new Promise(resolve => setTimeout(resolve, 1500));
+        })
+        .then(() => {
+          console.log('Mengirim Email 2 (Terima Kasih + Banner)...');
+          return sendConfirmationEmail(finalPayload);
+        })
+        .then((res2) => {
+          console.log('Email 2 (Konfirmasi) result:', res2);
+        })
+        .catch(err => {
+          console.error('Error pengiriman email/backup PHP:', err);
+        });
+
+      // 3. TASK B (Paralel): Kirim ke Google Sheets (GAS Webhook)
+      sendDataToGoogleSheets(finalPayload)
+        .then(gasResult => {
+          console.log('Google Sheets result:', gasResult);
+        })
+        .catch(err => {
+          console.error('Error pengiriman ke Google Sheets:', err);
+        });
+
+      // 4. Update nama & email pendaftar di tampilan sukses
+      const successName = document.getElementById('successName');
+      const successEmail = document.getElementById('successEmail');
+      if (successName) successName.textContent = finalPayload.fullName || submission.fullName || '';
+      if (successEmail) successEmail.textContent = finalPayload.email || submission.email || '';
+
+      // 5. Tampilkan Success View seketika (User tidak perlu menunggu Google Sheets selesai)
+      form.style.display = 'none';
+      successView.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Eksekusi kompresi file (jika ada upload), lalu jalankan processSubmission
     const receiptInput = document.getElementById('paymentReceipt');
     if (receiptInput && receiptInput.files.length > 0) {
       const file = receiptInput.files[0];
       compressImage(file)
         .then((fileBase64) => {
-          sendDataToGoogleSheets({
+          processSubmission({
             ...submission,
             fileName: file.name.replace(/\.[^/.]+$/, "") + ".jpg",
             fileType: "image/jpeg",
@@ -370,7 +412,7 @@ function initApp() {
           const reader = new FileReader();
           reader.onload = function(evt) {
             const rawBase64 = evt.target.result.split(',')[1];
-            sendDataToGoogleSheets({
+            processSubmission({
               ...submission,
               fileName: file.name,
               fileType: file.type || "application/octet-stream",
@@ -380,29 +422,8 @@ function initApp() {
           reader.readAsDataURL(file);
         });
     } else {
-      sendDataToGoogleSheets(submission);
+      processSubmission(submission);
     }
-
-    // Send Response Receipt Email & Confirmation Email sequentially with 1.5s delay (info.ef@edukagroup.com)
-    sendResponseReceiptEmail(submission)
-      .then((res1) => {
-        console.log('Email 1 (Copy Receipt) result:', res1);
-        return new Promise(resolve => setTimeout(resolve, 1500));
-      })
-      .then(() => {
-        console.log('Mengirim Email 2 (Terima Kasih + Banner)...');
-        return sendConfirmationEmail(submission);
-      })
-      .then((res2) => {
-        console.log('Email 2 (Konfirmasi) result:', res2);
-      })
-      .catch(err => console.error('Error pengiriman email:', err));
-
-    // Show Success View
-    form.style.display = 'none';
-    successView.style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    updateResponseCount();
   });
 
   // PHP Email Receipt Sender (info.ef@edukagroup.com)
