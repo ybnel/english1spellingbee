@@ -10,6 +10,7 @@ function initApp() {
   const btnSubmitAnother = document.getElementById('btnSubmitAnother');
   const clearButtons = document.querySelectorAll('.btn-clear-all');
   const english1CenterSelect = document.getElementById('english1Center');
+  let isSubmitting = false;
 
   const welcomeScreen = document.getElementById('welcomeScreen');
   const btnStartRegistration = document.getElementById('btnStartRegistration');
@@ -116,6 +117,14 @@ function initApp() {
   });
 
   function resetForm() {
+    isSubmitting = false;
+    const submitBtn = document.getElementById('btnSubmit');
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit';
+      submitBtn.style.opacity = '1';
+      submitBtn.style.cursor = 'pointer';
+    }
     form.reset();
     if (fileNameDisplay) fileNameDisplay.textContent = '';
     if (fileStatusBox) fileStatusBox.style.display = 'none';
@@ -320,6 +329,12 @@ function initApp() {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
+    // 🛡️ ANTI-DUPLICATE GUARD: Cegah double/multi-submit saat tombol diklik berkali-kali
+    if (isSubmitting) {
+      console.warn('Pengiriman sedang diproses, klik ganda diabaikan.');
+      return;
+    }
+
     // If section 1 is currently active (e.g. user pressed Enter key in Section 1 text input)
     if (section1.style.display !== 'none') {
       goToSection2();
@@ -328,6 +343,16 @@ function initApp() {
 
     // Validate Section 2 inputs (file upload receipt)
     if (!validateCardSection(section2)) return;
+
+    // 🔒 Kunci form & nonaktifkan tombol submit seketika
+    isSubmitting = true;
+    const submitBtn = document.getElementById('btnSubmit');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Memproses...';
+      submitBtn.style.opacity = '0.6';
+      submitBtn.style.cursor = 'not-allowed';
+    }
 
     const formData = new FormData(form);
     const receiptFile = document.getElementById('paymentReceipt');
@@ -350,13 +375,23 @@ function initApp() {
       paymentReceipt: receiptFileName
     };
 
-    // Fungsi proses pendaftaran Paralel (Google Sheets & PHP Email/Backup jalan bersamaan)
-    function processSubmission(finalPayload) {
-      // 1. Simpan data di local browser
-      saveSubmission(submission);
-      updateResponseCount();
+    // ⚡ SEKETIKA: Tampilkan Layar Sukses & hilangkan form agar user TIDAK BISA spam-klik
+    const successName = document.getElementById('successName');
+    const successEmail = document.getElementById('successEmail');
+    if (successName) successName.textContent = submission.fullName || '';
+    if (successEmail) successEmail.textContent = submission.email || '';
 
-      // 2. TASK A (Paralel): Kirim ke Server PHP (Auto Backup JSON + Kirim Email)
+    form.style.display = 'none';
+    successView.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Simpan data di local browser
+    saveSubmission(submission);
+    updateResponseCount();
+
+    // Fungsi eksekusi pengiriman ke Server PHP & Google Sheets (Paralel)
+    function executeServerDispatch(finalPayload) {
+      // TASK A (Paralel): Kirim ke Server PHP (Auto Backup JSON + Kirim Email)
       sendResponseReceiptEmail(finalPayload)
         .then((res1) => {
           console.log('Email 1 (Copy Receipt & Backup) result:', res1);
@@ -373,7 +408,7 @@ function initApp() {
           console.error('Error pengiriman email/backup PHP:', err);
         });
 
-      // 3. TASK B (Paralel): Kirim ke Google Sheets (GAS Webhook)
+      // TASK B (Paralel): Kirim ke Google Sheets (GAS Webhook)
       sendDataToGoogleSheets(finalPayload)
         .then(gasResult => {
           console.log('Google Sheets result:', gasResult);
@@ -381,26 +416,15 @@ function initApp() {
         .catch(err => {
           console.error('Error pengiriman ke Google Sheets:', err);
         });
-
-      // 4. Update nama & email pendaftar di tampilan sukses
-      const successName = document.getElementById('successName');
-      const successEmail = document.getElementById('successEmail');
-      if (successName) successName.textContent = finalPayload.fullName || submission.fullName || '';
-      if (successEmail) successEmail.textContent = finalPayload.email || submission.email || '';
-
-      // 5. Tampilkan Success View seketika (User tidak perlu menunggu Google Sheets selesai)
-      form.style.display = 'none';
-      successView.style.display = 'block';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Eksekusi kompresi file (jika ada upload), lalu jalankan processSubmission
+    // Eksekusi kompresi file (jika ada upload), lalu kirim ke server secara tepat 1 kali
     const receiptInput = document.getElementById('paymentReceipt');
     if (receiptInput && receiptInput.files.length > 0) {
       const file = receiptInput.files[0];
       compressImage(file)
         .then((fileBase64) => {
-          processSubmission({
+          executeServerDispatch({
             ...submission,
             fileName: file.name.replace(/\.[^/.]+$/, "") + ".jpg",
             fileType: "image/jpeg",
@@ -412,7 +436,7 @@ function initApp() {
           const reader = new FileReader();
           reader.onload = function(evt) {
             const rawBase64 = evt.target.result.split(',')[1];
-            processSubmission({
+            executeServerDispatch({
               ...submission,
               fileName: file.name,
               fileType: file.type || "application/octet-stream",
@@ -422,7 +446,7 @@ function initApp() {
           reader.readAsDataURL(file);
         });
     } else {
-      processSubmission(submission);
+      executeServerDispatch(submission);
     }
   });
 
@@ -473,9 +497,9 @@ function initApp() {
   const GOOGLE_SCRIPT_URL_SURABAYA = 'https://script.google.com/macros/s/AKfycbyQym6DmlPm2hxeT3ELSu9BqHff-qL_BIHEA6fJmc4UTCMZKcJHA1VZxlisC6jq_30ScA/exec';
 
   function sendDataToGoogleSheets(payload) {
-    if (!GOOGLE_SCRIPT_URL_SURABAYA) return;
+    if (!GOOGLE_SCRIPT_URL_SURABAYA) return Promise.resolve(null);
 
-    fetch(GOOGLE_SCRIPT_URL_SURABAYA, {
+    return fetch(GOOGLE_SCRIPT_URL_SURABAYA, {
       method: 'POST',
       mode: 'no-cors',
       headers: {
@@ -484,8 +508,10 @@ function initApp() {
       body: JSON.stringify(payload)
     }).then(() => {
       console.log('Data pendaftaran berhasil dikirim ke Google Sheets.');
+      return true;
     }).catch(err => {
       console.error('Gagal mengirim data ke Google Sheets:', err);
+      return false;
     });
   }
 
