@@ -41,6 +41,30 @@ function initApp() {
 
   let currentCalculatedBranch = '';
 
+  // Dynamic header fee description update based on date
+  const formFeeDescEl = document.getElementById('formFeeDescription');
+  if (formFeeDescEl) {
+    const isEarlyBirdInit = new Date() <= new Date('2026-09-12T23:59:59');
+    if (isEarlyBirdInit) {
+      formFeeDescEl.innerHTML = `
+        <p style="margin-top: 8px; margin-bottom: 4px;">Biaya Pendaftaran Early Bird (s.d tgl 12 September 2026) :</p>
+        <p style="margin-top: 0; margin-bottom: 2px;">English 1 Students : <strong>Rp. 100.000</strong></p>
+        <p style="margin-top: 0; margin-bottom: 8px;">Non English 1 Students : <strong>Rp. 200.000</strong></p>
+        <p style="margin-top: 4px; margin-bottom: 4px;">Biaya Pendaftaran Normal :</p>
+        <p style="margin-top: 0; margin-bottom: 2px;">English 1 Students : <strong>Rp. 125.000</strong></p>
+        <p style="margin-top: 0; margin-bottom: 8px;">Non English 1 Students : <strong>Rp. 250.000</strong></p>
+        <p style="margin-top: 12px; margin-bottom: 4px;">Lengkapi data diri di bawah ini dengan <strong>BENAR</strong>.</p>
+      `;
+    } else {
+      formFeeDescEl.innerHTML = `
+        <p style="margin-top: 8px; margin-bottom: 4px;">Biaya Pendaftaran Normal :</p>
+        <p style="margin-top: 0; margin-bottom: 2px;">English 1 Students : <strong>Rp. 125.000</strong></p>
+        <p style="margin-top: 0; margin-bottom: 8px;">Non English 1 Students : <strong>Rp. 250.000</strong></p>
+        <p style="margin-top: 12px; margin-bottom: 4px;">Lengkapi data diri di bawah ini dengan <strong>BENAR</strong>.</p>
+      `;
+    }
+  }
+
   // Active card highlight logic
   cards.forEach(card => {
     card.addEventListener('click', () => {
@@ -149,7 +173,7 @@ function initApp() {
       activeCard = branchStudentGroup1;
       currentCalculatedBranch = isEarlyBird
         ? 'Siswa English 1 (Early Bird) - Rp 100.000'
-        : 'Siswa English 1 (Normal) - Rp 150.000';
+        : 'Siswa English 1 (Normal) - Rp 125.000';
       if (wasStudentCard) {
         wasStudentCard.style.display = 'none';
         wasStudentCard.dataset.required = 'false';
@@ -171,6 +195,18 @@ function initApp() {
     }
 
     if (activeCard) {
+      const detailsEl = activeCard.querySelector('.payment-details');
+      if (detailsEl) {
+        if (isStudent === 'Ya') {
+          detailsEl.innerHTML = isEarlyBird
+            ? 'Early Bird Period (s.d tgl 12 September 2026): <strong>Rp 100.000</strong> (Normal: Rp 125.000)'
+            : 'Biaya Pendaftaran Normal: <strong>Rp 125.000</strong>';
+        } else {
+          detailsEl.innerHTML = isEarlyBird
+            ? 'Early Bird Period (s.d tgl 12 September 2026): <strong>Rp 200.000</strong> (Normal: Rp 250.000)'
+            : 'Biaya Pendaftaran Normal: <strong>Rp 250.000</strong>';
+        }
+      }
       activeCard.style.display = 'block';
       if (shouldScroll) {
         activeCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
