@@ -140,7 +140,7 @@ function initApp() {
   function updateBranchCard(shouldScroll = false) {
     const formData = new FormData(form);
     const isStudent = formData.get('isEnglish1Student'); // "Ya" or "Tidak"
-    const cutoffDate = new Date('2026-09-25T23:59:59');
+    const cutoffDate = new Date('2026-09-29T23:59:59');
     const isEarlyBird = new Date() <= cutoffDate;
 
     allBranchCards.forEach(card => card.style.display = 'none');
@@ -170,7 +170,7 @@ function initApp() {
       if (detailsEl) {
         if (isEarlyBird) {
           const fee = isStudentBool ? 'Rp 100.000' : 'Rp 200.000';
-          detailsEl.innerHTML = `Early Bird Period (s.d tgl 25 September 2026): <strong>${fee}</strong> | Transfer to bank account <strong>${bankAccount}</strong>`;
+          detailsEl.innerHTML = `Early Bird Period (s.d tgl 29 September 2026): <strong>${fee}</strong> | Transfer to bank account <strong>${bankAccount}</strong>`;
         } else {
           const fee = isStudentBool ? 'Rp 125.000' : 'Rp 250.000';
           detailsEl.innerHTML = `Normal Registration Period: <strong>${fee}</strong> | Transfer to bank account <strong>${bankAccount}</strong>`;
@@ -432,44 +432,51 @@ function initApp() {
       paymentReceipt: receiptFileName
     };
 
-    // Function to execute sending to Google Sheets and then emails (Lombok Architecture)
+    // Function to execute sending to Google Sheets and PHP Email/Backup in parallel
     function processSubmission(finalPayload) {
-      sendDataToGoogleSheets(finalPayload)
+      // 1. Simpan salinan lokal terlebih dahulu
+      saveSubmission(submission);
+      updateResponseCount();
+
+      // 2. Jalankan Pengiriman ke Google Sheets & Google Drive (Track 1)
+      const sheetsPromise = sendDataToGoogleSheets(finalPayload)
         .then(gasResult => {
+          console.log('Google Sheets Malang sync result:', gasResult);
           if (gasResult && gasResult.fileUrl) {
             submission.paymentReceipt = gasResult.fileUrl;
+            // Update URL file di local storage
+            const list = getSubmissions();
+            const idx = list.findIndex(item => item.id === submission.id);
+            if (idx !== -1) {
+              list[idx].paymentReceipt = gasResult.fileUrl;
+              localStorage.setItem('spelling_bee_submissions', JSON.stringify(list));
+            }
           }
-          saveSubmission(submission);
-          updateResponseCount();
-
-          // Send Response Receipt Email & Confirmation Email sequentially
-          return sendResponseReceiptEmail(submission);
+          return gasResult;
         })
+        .catch(err => {
+          console.error('Peringatan: Gagal mengirim ke Google Sheets:', err);
+          return null;
+        });
+
+      // 3. Jalankan Pengiriman Email & Backup Server PHP secara PARALEL & INDEPENDEN (Track 2)
+      const emailPromise = sendResponseReceiptEmail(submission)
         .then((res1) => {
-          console.log('Email 1 (Copy Receipt) result:', res1);
+          console.log('Email 1 (Copy Receipt + Backup Server) result:', res1);
           return new Promise(resolve => setTimeout(resolve, 1500));
         })
         .then(() => {
-          console.log('Mengirim Email 2 (Terima Kasih + Banner)...');
+          console.log('Mengirim Email 2 (Konfirmasi + Banner)...');
           return sendConfirmationEmail(submission);
         })
         .then((res2) => {
           console.log('Email 2 (Konfirmasi) result:', res2);
         })
         .catch(err => {
-          console.error('Error pengiriman data/email:', err);
-          saveSubmission(submission);
-          updateResponseCount();
-        })
-        .finally(() => {
-          isSubmitting = false;
-          if (btnSubmit) {
-            btnSubmit.disabled = false;
-            btnSubmit.textContent = 'Submit';
-          }
+          console.error('Peringatan: Gagal proses email/backup PHP:', err);
         });
 
-      // Update personalized success screen with participant name & email (anti fake-screenshot)
+      // 4. Update personalized success screen with participant name & email (anti fake-screenshot)
       const successSubtitle = document.getElementById('successSubtitle');
       const successUserEmail = document.getElementById('successUserEmail');
       if (successSubtitle) {
@@ -479,10 +486,19 @@ function initApp() {
         successUserEmail.textContent = submission.email || 'email Anda';
       }
 
-      // Show Success View immediately
+      // 5. Tampilkan Success View segera
       form.style.display = 'none';
       successView.style.display = 'block';
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // 6. Reset status button setelah semua proses async selesai
+      Promise.allSettled([sheetsPromise, emailPromise]).finally(() => {
+        isSubmitting = false;
+        if (btnSubmit) {
+          btnSubmit.disabled = false;
+          btnSubmit.textContent = 'Submit';
+        }
+      });
     }
 
     // Convert file with compression if uploaded, then process submission
